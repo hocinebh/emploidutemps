@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Propriétaire/Mes documents/Tonya/Cours/INSA 4°année/BE COO POO/Eclipse/jdom-1.0/build/jdom.jar"/>
-	<classpathentry kind="output" path=""/>
-</classpath>
