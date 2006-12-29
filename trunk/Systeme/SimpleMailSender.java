@@ -1,4 +1,4 @@
-package systeme;
+package Systeme;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.*;
@@ -13,7 +13,7 @@ import java.util.*;
 public class SimpleMailSender {
 
 	static boolean envoiok = true;
-	private String smtpServer = "smtp.free.fr";
+	private static String smtpServer = "smtp.free.fr";
 	// privqte String smtpServer = "melinite.insa-toulouse.fr"
 	/**
 	 * Methode qui envoie un mail. Il faut changer le SMTP dans la source pour qu'il marche sur le serveur en compte! 
@@ -26,7 +26,7 @@ public class SimpleMailSender {
 	public static boolean envoimail(String to, String from, String subject, String body){
 		try 
 		{
-			send("smtp.free.fr",to,from,subject,body);
+			send(smtpServer,to,from,subject,body);
 		}
 		catch (Exception ex)
 		{

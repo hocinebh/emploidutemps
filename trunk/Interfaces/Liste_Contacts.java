@@ -1,4 +1,4 @@
-package Interface;
+package Interfaces;
 
 import java.awt.*;
 import java.awt.event.*;
