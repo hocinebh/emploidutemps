@@ -8,15 +8,32 @@ import Systeme.Jours;
 import javax.swing.*;
 
 import java.util.*;
-import java.text.*;
 
 public class Interface_EDT {
 	
 	public static Calendar maintenant = Calendar.getInstance();
 	public static JFrame fenetre = new JFrame();
+	private static JLabel LLundi = new JLabel();
+	private static JLabel LMardi = new JLabel();
+	private static JLabel LMercredi = new JLabel();
+	private static JLabel LJeudi = new JLabel();
+	private static JLabel LVendredi = new JLabel();
+	private static JButton LSemaine = new JButton();
+	private static JButton SemainePrec = new JButton();
+	private static JButton SemaineSuiv = new JButton();
 	/**
 	 * @param args
 	 */
+	public static void afficher_contenu(Jours Semaine){
+		LLundi.setText(Semaine.getStringJour1());
+		LMardi.setText(Semaine.getStringJour2());
+		LMercredi.setText(Semaine.getStringJour3());
+		LJeudi.setText(Semaine.getStringJour4());
+		LVendredi.setText(Semaine.getStringJour5());
+		LSemaine.setText(" Semaine: "+ Semaine.getStringSemaine());
+		SemainePrec.setText("Semaine " + Semaine.getStringSemaineprec());
+		SemaineSuiv.setText("Semaine " + Semaine.getStringSemaineproch());
+	}
 	public static void main(String[] args) {
 		
 		fenetre.setTitle("Emploi du temps");
@@ -25,9 +42,7 @@ public class Interface_EDT {
 		
 		Jours Semaine = new Jours(maintenant);
 		/* Labels et boutons NORD */
-		JButton LSemaine = new JButton(" Semaine: "+ Semaine.getStringSemaine());
-		JButton SemainePrec = new JButton("Semaine " + Semaine.getStringSemaineprec());
-		JButton SemaineSuiv = new JButton("Semaine " + Semaine.getStringSemaineproch());
+		
 		JPanel headerpane = new JPanel();
 		headerpane.setLayout(new BorderLayout());
 		headerpane.add(SemainePrec,BorderLayout.WEST);
@@ -36,11 +51,8 @@ public class Interface_EDT {
 		
 		
 		/* Message et Sujet CENTER */
-		JLabel LLundi = new JLabel(Semaine.getStringJour1());
-		JLabel LMardi = new JLabel(Semaine.getStringJour2());
-		JLabel LMercredi = new JLabel(Semaine.getStringJour3());
-		JLabel LJeudi = new JLabel(Semaine.getStringJour4());
-		JLabel LVendredi = new JLabel(Semaine.getStringJour5());
+		afficher_contenu(Semaine);
+
 		JPanel JoursSemaine = new JPanel();
 		JoursSemaine.setLayout(new GridLayout(1,5));
 		JoursSemaine.add(LLundi);
@@ -79,9 +91,9 @@ public class Interface_EDT {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				maintenant.add(Calendar.DAY_OF_YEAR,+7);
+				maintenant.add(Calendar.WEEK_OF_YEAR,+1);
 				Jours Semaine = new Jours(maintenant);
-				/** TODO how do I repaint the panel ? */
+				afficher_contenu(Semaine);
 			}
 		};
 		SemaineSuiv.addActionListener(SemaineSuivante);
@@ -90,8 +102,9 @@ public class Interface_EDT {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				maintenant.add(Calendar.DAY_OF_YEAR,+7);
+				maintenant.add(Calendar.WEEK_OF_YEAR,-1);
 				Jours Semaine = new Jours(maintenant);
+				afficher_contenu(Semaine);
 				
 			}
 		};
@@ -104,7 +117,9 @@ public class Interface_EDT {
 		fenetre.setSize(800,600);
 		
 		fenetre.setVisible(true);
-
+		
+		
 	}
-
+	
 }
+
