@@ -19,6 +19,7 @@ public class Responsable extends Enseignant {
 	public Responsable(String num_personne, String username, String password, String nom, String prenom, String adresse, String email, int tel, Promotion promo) {
 		super(num_personne, username, password, nom, prenom, adresse, email, tel);
 		this.promo = promo;
+		this.promo.setResp(this);
 	}
 
 	

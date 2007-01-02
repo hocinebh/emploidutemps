@@ -26,8 +26,15 @@ import bdd.*;
  */
 public class Gestion_BDD implements Serializable {
 
-	private static final String ficXml ="XML/bdedt.xml";
+	//Definition des constantes
+	private static final int ETUDIANT =1;
+	private static final int RESPONSABLE =2;
+	private static final int ENSEIGNANT =3;
+	private static final String ficXml ="XML/bdedt2.xml";
 	private static final String ficSauvegarde = "tmp/system";
+	
+	//Definition des attributs
+	private File fichier;
 	private org.jdom.Document document;
 	private Element racine;
 	private Vector<Personne> utilisateurs;
@@ -42,46 +49,74 @@ public class Gestion_BDD implements Serializable {
 	
 	private Gestion_BDD(Boolean chargeXml)
 	{
+		//Création du fichier se sauvegarde si il n existe pas
+		fichier = new File(ficSauvegarde);
+		if(!fichier.exists())
+		{
+			try {
+				fichier.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+		//Initialisation des vecteurs
+		utilisateurs = new Vector<Personne>();
+		promotions = new Vector<Promotion>();
+		groupes = new Vector<Groupe>();
+		salles = new Vector <Salle>();
+		cours = new Vector<Cours>();
+		matieres = new Vector<Matiere>();
+		
 		//SAXBuilder sxb = new SAXBuilder(true);
 		SAXBuilder sxb = new SAXBuilder();
 		sxb.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
-		//On crée un nouveau document JDOM avec en argument
-		//le fichier XML
-		try {
-			document = sxb.build(new File(ficXml));
-			System.out.println("Création du jdom");
-			
-			//On initialise un nouvel élément racine avec 
-			//l'élément racine du document .
-			racine = document.getRootElement();
-			
-			//affiche();
-			
-			//Initialisation des vecteurs
-			utilisateurs = new Vector<Personne>();
-			promotions = new Vector<Promotion>();
-			groupes = new Vector<Groupe>();
-			salles = new Vector <Salle>();
-			cours = new Vector<Cours>();
-			matieres = new Vector<Matiere>();
-			
-			System.out.println("debut du chargement");
-			//Chargement du fichier xml
-			chargement();			
-		 }
-	    // indicates a well-formedness or validity error
-	    catch (JDOMException e) { 
-	      System.out.println(ficXml + " is not valid.");
-	      System.out.println(e.getMessage());
-	    }  
-	    catch (IOException e) { 
-	      System.out.println("Could not check " + ficXml);
-	      System.out.println(" because " + e.getMessage());
-	    } 
-	    catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(chargeXml)
+		{
+			try {
+				document = sxb.build(new File(ficXml));
+				System.out.println("Création du jdom");
+				
+				//On initialise un nouvel élément racine avec 
+				//l'élément racine du document .
+				racine = document.getRootElement();
+				
+				//affiche();
+								
+				System.out.println("debut du chargement");
+				//Chargement du fichier xml
+				chargement();			
+			 }
+		    // indicates a well-formedness or validity error
+		    catch (JDOMException e) { 
+		      System.out.println(ficXml + " is not valid.");
+		      System.out.println(e.getMessage());
+		    }  
+		    catch (IOException e) { 
+		      System.out.println("Could not check " + ficXml);
+		      System.out.println(" because " + e.getMessage());
+		    } 
+		    catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			try {
+				chargeBDD();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -103,6 +138,13 @@ public class Gestion_BDD implements Serializable {
 		return instance;
 	}
 	
+//==============================================================
+//  Fonctions de chargement a partir d'un fichier xml
+//==============================================================
+	
+	/**
+	 * Fonction qui charge le document xml dans la bdd
+	 */
 	
 	private void chargement() throws Exception
 	{
@@ -114,20 +156,12 @@ public class Gestion_BDD implements Serializable {
 		chargeSalles(racine.getChild("salles").getChildren());
 		chargeEdt(racine.getChild("edt").getChildren());
 		
-		//Vérifications a retirer par la suite
-		/*System.out.println("Fin chargement");
-		System.out.println(this.utilisateurs.size()+" utilisateurs");
-		System.out.println(this.promotions.size()+" promotions");
-		System.out.println(this.groupes.size()+" groupes");
-		System.out.println(this.matieres.size()+" matieres");
-		System.out.println(this.cours.size()+" cours");
-		System.out.println(this.salles.size()+" salles");
-		afficheObjets(utilisateurs);
-		*/
+		
+		
 	}
 	
 	/**
-	 * Exception OK
+	 * Fonction qui charge les responsables
 	 * @param listResponsables
 	 * @throws Exception
 	 */
@@ -192,9 +226,7 @@ public class Gestion_BDD implements Serializable {
 			v.add(et);
 			utilisateurs.add(et);
 		}
-		
-		return v;
-		
+		return v;	
 	}
 	
 	/**
@@ -228,14 +260,15 @@ public class Gestion_BDD implements Serializable {
 				//On initialise une fois le responsable du groupe
 				if(!ok)
 				{
-					gp.setResponsable(etud.getPromo().getResp());
+					Responsable resp=etud.getPromo().getResp();
+					if (resp==null) throw new Exception("responsable inexistant");
+					gp.setResponsable(resp);
 					ok=true;
 				}
 			}
 			
 		}
 	}
-	
 	/**
 	 * Fonction qui charge les matieres
 	 * @param listMatieres
@@ -269,12 +302,12 @@ public class Gestion_BDD implements Serializable {
 				int type_enseignement;
 				if((type_enseignement=Enseignement.getTypeEnseignement(courant2.getName()))==-1)
 				{
-					throw new Exception("Erreur chargement Matieres : Type inexistant");
+					throw new Exception("Erreur chargement Enseignement : Type inexistant");
 				}
 				
 				//Détermination du volume horaire
 				String vol[]= courant2.getAttributeValue("volume").split(":");
-				if (vol.length!=2){throw new Exception("Erreur chargement Matieres : format volume horaire incorect");}
+				if (vol.length!=2){throw new Exception("Erreur chargement Enseignement : format volume horaire incorect");}
 				//Heure donné en secondes
 				Time volume_horaire= new Time((Long.parseLong(vol[0])*60+Long.parseLong(vol[1]))*60);
 				
@@ -301,7 +334,6 @@ public class Gestion_BDD implements Serializable {
 			matieres.add(mat);
 		}
 	}
-	
 	/**
 	 * Fonction qui charge les salles
 	 * @param listSalles
@@ -323,7 +355,6 @@ public class Gestion_BDD implements Serializable {
 			salles.add(new Salle(courant.getAttributeValue("id"),type_salle, Integer.parseInt(courant.getAttributeValue("taille"))));		
 		}
 	}
-
 	/**
 	 * Fonction qui charge les cours
 	 * @param listEdt
@@ -344,22 +375,42 @@ public class Gestion_BDD implements Serializable {
 			cours.add(new Cours(c,s,gp,mat));		
 		}
 	}
-	
-	/**
-	 * Procedure affiche qui affiche un document xml
-	 *
-	 */
-	private void affiche()
+
+//==============================================================
+//  Fonctions de sauvegarde dans un fichier xml
+//==============================================================
+	public void sauvegarde()
 	{
-		try
-		{
-			//On utilise ici un affichage classique avec getPrettyFormat()
-			XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-			sortie.output(document, System.out);
-		}
-		catch (java.io.IOException e){}
+		racine = new Element("bdedt");
+		document = new Document(racine);
+		
+		Element inspecteurs = new Element("inspecteurs");
+		racine.addContent(inspecteurs);
+		Element enseignants = new Element("enseignants");
+		racine.addContent(enseignants);
+		Element etudiants = new Element("étudiants");
+		racine.addContent(etudiants);
+		Element groupes = new Element("groupes");
+		racine.addContent(groupes);
+		Element matieres = new Element("matières");
+		racine.addContent(matieres);
+		Element salles = new Element("salles");
+		racine.addContent(salles);
+		Element edt= new Element("edt");
+		racine.addContent(edt);
+
 	}
 	
+//==============================================================
+//  Accesseurs
+//==============================================================
+	
+	/**
+	 * Fonction qui retourne une promotion à partir de sont nom
+	 * @param name - nom de la promotion
+	 * @return la promotion correspondant
+	 * @throws Exception si la promotion n'existe pas
+	 */
 	private Promotion getPromotion(String name) throws Exception
 	{
 		Promotion promo= null;
@@ -377,7 +428,13 @@ public class Gestion_BDD implements Serializable {
 		if(!trouve) throw new Exception("Promotion inexistante");
 		return promo;
 	}
-		
+	
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 * @throws Exception
+	 */
 	private Groupe getGroupe(String name) throws Exception
 	{
 		Groupe gp= null;
@@ -475,6 +532,60 @@ public class Gestion_BDD implements Serializable {
 		return mat;
 	}
 	
+	/**
+	 * @return Returns the utilisateurs.
+	 */
+	public Vector<Personne> getUtilisateurs() {
+		return utilisateurs;
+	}
+
+//==============================================================
+//  Fonctions de chargement et de sauvegarde de la base 
+//	dans un fichier (serialization)
+//==============================================================
+	/**
+	 * Sauvegarde la base de donnees sur un fichier de sauvegarde
+	 * @throws IOException
+	 */
+	public void sauveBDD() throws IOException
+	{
+		if(fichier.exists())fichier.delete();
+		fichier.createNewFile();
+		FileOutputStream fos = new FileOutputStream(fichier);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		
+		oos.writeObject(this.utilisateurs);
+		oos.writeObject(this.promotions);
+		oos.writeObject(this.groupes);
+		oos.writeObject(this.matieres);
+		oos.writeObject(this.salles);
+		oos.writeObject(this.cours);
+		oos.close();
+	}
+	
+	/**
+	 * Charge la base de donnees a partir d'un fichier de sauvegarde
+	 * @throws Exception
+	 */
+	private void chargeBDD()throws Exception
+	{
+		FileInputStream fis = new FileInputStream(fichier);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		
+		this.utilisateurs=(Vector<Personne>)ois.readObject();
+		this.promotions=(Vector<Promotion>)ois.readObject();
+		this.groupes=(Vector<Groupe>)ois.readObject();
+		this.matieres=(Vector<Matiere>)ois.readObject();
+		this.salles=(Vector<Salle>)ois.readObject();
+		this.cours=(Vector<Cours>)ois.readObject();
+		
+		ois.close();
+	}
+
+//===================================================
+//   Fonctions de tests
+//===================================================
+	
 	private void afficheObjets(Vector v)
 	{
 		Iterator i = v.iterator();
@@ -484,33 +595,44 @@ public class Gestion_BDD implements Serializable {
 		}
 	}
 	
-	/**
-	 * @return Returns the utilisateurs.
-	 */
-	public Vector<Personne> getUtilisateurs() {
-		return utilisateurs;
-	}
-
-	private void sauveBDD() throws IOException
+	public void testAffiche()
 	{
-		FileOutputStream fos = new FileOutputStream(ficSauvegarde);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(this);               
-		oos.close();
-	}
-	private void chargeBDD(Gestion_BDD bd)throws IOException, ClassNotFoundException
-	{
-		FileInputStream fis = new FileInputStream(ficSauvegarde);
-		ObjectInputStream ois = new ObjectInputStream(fis);             
-		bd=(Gestion_BDD)ois.readObject();
-		ois.close();
+		//Vérifications a retirer par la suite
+		System.out.println("Fin chargement");
+		System.out.println(this.utilisateurs.size()+" utilisateurs");
+		System.out.println(this.promotions.size()+" promotions");
+		System.out.println(this.groupes.size()+" groupes");
+		System.out.println(this.matieres.size()+" matieres");
+		System.out.println(this.cours.size()+" cours");
+		System.out.println(this.salles.size()+" salles");
+		afficheObjets(utilisateurs);
 	}
 	
-	public static void main(String[] args) 
+	/**
+	 * Procedure affiche qui affiche un document xml
+	 *
+	 */
+	private void afficheXML()
 	{
-		Gestion_BDD bd = Gestion_BDD.getInstance();
+		try
+		{
+			//On utilise ici un affichage classique avec getPrettyFormat()
+			XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+			sortie.output(document, System.out);
+		}
+		catch (java.io.IOException e){}
 	}
 
-
+	public static void main(String[] args) 
+	{
+		Gestion_BDD bd = Gestion_BDD.getInstance(false);
+		bd.testAffiche();
+		try {
+			bd.sauveBDD();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
