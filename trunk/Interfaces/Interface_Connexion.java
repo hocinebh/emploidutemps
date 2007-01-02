@@ -7,10 +7,10 @@ import javax.swing.*;
 public class Interface_Connexion {
 
 	/**
-	 * Methode qui affiche la fenetre de connexion qui appelle la fenetre 
+	 * Methode qui affiche la fenetre de connexion
 	 *
 	 */
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		JFrame fenetre = new JFrame("Connexion");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JLabel Llogin = new JLabel("Login");
@@ -47,7 +47,7 @@ public class Interface_Connexion {
 				//TODO envoi un signal au serveur avec 2 parametres le nom et le mdp
 				boolean test= false; //retour de envoi_signal();
 				if (test == false){
-					JOptionPane.showMessageDialog(null,"Connexion echoué","Connexion echoué",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Connexion echouï¿½","Connexion echouï¿½",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
 					//TODO afficher son emploi du temps 
