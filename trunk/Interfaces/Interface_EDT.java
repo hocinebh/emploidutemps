@@ -54,7 +54,7 @@ public class Interface_EDT {
 			for (int i=0;i<=(nbcours*5)-1;i=i+5){
 				//on va chercher les cours a afficher pour chaque jour
 				//horaire
-				System.out.println(i+".."+(i+4));
+
 				SJour[i]="10:00-11:15"+"\n";
 				StyleJour[i]="horaire";
 				//la matiere
@@ -187,6 +187,11 @@ public class Interface_EDT {
 		PMercredi.setEditable(false);
 		PJeudi.setEditable(false);
 		PVendredi.setEditable(false);
+		PLundi.setBackground(Color.GREEN);
+		PMardi.setBackground(Color.PINK);
+		PMercredi.setBackground(Color.lightGray);
+		PJeudi.setBackground(new Color(100,156,100));
+		PVendredi.setBackground(new Color(200,100,54));
 		contenu.add(PLundi);
 		contenu.add(PMardi);
 		contenu.add(PMercredi);
