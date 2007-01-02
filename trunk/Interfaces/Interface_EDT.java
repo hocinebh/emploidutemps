@@ -1,15 +1,11 @@
 package Interfaces;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import Systeme.Jours;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.border.*;
 import javax.swing.text.*;
-
 import java.util.*;
 
 public class Interface_EDT {
@@ -32,12 +28,12 @@ public class Interface_EDT {
 	
 	
     private static void AddtexttoPane(String[] initString,String[] initStyles, JTextPane textPane) {
-
         StyledDocument doc = textPane.getStyledDocument();
         addStylesToDocument(doc);
 
         try {
             for (int i=0; i < initString.length; i++) {
+            	
                 doc.insertString(doc.getLength(), initString[i],
                                  doc.getStyle(initStyles[i]));
             }
@@ -45,6 +41,51 @@ public class Interface_EDT {
             System.err.println("Couldn't insert initial text into text pane.");
         }
     }
+	public static void Addcourstojour() {
+		//String[] initString ={"10:00 - 11:15 \n","MDSI \n","Salle 110 \n","Daniel Marre\n","******************\n"};
+		int nbcours;
+		JTextPane textpane;
+		
+		/* Calculer le nombre de cours */
+		nbcours =6;
+		for(int jours=0;jours<5;jours++){
+			String[] SJour = new String[5*nbcours];
+			String[] StyleJour = new String[5*nbcours];
+			for (int i=0;i<=(nbcours*5)-1;i=i+5){
+				//on va chercher les cours a afficher pour chaque jour
+				//horaire
+				System.out.println(i+".."+(i+4));
+				SJour[i]="10:00-11:15"+"\n";
+				StyleJour[i]="horaire";
+				//la matiere
+				SJour[i+1]="MDSI"+"\n";
+				StyleJour[i+1]="cours";
+				//la salle
+				SJour[i+2]="Salle 110"+"\n";
+				StyleJour[i+2]="salle";
+				//le prof
+				SJour[i+3]="Daniel Marre"+"\n";
+				StyleJour[i+3]="prof";
+				//le delimitement
+				SJour[i+4]="******************"+"\n";
+				StyleJour[i+4]="cours";
+			}
+	        
+			switch(jours) {
+				case 0:  textpane= PLundi; break;
+				case 1:  textpane = PMardi; break;
+				case 2:  textpane = PMercredi; break;
+				case 3:  textpane = PJeudi; break;
+				case 4:  textpane = PVendredi; break;
+				default: textpane = null;
+			}
+			System.out.println("jours"+jours);
+	        AddtexttoPane(SJour,StyleJour,textpane);
+	        
+		}
+
+	}
+	
     
 	protected static void addStylesToDocument(StyledDocument doc) {
         //Initialize some styles.
@@ -66,6 +107,7 @@ public class Interface_EDT {
         StyleConstants.setBold(s, true);
        
 	}
+
 	/**
 	 * @param
 	 * 
@@ -86,14 +128,7 @@ public class Interface_EDT {
 		LSemaine.setText(" Semaine: "+ Semaine.getStringSemaine());
 		SemainePrec.setText(" Semaine " + Semaine.getStringSemaineprec());
 		SemaineSuiv.setText(" Semaine " + Semaine.getStringSemaineproch());
-        String[] initString ={"10:00 - 11:15 \n","MDSI \n","Salle 110 \n","Daniel Marre\n","******************\n"};
-        String[] initStyles ={"horaire","cours","salle","prof","cours"};
-        //on va chercher les cours a afficher pour chaque jour
-        AddtexttoPane(initString,initStyles,PLundi);
-        AddtexttoPane(initString,initStyles,PMardi);
-        AddtexttoPane(initString,initStyles,PMercredi);
-        AddtexttoPane(initString,initStyles,PJeudi);
-        AddtexttoPane(initString,initStyles,PVendredi);
+		Addcourstojour();
 		
 	}
 	public static void main(String[] args) {
@@ -147,6 +182,11 @@ public class Interface_EDT {
 		PMercredi.setBorder(new LineBorder(new Color(0,0,0)));
 		PJeudi.setBorder(new LineBorder(new Color(0,0,0)));
 		PVendredi.setBorder(new LineBorder(new Color(0,0,0)));
+		PLundi.setEditable(false);
+		PMardi.setEditable(false);
+		PMercredi.setEditable(false);
+		PJeudi.setEditable(false);
+		PVendredi.setEditable(false);
 		contenu.add(PLundi);
 		contenu.add(PMardi);
 		contenu.add(PMercredi);
