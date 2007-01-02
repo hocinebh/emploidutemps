@@ -13,7 +13,6 @@ public class Jours {
 	private Date jour5;
 	static final SimpleDateFormat formatsemaine =  new SimpleDateFormat("w",new Locale("fr","FR"));
 	static final SimpleDateFormat formatjour =  new SimpleDateFormat("EEEE dd/MM",new Locale("fr","FR"));
-	//final SimpleDateFormat formatjour =  new SimpleDateFormat("EEEE dd/MM",new Locale("fr","FR"));
 	 TimeZone cet = TimeZone.getTimeZone( "CET" );
 	 
 	/**
@@ -31,7 +30,6 @@ public class Jours {
 	else {
 
 		maintenant.add(Calendar.DAY_OF_WEEK,+2-maintenant.get(maintenant.DAY_OF_WEEK));
-
 	}
 	
 	jour1 = maintenant.getTime();
