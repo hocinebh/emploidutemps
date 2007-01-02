@@ -51,6 +51,8 @@ public class Interface_EDT {
         Style def = StyleContext.getDefaultStyleContext().
                         getStyle(StyleContext.DEFAULT_STYLE);
 
+        StyleConstants.setAlignment(def, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, 0, def, true);
         Style regular = doc.addStyle("horaire", def);
         StyleConstants.setFontFamily(def, "SansSerif");
 
@@ -62,12 +64,21 @@ public class Interface_EDT {
 
         s = doc.addStyle("cours", regular);
         StyleConstants.setBold(s, true);
+       
 	}
 	/**
-	 * @param args
+	 * @param
+	 * 
 	 */
 	public static void afficher_contenu(Jours Semaine){
-		LLundi.setText("     " +Semaine.getStringJour1());
+		//On efface le contenu dans les panels
+		PLundi.setText("");
+		PMardi.setText("");
+		PMercredi.setText("");
+		PJeudi.setText("");
+		PVendredi.setText("");
+		//les labels sont rennomés
+		LLundi.setText("     "+Semaine.getStringJour1());
 		LMardi.setText("     " +Semaine.getStringJour2());
 		LMercredi.setText("     " +Semaine.getStringJour3());
 		LJeudi.setText("     " +Semaine.getStringJour4());
@@ -75,8 +86,9 @@ public class Interface_EDT {
 		LSemaine.setText(" Semaine: "+ Semaine.getStringSemaine());
 		SemainePrec.setText(" Semaine " + Semaine.getStringSemaineprec());
 		SemaineSuiv.setText(" Semaine " + Semaine.getStringSemaineproch());
-        String[] initString ={"\n************\n","MDSI \n","Salle 110 \n","10:00 - 11:15 \n","Daniel Marre\n","************"};
-        String[] initStyles ={"cours","cours","salle","horaire","prof","cours"};
+        String[] initString ={"10:00 - 11:15 \n","MDSI \n","Salle 110 \n","Daniel Marre\n","******************\n"};
+        String[] initStyles ={"horaire","cours","salle","prof","cours"};
+        //on va chercher les cours a afficher pour chaque jour
         AddtexttoPane(initString,initStyles,PLundi);
         AddtexttoPane(initString,initStyles,PMardi);
         AddtexttoPane(initString,initStyles,PMercredi);
@@ -120,30 +132,37 @@ public class Interface_EDT {
 		LVendredi.setBorder(new LineBorder(new Color(0,0,0)));
 				
 		
-		JPanel contenu = new JPanel();
-		contenu.setLayout(new GridLayout(1,5));
-		System.out.println("test: "+PLundi.getText());
-		PLundi.setBorder(new LineBorder(new Color(0,0,0)));
-		contenu.add(PLundi);
-		contenu.add(PMardi);
-		contenu.add(PMercredi);
-		contenu.add(PJeudi);
-		contenu.add(PVendredi);
 		
-		fenetre.getContentPane().add(contenu,BorderLayout.SOUTH);
 		
 		JPanel toppanel = new JPanel();
 		toppanel.setLayout(new BorderLayout());
 		toppanel.add(headerpane,BorderLayout.NORTH);
 		toppanel.add(JoursSemaine,BorderLayout.SOUTH);
 		
-		fenetre.setLayout(new BorderLayout());
 		fenetre.getContentPane().add(toppanel,BorderLayout.NORTH);
+		
+		JPanel contenu = new JPanel();
+		contenu.setSize(800,400);
+		contenu.setLayout(new GridLayout(1,5));
+		contenu.setBackground(new Color(255,255,255));
+		System.out.println("test: "+PLundi.getText());
+		PLundi.setBorder(new LineBorder(new Color(0,0,0)));
+		PMardi.setBorder(new LineBorder(new Color(0,0,0)));
+		PMercredi.setBorder(new LineBorder(new Color(0,0,0)));
+		PJeudi.setBorder(new LineBorder(new Color(0,0,0)));
+		PVendredi.setBorder(new LineBorder(new Color(0,0,0)));
+		contenu.add(PLundi);
+		contenu.add(PMardi);
+		contenu.add(PMercredi);
+		contenu.add(PJeudi);
+		contenu.add(PVendredi);
+		
+		fenetre.getContentPane().add(contenu,BorderLayout.CENTER);
 		
 		JMenuBar menu = new JMenuBar();
 		JMenu mfichier = new JMenu("Fichier");
 		JMenuItem quitter = new JMenuItem("Quitter");
-		
+		menu.add(mfichier);
 		
 		
 		ActionListener fermer = new ActionListener()
