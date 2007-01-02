@@ -142,7 +142,6 @@ public class Interface_EDT {
 		contenu.setSize(800,400);
 		contenu.setLayout(new GridLayout(1,5));
 		contenu.setBackground(new Color(255,255,255));
-		System.out.println("test: "+PLundi.getText());
 		PLundi.setBorder(new LineBorder(new Color(0,0,0)));
 		PMardi.setBorder(new LineBorder(new Color(0,0,0)));
 		PMercredi.setBorder(new LineBorder(new Color(0,0,0)));
