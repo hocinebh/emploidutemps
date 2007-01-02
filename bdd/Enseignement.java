@@ -50,16 +50,16 @@ public class Enseignement implements Serializable{
 	public Enseignant getEnseignant(Groupe g)
 	{
 		Enseignant ens = null;
-		int i;
-		
-		for(i=0; i<liste_groupes.size(); i++)
+		int i=0;
+		while (i<liste_groupes.size() && ens==null)
 		{
 			if(liste_groupes.elementAt(i).egal(g))
 			{
 				ens = liste_enseignants.elementAt(i);
 			}
+			i++;
 		}
-		return null;
+		return ens;
 	}
 		
 }
