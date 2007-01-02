@@ -26,18 +26,12 @@ public class Jours {
 		maintenant.setFirstDayOfWeek(Calendar.MONDAY);
 	/* Trouver le premier jour (sa date) de la semaine */
 	if (maintenant.get(maintenant.DAY_OF_WEEK)>6){
-		System.out.println(""+maintenant.get(maintenant.WEEK_OF_YEAR));
-		System.out.println(""+maintenant.getTime());
 		maintenant.add(Calendar.DAY_OF_WEEK,(+9-maintenant.get(maintenant.DAY_OF_WEEK)));
-		System.out.println(""+maintenant.getTime());
-		System.out.println(""+maintenant.get(maintenant.WEEK_OF_YEAR));
 	}
 	else {
-		System.out.println(""+maintenant.get(maintenant.WEEK_OF_YEAR));
-		System.out.println(""+maintenant.getTime());
+
 		maintenant.add(Calendar.DAY_OF_WEEK,+2-maintenant.get(maintenant.DAY_OF_WEEK));
-		System.out.println(""+maintenant.getTime());
-		System.out.println(""+maintenant.get(maintenant.WEEK_OF_YEAR));
+
 	}
 	
 	jour1 = maintenant.getTime();
