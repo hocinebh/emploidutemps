@@ -2,13 +2,13 @@ package bdd;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.Date;
+import java.util.GregorianCalendar;
+
 
 public class Creneau implements Serializable{
 
-	private Date Date;
-	private Time HeureDeb;
-	private Time HeureFin;
+	private GregorianCalendar  Datedebut; //contient date et heure début
+    private Time Duree;
 	
 	/**
 	 * Constructeur d'un créneau
@@ -27,9 +27,9 @@ public class Creneau implements Serializable{
 		String tmpD [] = heureDeb.split(":");
 		if (tmpD.length!=2) throw new Exception("Creation creneau : Erreur format duree");
 		
-		Date = new Date(Integer.parseInt(tmpJ[2]), Integer.parseInt(tmpJ[1]), Integer.parseInt(tmpJ[0]));
-		HeureDeb = new Time((Long.parseLong(tmpH[0])*60+Long.parseLong(tmpH[1]))*60);
-		HeureFin = new Time((Long.parseLong(tmpH[0])+Long.parseLong(tmpD[0]))*60+(Long.parseLong(tmpH[1])+Long.parseLong(tmpD[0]))*60);
+		Datedebut = new GregorianCalendar ();
+		Datedebut.set(Integer.parseInt(tmpJ[2]), Integer.parseInt(tmpJ[1]), Integer.parseInt(tmpJ[0]), Integer.parseInt(tmpH[0]), Integer.parseInt(tmpH[1]));
+		Duree = new Time((Long.parseLong(tmpH[0])+Long.parseLong(tmpD[0]))*60+(Long.parseLong(tmpH[1])+Long.parseLong(tmpD[0]))*60);
 	}
 	
 }
