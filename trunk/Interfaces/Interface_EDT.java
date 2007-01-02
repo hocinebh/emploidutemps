@@ -131,9 +131,6 @@ public class Interface_EDT {
 		LJeudi.setBorder(new LineBorder(new Color(0,0,0)));
 		LVendredi.setBorder(new LineBorder(new Color(0,0,0)));
 				
-		
-		
-		
 		JPanel toppanel = new JPanel();
 		toppanel.setLayout(new BorderLayout());
 		toppanel.add(headerpane,BorderLayout.NORTH);
