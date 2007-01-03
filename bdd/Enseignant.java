@@ -32,6 +32,21 @@ public class Enseignant extends Personne {
 	{
 		return ((num_personne.compareTo(ens.getNum_personne()))==0);
 	}
+
+	/**
+	 * @return the liste_cours
+	 */
+	public Vector<Cours> getListe_cours() {
+		return liste_cours;
+	}
+
+	/**
+	 * @param liste_cours the liste_cours to set
+	 */
+	public void setListe_cours(Vector<Cours> liste_cours) {
+		this.liste_cours = liste_cours;
+	}
+	
 	
 
 

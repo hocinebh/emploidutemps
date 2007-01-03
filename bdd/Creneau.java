@@ -50,4 +50,9 @@ public class Creneau implements Serializable{
 		return Duree.toString().substring(0, 5);
 	}
 	
+	public String getDate()
+	{
+		return (new GregorianCalendar(Datedebut.get(GregorianCalendar.YEAR),Datedebut.get(GregorianCalendar.MONTH),Datedebut.get(GregorianCalendar.DAY_OF_MONTH))).toString();
+	}
+	
 }
