@@ -19,27 +19,27 @@ public class Jours {
 	 * Constructeur qui a partir de la date donnée (par defaut aujourd'hui) trouve les dates lundi-vendredi qu'on veut utiliser
 	 * @param maintenant - Calendar
 	 */
-	public Jours(Calendar maintenant){	
+	public Jours(GregorianCalendar maintenant){	
 		formatsemaine.setTimeZone(cet);
 		formatjour.setTimeZone(cet);
-		maintenant.setFirstDayOfWeek(Calendar.MONDAY);
+		maintenant.setFirstDayOfWeek(GregorianCalendar.MONDAY);
 	/* Trouver le premier jour (sa date) de la semaine */
-	if (maintenant.get(maintenant.DAY_OF_WEEK)>6){
-		maintenant.add(Calendar.DAY_OF_WEEK,(+9-maintenant.get(maintenant.DAY_OF_WEEK)));
+	if (maintenant.get(GregorianCalendar.DAY_OF_WEEK)>6){
+		maintenant.add(GregorianCalendar.DAY_OF_WEEK,(+9-maintenant.get(GregorianCalendar.DAY_OF_WEEK)));
 	}
 	else {
 
-		maintenant.add(Calendar.DAY_OF_WEEK,+2-maintenant.get(maintenant.DAY_OF_WEEK));
+		maintenant.add(Calendar.DAY_OF_WEEK,+2-maintenant.get(Calendar.DAY_OF_WEEK));
 	}
 	
 	jour1 = maintenant.getTime();
-	maintenant.add(Calendar.DAY_OF_WEEK,+1);
+	maintenant.add(GregorianCalendar.DAY_OF_WEEK,+1);
 	jour2 = maintenant.getTime();
-	maintenant.add(Calendar.DAY_OF_WEEK,+1);
+	maintenant.add(GregorianCalendar.DAY_OF_WEEK,+1);
 	jour3 = maintenant.getTime();
-	maintenant.add(Calendar.DAY_OF_WEEK,+1);
+	maintenant.add(GregorianCalendar.DAY_OF_WEEK,+1);
 	jour4 = maintenant.getTime();
-	maintenant.add(Calendar.DAY_OF_WEEK,+1);
+	maintenant.add(GregorianCalendar.DAY_OF_WEEK,+1);
 	jour5 = maintenant.getTime();
 	}
 	public Date getJour1() {
