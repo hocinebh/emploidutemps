@@ -131,6 +131,7 @@ public class Interface_EDT {
 		
 	}
 	
+	
 	/**
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
@@ -152,6 +153,10 @@ public class Interface_EDT {
 		final Liste_Contacts Fenetremail = new Liste_Contacts();
 		String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
 		Fenetremail.Init_fenetre_mail(emails);
+		
+		/* Init fenetre reservation */
+		Interface_Reservation FenetreReservation = new Interface_Reservation();
+		FenetreReservation.Affiche_Interface_Reservation();
 		
 		
 		/* Trouver les jours de la semaine en cours */ 
