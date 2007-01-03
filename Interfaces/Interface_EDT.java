@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Interface_EDT {
 	
-	public static Calendar maintenant = Calendar.getInstance();
+	public static GregorianCalendar maintenant = (GregorianCalendar) GregorianCalendar.getInstance();
 	public static JFrame fenetre = new JFrame();
 	private static JLabel LLundi = new JLabel();
 	private static JLabel LMardi = new JLabel();
