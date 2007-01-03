@@ -8,14 +8,21 @@ import Systeme.SimpleMailSender;
 
 public class Liste_Contacts {
 
-
-	private static JTextField Sujet = new JTextField(35);
-	private static JTextArea Message= new JTextArea("",20,37);
+	private final JFrame fenetre = new JFrame();
+	private JTextField Sujet = new JTextField(35);
+	private JTextArea Message= new JTextArea("",20,37);
 
 	/**
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
      */
+	
+	public void affiche_interface_mail(){
+		
+		fenetre.setVisible(true);
+		
+	}
+
 	private static void centerFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   Dimension frameSize = frame.getSize();
@@ -26,10 +33,7 @@ public class Liste_Contacts {
 	 * 
 	 * @param liste_emails_nom - liste de tous les emails auxquels la personne peut envoyer
 	 */
-	public void Afficher_Liste_Contacts(String[] liste_emails_nom) {
-	//public static void main(String[] args) {
-		//String[] liste_emails_nom= {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
-		final JFrame fenetre = new JFrame();
+	public void Init_fenetre_mail(String[] liste_emails_nom) {	
 		fenetre.setTitle("Envoyer un message");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.setSize(500,500);
@@ -80,17 +84,14 @@ public class Liste_Contacts {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				fenetre.setVisible(false);
-				/*try {
-					this.finalize();
-				} catch (Throwable e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}*/
 				/* On envoit un signal au serveur qui envoi ensuite le mail */
 				//TODO
 				SimpleMailSender NouveauMail = new SimpleMailSender();
-				NouveauMail.envoimail("alex.remen@gmail.com","sadako22@free.fr",Sujet.getText(), Message.getText());
+				if (NouveauMail.envoimail("alex.remen@gmail.com","sadako22@free.fr",Sujet.getText(), Message.getText())==false)
+					JOptionPane.showMessageDialog(null,"Envoi du mail echoué ","Mail pas envoyé",JOptionPane.ERROR_MESSAGE);
+				else
+					fenetre.setVisible(false);
+				
 			}
 		};
 		Valider.addActionListener(envoyer);
@@ -100,15 +101,7 @@ public class Liste_Contacts {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				fenetre.setVisible(false);
-				/*try {
-					super.finalize();
-				} catch (Throwable e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}*/
-				
-				
+				fenetre.setVisible(false);				
 			}
 		};
 		Annuler.addActionListener(annuler);
@@ -155,12 +148,7 @@ public class Liste_Contacts {
 		fenetre.getContentPane().add(pcontacts, BorderLayout.NORTH);
 		fenetre.getContentPane().add(messagepane, BorderLayout.CENTER);
 		fenetre.getContentPane().add(buttonspane,BorderLayout.SOUTH);
-		fenetre.setJMenuBar(menu);
-		
-		//fenetre.pack();
-		fenetre.setVisible(true);
-
-
+		fenetre.setJMenuBar(menu);	
 	}
 	
 }

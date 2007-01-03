@@ -148,6 +148,11 @@ public class Interface_EDT {
 		fenetre.setSize(800,600);
 		centerFrame(fenetre);
 		
+		/* Init fenetre mail */
+		final Liste_Contacts Fenetremail = new Liste_Contacts();
+		String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
+		Fenetremail.Init_fenetre_mail(emails);
+		
 		
 		/* Trouver les jours de la semaine en cours */ 
 		Jours Semaine = new Jours(maintenant);
@@ -228,10 +233,8 @@ public class Interface_EDT {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				Fenetremail.affiche_interface_mail();
 				
-				final Liste_Contacts Fenetremail = new Liste_Contacts();
-				String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
-				Fenetremail.Afficher_Liste_Contacts(emails);
 			}
 		};
 		envoiemail.addActionListener(actionmail);
