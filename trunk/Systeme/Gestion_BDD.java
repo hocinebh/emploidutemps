@@ -24,14 +24,10 @@ import bdd.*;
  * @author Tonya Vo Thanh et Alexander Remen
  *
  */
-public class Gestion_BDD implements Serializable {
+public class Gestion_BDD {
 
 	//Definition des constantes
-	private static final int ETUDIANT =1;
-	private static final int RESPONSABLE =2;
-	private static final int ENSEIGNANT =3;
 	private static final String ficXml ="XML/bdedt2.xml";
-	private static final String ficXml2 ="XML/bdedt3.xml";
 	private static final String ficSauvegarde = "tmp/system";
 	
 	//Definition des attributs
@@ -304,10 +300,15 @@ public class Gestion_BDD implements Serializable {
 				}
 				
 				//Détermination du volume horaire
-				String vol[]= courant2.getAttributeValue("volume").split(":");
-				if (vol.length!=2){throw new Exception("Erreur chargement Enseignement : format volume horaire incorect");}
-				//Heure donné en secondes
-				Time volume_horaire= new Time((Long.parseLong(vol[0])*60+Long.parseLong(vol[1]))*60);
+				Time volume_horaire;
+				try
+				{
+					volume_horaire= Time.valueOf(courant2.getAttributeValue("volume")+":00");
+				}
+				catch (Exception e)
+				{
+					throw new Exception("Erreur chargement Enseignement : format volume horaire incorect");
+				}
 				
 				Enseignement enseign = new Enseignement(type_enseignement, volume_horaire);
 				
@@ -365,7 +366,7 @@ public class Gestion_BDD implements Serializable {
 		while(i.hasNext())
 		{
 			Element courant = (Element)i.next();
-			Creneau c = new Creneau(courant.getAttributeValue("date"), courant.getAttributeValue("heure"), courant.getAttributeValue("duree"));
+			Creneau c = new Creneau(courant.getAttributeValue("date"), courant.getAttributeValue("heure"), courant.getAttributeValue("durée"));
 			Salle s = getSalle(courant.getAttributeValue("salle"));
 			Groupe gp = getGroupe(courant.getAttributeValue("groupe"));
 			Matiere mat = getMatiere(courant.getAttributeValue("matière"));
@@ -414,14 +415,13 @@ public class Gestion_BDD implements Serializable {
 		racine.addContent(edt);
 		sauvegardeCours(edt);
 		
-		afficheXML(document);
+		//afficheXML(document);
 		
 		try
 		   {
 		      //On utilise ici un affichage classique avec getPrettyFormat()
 		      XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-		      //Test dans un autre fichier pour l'instant
-		      sortie.output(document, new FileOutputStream(ficXml2));
+		      sortie.output(document, new FileOutputStream(ficXml));
 		   }
 		   catch (java.io.IOException e){}
 	}
@@ -543,7 +543,7 @@ public class Gestion_BDD implements Serializable {
 				}
 			}
 		}
-		return etudiants;
+		return etudiants.substring(0, etudiants.length()-1);
 	}
 
 	private void sauvegardeUtilisateurs(Element inspecteurs, Element enseignants) {
@@ -878,9 +878,9 @@ public class Gestion_BDD implements Serializable {
 
 	public static void main(String[] args) 
 	{
-		Gestion_BDD bd = Gestion_BDD.getInstance(true);
+		Gestion_BDD bd = Gestion_BDD.getInstance(false);
 		bd.testAffiche();
-		System.out.println("====================================================");
+		//System.out.println("====================================================");
 		bd.sauvegarde();
 		try {
 			bd.sauveBDD();

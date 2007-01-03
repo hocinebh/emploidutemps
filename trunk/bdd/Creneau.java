@@ -24,24 +24,30 @@ public class Creneau implements Serializable{
 		if (tmpJ.length!=3) throw new Exception("Creation creneau : Erreur format date");
 		String tmpH [] = heureDeb.split(":");
 		if (tmpH.length!=2) throw new Exception("Creation creneau : Erreur format heure début");
-		String tmpD [] = heureDeb.split(":");
+		String tmpD [] = duree.split(":");
 		if (tmpD.length!=2) throw new Exception("Creation creneau : Erreur format duree");
 		
-		Datedebut = new GregorianCalendar ();
-		Datedebut.set(Integer.parseInt(tmpJ[2]), Integer.parseInt(tmpJ[1]), Integer.parseInt(tmpJ[0]), Integer.parseInt(tmpH[0]), Integer.parseInt(tmpH[1]));
-		Duree = new Time((Long.parseLong(tmpH[0])+Long.parseLong(tmpD[0]))*60+(Long.parseLong(tmpH[1])+Long.parseLong(tmpD[0]))*60);
+		int month = Integer.parseInt(tmpJ[1]);
+		if(month==12) month=0;
+		Datedebut = new GregorianCalendar (Integer.parseInt(tmpJ[2]),month, Integer.parseInt(tmpJ[0]), Integer.parseInt(tmpH[0]), Integer.parseInt(tmpH[1]));
+		Duree = Time.valueOf(duree+":00");
 	}
 
 	public String date() {
-		return Datedebut.get(GregorianCalendar.DAY_OF_WEEK)+"/"+(Datedebut.get(GregorianCalendar.MONTH)+1)+"/"+Datedebut.get(GregorianCalendar.YEAR);
+		int month = Datedebut.get(GregorianCalendar.MONTH);
+		if(month==0) month=12;
+		return Datedebut.get(GregorianCalendar.DAY_OF_MONTH)+"/"+month+"/"+Datedebut.get(GregorianCalendar.YEAR);
 	}
 
 	public String heure() {
-		return Datedebut.get(GregorianCalendar.HOUR_OF_DAY)+":"+Datedebut.get(GregorianCalendar.MINUTE);
+		int minute = Datedebut.get(GregorianCalendar.MINUTE);
+		String min=""+minute;
+		if(minute<10)min="0"+minute;
+		return Datedebut.get(GregorianCalendar.HOUR_OF_DAY)+":"+min;
 	}
 
 	public String duree() {
-		return Duree.getHours()+":"+Duree.getMinutes();
+		return Duree.toString().substring(0, 5);
 	}
 	
 }
