@@ -29,12 +29,6 @@ public class Enseignement implements Serializable{
 		liste_groupes = new Vector<Groupe>();
 	}
 
-	public void ajoutGroupeEnseignant(Groupe g, Enseignant e)
-	{
-		liste_groupes.add(g);
-		liste_enseignants.add(e);
-	}
-	
 	public static int getTypeEnseignement(String nom)
 	{
 		int type_enseignement = -1;
@@ -46,6 +40,13 @@ public class Enseignement implements Serializable{
 				
 		return type_enseignement;
 	}
+	
+	public void ajoutGroupeEnseignant(Groupe g, Enseignant e)
+	{
+		liste_groupes.add(g);
+		liste_enseignants.add(e);
+	}
+
 	
 	public Enseignant getEnseignant(Groupe g)
 	{
@@ -125,7 +126,7 @@ public class Enseignement implements Serializable{
 		{
 			enseignants +=((Enseignant)i.next()).getNum_personne()+" ";
 		}
-		return enseignants;
+		return enseignants.substring(0, enseignants.length()-1);
 	}
 
 	public String recupGroupes() {
@@ -135,11 +136,11 @@ public class Enseignement implements Serializable{
 		{
 			groupes +=((Groupe)i.next()).getnum_groupe()+" ";
 		}
-		return groupes;
+		return groupes.substring(0, groupes.length()-1);
 	}
 
 	public String recupvolume() {
-		return volume_horaire.getHours()+":"+volume_horaire.getMinutes();
+		return volume_horaire.toString().substring(0, 5);
 	}
 	
 	
