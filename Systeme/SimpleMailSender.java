@@ -1,6 +1,7 @@
 package Systeme;
 import javax.mail.*;
 import javax.mail.internet.*;
+
 import java.util.*;
 
 /**
@@ -14,7 +15,8 @@ public class SimpleMailSender {
 
 	static boolean envoiok = true;
 	private static String smtpServer = "smtp.free.fr";
-	// privqte String smtpServer = "melinite.insa-toulouse.fr"
+	//private String smtpServer = "melinite.insa-toulouse.fr"
+	//private static String smtpServer = "smtp.online.no";
 	/**
 	 * Methode qui envoie un mail. Il faut changer le SMTP dans la source pour qu'il marche sur le serveur en compte! 
 	 * @param to : destinataire
@@ -23,7 +25,7 @@ public class SimpleMailSender {
 	 * @param body : contenu du mail
 	 * @return Mail_envoye : true si l'envoi est reussi, false si echoue
 	 */
-	public static boolean envoimail(String to, String from, String subject, String body){
+	public boolean envoimail(String to, String from, String subject, String body){
 		try 
 		{
 			send(smtpServer,to,from,subject,body);
@@ -31,18 +33,19 @@ public class SimpleMailSender {
 		catch (Exception ex)
 		{
 			envoiok = false;
+			System.out.println("envoiok = false");
 		}
 		return envoiok;
 	}
 	
 	  /**
 	    * "send" method to send the message.
+	    * @throws Exception
 	    */
-	  public static void send(String smtpServer, String to, String from
-	   , String subject, String body)
+	  private static void send(String smtpServer, String to, String from
+	   , String subject, String body) throws Exception
 	  {
-	    try
-	    {
+
 	      Properties props = System.getProperties();
 	      // -- Attaching to default Session, or we could start a new one --
 	      props.put("mail.smtp.host", smtpServer);
@@ -65,11 +68,8 @@ public class SimpleMailSender {
 	      msg.setSentDate(new Date());
 	      // -- Send the message --
 	      Transport.send(msg);
-	      System.out.println("Message sent OK.");
+	      //System.out.println("Message sent OK.");
 	    }
-	    catch (Exception ex)
-	    {
-	      ex.printStackTrace();
-	    }
-	  }	
+
+	
 }	
