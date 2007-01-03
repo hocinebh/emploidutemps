@@ -29,7 +29,7 @@ public class Jours {
 	}
 	else {
 
-		maintenant.add(Calendar.DAY_OF_WEEK,+2-maintenant.get(Calendar.DAY_OF_WEEK));
+		maintenant.add(GregorianCalendar.DAY_OF_WEEK,+2-maintenant.get(GregorianCalendar.DAY_OF_WEEK));
 	}
 	
 	jour1 = maintenant.getTime();
