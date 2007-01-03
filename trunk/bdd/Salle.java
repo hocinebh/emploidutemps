@@ -7,9 +7,9 @@ public class Salle implements Serializable{
 	private static int nbSalle =0;
 	
 	/*Déclaration des constantes*/
-	private static final int TP = 1;
-	private static final int AMPHI =2;
-	private static final int COURS = 3;
+	public static final int TP = 1;
+	public static final int AMPHI =2;
+	public static final int COURS = 3;
 	
 	/*Déclaration des attributs*/
 	private String nom_salle;
@@ -52,6 +52,34 @@ public class Salle implements Serializable{
 	 */
 	public void setNom_salle(String nom_salle) {
 		this.nom_salle = nom_salle;
+	}
+
+	/**
+	 * @return the taille
+	 */
+	public int getTaille() {
+		return taille;
+	}
+
+	/**
+	 * @param taille the taille to set
+	 */
+	public void setTaille(int taille) {
+		this.taille = taille;
+	}
+
+	/**
+	 * @return the type_Salle
+	 */
+	public int getType_Salle() {
+		return type_Salle;
+	}
+
+	/**
+	 * @param type_Salle the type_Salle to set
+	 */
+	public void setType_Salle(int type_Salle) {
+		this.type_Salle = type_Salle;
 	}
 	
 	

@@ -31,5 +31,17 @@ public class Creneau implements Serializable{
 		Datedebut.set(Integer.parseInt(tmpJ[2]), Integer.parseInt(tmpJ[1]), Integer.parseInt(tmpJ[0]), Integer.parseInt(tmpH[0]), Integer.parseInt(tmpH[1]));
 		Duree = new Time((Long.parseLong(tmpH[0])+Long.parseLong(tmpD[0]))*60+(Long.parseLong(tmpH[1])+Long.parseLong(tmpD[0]))*60);
 	}
+
+	public String date() {
+		return Datedebut.get(GregorianCalendar.DAY_OF_WEEK)+"/"+(Datedebut.get(GregorianCalendar.MONTH)+1)+"/"+Datedebut.get(GregorianCalendar.YEAR);
+	}
+
+	public String heure() {
+		return Datedebut.get(GregorianCalendar.HOUR_OF_DAY)+":"+Datedebut.get(GregorianCalendar.MINUTE);
+	}
+
+	public String duree() {
+		return Duree.getHours()+":"+Duree.getMinutes();
+	}
 	
 }

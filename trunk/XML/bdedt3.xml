@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bdedt>
+  <inspecteurs>
+    <inspecteur id="1" promotion="4GI">
+      <nom>inspect1</nom>
+      <prénom>toto1</prénom>
+      <mèl>toto1@bla</mèl>
+      <login>toto1</login>
+      <pass>toto1</pass>
+    </inspecteur>
+    <inspecteur id="2" promotion="4RT">
+      <nom>inspect2</nom>
+      <prénom>toto2</prénom>
+      <mèl>toto2@bla</mèl>
+      <login>toto2</login>
+      <pass>toto2</pass>
+    </inspecteur>
+    <inspecteur id="3" promotion="4GM">
+      <nom>inspect3</nom>
+      <prénom>toto3</prénom>
+      <mèl>toto3@bla</mèl>
+      <login>toto3</login>
+      <pass>toto3</pass>
+    </inspecteur>
+  </inspecteurs>
+  <enseignants>
+    <enseignant id="1">
+      <nom>enseign1</nom>
+      <prénom>titi1</prénom>
+      <mèl>titi1@bla</mèl>
+      <login>titi1</login>
+      <pass>titi1</pass>
+    </enseignant>
+    <enseignant id="2">
+      <nom>enseign2</nom>
+      <prénom>titi2</prénom>
+      <mèl>titi2@bla</mèl>
+      <login>titi2</login>
+      <pass>titi2</pass>
+    </enseignant>
+    <enseignant id="3">
+      <nom>enseign3</nom>
+      <prénom>titi3</prénom>
+      <mèl>titi3@bla</mèl>
+      <login>titi3</login>
+      <pass>titi3</pass>
+    </enseignant>
+  </enseignants>
+  <étudiants />
+  <groupes>
+    <groupe id="1" étudiants="1 2 " />
+    <groupe id="11" étudiants="1 " />
+    <groupe id="12" étudiants="2 " />
+    <groupe id="2" étudiants="3 4 " />
+    <groupe id="21" étudiants="3 " />
+    <groupe id="22" étudiants="4 " />
+    <groupe id="3" étudiants="5 6 " />
+    <groupe id="31" étudiants="5 " />
+    <groupe id="32" étudiants="6 " />
+  </groupes>
+  <matières>
+    <matière id="1" type="facultatif">
+      <intitulé>mat1</intitulé>
+      <enseignements />
+      <CM enseignants="1 2 " groupes="1 2 " volume="1:0" />
+      <TD enseignants="3 " groupes="3 " volume="1:0" />
+    </matière>
+    <matière id="2" type="facultatif">
+      <intitulé>mat2</intitulé>
+      <enseignements />
+      <CM enseignants="1 2 " groupes="1 2 " volume="1:0" />
+      <TD enseignants="3 " groupes="3 " volume="1:0" />
+    </matière>
+    <matière id="3" type="facultatif">
+      <intitulé>mat3</intitulé>
+      <enseignements />
+      <CM enseignants="1 2 " groupes="1 2 " volume="1:0" />
+      <TD enseignants="3 " groupes="3 " volume="1:0" />
+    </matière>
+  </matières>
+  <salles>
+    <salle id="1" taille="15" type="amphi" />
+    <salle id="2" taille="15" type="cours" />
+    <salle id="3" taille="15" type="cours" />
+    <salle id="4" taille="15" type="tp" />
+  </salles>
+  <edt>
+    <réservation date="5/11/2007" heure="8:0" durée="1:0" salle="1" groupe="1" matière="1" />
+    <réservation date="7/12/2007" heure="8:0" durée="1:0" salle="2" groupe="2" matière="2" />
+    <réservation date="3/1/2008" heure="8:0" durée="1:0" salle="3" groupe="3" matière="3" />
+  </edt>
+</bdedt>
+

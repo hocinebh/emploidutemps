@@ -67,6 +67,10 @@ public class Etudiant extends Personne {
 		this.groupes = groupes;
 	}
 
+	public boolean estDuGroupe(Groupe g)
+	{		
+		return groupes.contains(g);
+	}
 
 
 	private String AfficheGroupes()

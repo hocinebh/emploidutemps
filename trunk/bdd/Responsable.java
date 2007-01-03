@@ -22,6 +22,22 @@ public class Responsable extends Enseignant {
 		this.promo.setResp(this);
 	}
 
+	/**
+	 * @return the promo
+	 */
+	public Promotion getPromo() {
+		return promo;
+	}
+
+	/**
+	 * @param promo the promo to set
+	 */
+	public void setPromo(Promotion promo) {
+		this.promo = promo;
+	}
+	
+	
+
 	
 	
 	
