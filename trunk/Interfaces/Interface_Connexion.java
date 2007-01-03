@@ -7,12 +7,25 @@ import javax.swing.*;
 public class Interface_Connexion {
 
 	/**
+     * Centre la fenetre au milieu de l'ecran
+     * @param frame - la fenetre
+     */
+	private static void centerFrame(JFrame frame) {
+	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	   Dimension frameSize = frame.getSize();
+	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
+	}
+	
+	/**
 	 * Methode qui affiche la fenetre de connexion
 	 *
 	 */
 	public static void main(String[] args) {
 		JFrame fenetre = new JFrame("Connexion");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.setSize(300,200);
+		centerFrame(fenetre);
+		
 		JLabel Llogin = new JLabel("Login");
 		JLabel Lmdp = new JLabel("Mot de passe");
 		JTextField TFlogin = new JTextField(15);
@@ -47,7 +60,7 @@ public class Interface_Connexion {
 				//TODO envoi un signal au serveur avec 2 parametres le nom et le mdp
 				boolean test= false; //retour de envoi_signal();
 				if (test == false){
-					JOptionPane.showMessageDialog(null,"Connexion echou�","Connexion echou�",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Connexion echoue","Connexion echoue",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
 					//TODO afficher son emploi du temps 
@@ -61,7 +74,6 @@ public class Interface_Connexion {
 		menu.add(mfichier);
 		
 		
-		fenetre.setSize(800,600);
 		//fenetre.getContentPane().setLayout(layout);
 		
 		/*====================INSERTIONS DES ELEMENTS===================*/
@@ -136,7 +148,7 @@ public class Interface_Connexion {
 		fenetre.getContentPane().add(pconnexion, BorderLayout.CENTER);
 		fenetre.setJMenuBar(menu);
 		
-		fenetre.pack();
+		//fenetre.pack();
 		fenetre.setVisible(true);
 
 

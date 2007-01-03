@@ -79,7 +79,6 @@ public class Interface_EDT {
 				case 4:  textpane = PVendredi; break;
 				default: textpane = null;
 			}
-			System.out.println("jours"+jours);
 	        AddtexttoPane(SJour,StyleJour,textpane);
 	        
 		}
@@ -131,12 +130,26 @@ public class Interface_EDT {
 		Addcourstojour();
 		
 	}
+	
+	/**
+     * Centre la fenetre au milieu de l'ecran
+     * @param frame - la fenetre
+     */
+	private static void centerFrame(JFrame frame) {
+	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	   Dimension frameSize = frame.getSize();
+	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
+	}
+	
 	public static void main(String[] args) {
 		
 		fenetre.setTitle("Emploi du temps");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.setSize(800,600);
+		centerFrame(fenetre);
 		
 		
+		/* Trouver les jours de la semaine en cours */ 
 		Jours Semaine = new Jours(maintenant);
 		
 		/* Labels et boutons NORD */
@@ -200,10 +213,29 @@ public class Interface_EDT {
 		
 		fenetre.getContentPane().add(contenu,BorderLayout.CENTER);
 		
+		/* Menu */
 		JMenuBar menu = new JMenuBar();
 		JMenu mfichier = new JMenu("Fichier");
+		JMenuItem envoiemail = new JMenuItem("Envoi email");
 		JMenuItem quitter = new JMenuItem("Quitter");
 		menu.add(mfichier);
+		mfichier.add(envoiemail);
+		mfichier.add(quitter);
+		menu.add(mfichier);
+		fenetre.setJMenuBar(menu);
+		
+		ActionListener actionmail = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				
+				final Liste_Contacts Fenetremail = new Liste_Contacts();
+				String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
+				Fenetremail.Afficher_Liste_Contacts(emails);
+			}
+		};
+		envoiemail.addActionListener(actionmail);
+		
 		
 		
 		ActionListener fermer = new ActionListener()
@@ -241,12 +273,6 @@ public class Interface_EDT {
 			}
 		};
 		SemainePrec.addActionListener(SemainePrecedente);
-		
-		mfichier.add(quitter);
-		menu.add(mfichier);
-		
-		
-		fenetre.setSize(800,600);
 		
 		fenetre.setVisible(true);
 		

@@ -4,17 +4,38 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Systeme.SimpleMailSender;
+
 public class Liste_Contacts {
 
+
+	private static JTextField Sujet = new JTextField(35);
+	private static JTextArea Message= new JTextArea("",20,37);
+
+	/**
+     * Centre la fenetre au milieu de l'ecran
+     * @param frame - la fenetre
+     */
+	private static void centerFrame(JFrame frame) {
+	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	   Dimension frameSize = frame.getSize();
+	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
+	}
+	
 	/**
 	 * 
 	 * @param liste_emails_nom - liste de tous les emails auxquels la personne peut envoyer
 	 */
-	public static void Afficher_Liste_Contacts(String[] liste_emails_nom) {
-		//String[] test= {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
-		JFrame fenetre = new JFrame();
+	public void Afficher_Liste_Contacts(String[] liste_emails_nom) {
+	//public static void main(String[] args) {
+		//String[] liste_emails_nom= {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
+		final JFrame fenetre = new JFrame();
 		fenetre.setTitle("Envoyer un message");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.setSize(500,500);
+		centerFrame(fenetre);
+		
+		
 		
 		/* Choix du nom NORD */
 		JLabel LNom = new JLabel("Choix du destinataire");
@@ -29,8 +50,7 @@ public class Liste_Contacts {
 		/* Message et Sujet CENTER */
 		JLabel LSujet = new JLabel("Sujet: ");
 		JLabel LMessage = new JLabel("Message: ");
-		JTextField Sujet = new JTextField(35);
-		JTextArea Message= new JTextArea("",20,37);
+		
 		JPanel messagepane = new JPanel();
 		JPanel messagenord = new JPanel();
 		JPanel messagesud = new JPanel();
@@ -60,9 +80,17 @@ public class Liste_Contacts {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				fenetre.setVisible(false);
+				/*try {
+					this.finalize();
+				} catch (Throwable e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}*/
 				/* On envoit un signal au serveur qui envoi ensuite le mail */
 				//TODO
-				
+				SimpleMailSender NouveauMail = new SimpleMailSender();
+				NouveauMail.envoimail("alex.remen@gmail.com","sadako22@free.fr",Sujet.getText(), Message.getText());
 			}
 		};
 		Valider.addActionListener(envoyer);
@@ -72,8 +100,14 @@ public class Liste_Contacts {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				/* On raffiche l'emploi du temps */
-				//TODO
+				fenetre.setVisible(false);
+				/*try {
+					super.finalize();
+				} catch (Throwable e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}*/
+				
 				
 			}
 		};
@@ -83,7 +117,7 @@ public class Liste_Contacts {
 		menu.add(mfichier);
 		
 		
-		fenetre.setSize(500,500);
+		
 		fenetre.getContentPane().setLayout(new BorderLayout());
 		
 		
