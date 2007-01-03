@@ -61,5 +61,86 @@ public class Enseignement implements Serializable{
 		}
 		return ens;
 	}
-		
+
+	/**
+	 * @return the type_enseignement
+	 */
+	public int getType_enseignement() {
+		return type_enseignement;
+	}
+
+	/**
+	 * @param type_enseignement the type_enseignement to set
+	 */
+	public void setType_enseignement(int type_enseignement) {
+		this.type_enseignement = type_enseignement;
+	}
+
+	/**
+	 * @return the liste_enseignants
+	 */
+	public Vector<Enseignant> getListe_enseignants() {
+		return liste_enseignants;
+	}
+
+	/**
+	 * @param liste_enseignants the liste_enseignants to set
+	 */
+	public void setListe_enseignants(Vector<Enseignant> liste_enseignants) {
+		this.liste_enseignants = liste_enseignants;
+	}
+
+	/**
+	 * @return the liste_groupes
+	 */
+	public Vector<Groupe> getListe_groupes() {
+		return liste_groupes;
+	}
+
+	/**
+	 * @param liste_groupes the liste_groupes to set
+	 */
+	public void setListe_groupes(Vector<Groupe> liste_groupes) {
+		this.liste_groupes = liste_groupes;
+	}
+
+	/**
+	 * @return the volume_horaire
+	 */
+	public Time getVolume_horaire() {
+		return volume_horaire;
+	}
+
+	/**
+	 * @param volume_horaire the volume_horaire to set
+	 */
+	public void setVolume_horaire(Time volume_horaire) {
+		this.volume_horaire = volume_horaire;
+	}
+
+	public String recupEnseignants() {
+		String enseignants="";
+		Iterator i = this.liste_enseignants.iterator();
+		while(i.hasNext())
+		{
+			enseignants +=((Enseignant)i.next()).getNum_personne()+" ";
+		}
+		return enseignants;
+	}
+
+	public String recupGroupes() {
+		String groupes="";
+		Iterator i = this.liste_groupes.iterator();
+		while(i.hasNext())
+		{
+			groupes +=((Groupe)i.next()).getnum_groupe()+" ";
+		}
+		return groupes;
+	}
+
+	public String recupvolume() {
+		return volume_horaire.getHours()+":"+volume_horaire.getMinutes();
+	}
+	
+	
 }

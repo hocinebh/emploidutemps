@@ -77,6 +77,40 @@ public class Matiere implements Serializable{
 	public void setListe_enseignement(Vector<Enseignement> liste_enseignement) {
 		this.liste_enseignement = liste_enseignement;
 	}
+
+	/**
+	 * @return the intitule
+	 */
+	public String getIntitule() {
+		return intitule;
+	}
+
+
+
+	/**
+	 * @param intitule the intitule to set
+	 */
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
+	}
+
+
+
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
+
+
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
 	
 	
 	

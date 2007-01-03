@@ -31,6 +31,7 @@ public class Gestion_BDD implements Serializable {
 	private static final int RESPONSABLE =2;
 	private static final int ENSEIGNANT =3;
 	private static final String ficXml ="XML/bdedt2.xml";
+	private static final String ficXml2 ="XML/bdedt3.xml";
 	private static final String ficSauvegarde = "tmp/system";
 	
 	//Definition des attributs
@@ -154,10 +155,7 @@ public class Gestion_BDD implements Serializable {
 		chargeGroupes(racine.getChild("groupes").getChildren());
 		chargeMatieres(racine.getChild("matières").getChildren());
 		chargeSalles(racine.getChild("salles").getChildren());
-		chargeEdt(racine.getChild("edt").getChildren());
-		
-		
-		
+		chargeEdt(racine.getChild("edt").getChildren());		
 	}
 	
 	/**
@@ -384,29 +382,284 @@ public class Gestion_BDD implements Serializable {
 		racine = new Element("bdedt");
 		document = new Document(racine);
 		
+		//Ajout des responsables et des enseignants
 		Element inspecteurs = new Element("inspecteurs");
 		racine.addContent(inspecteurs);
 		Element enseignants = new Element("enseignants");
 		racine.addContent(enseignants);
+		sauvegardeUtilisateurs(inspecteurs, enseignants);
+		
+		//Ajout des promotions
 		Element etudiants = new Element("étudiants");
 		racine.addContent(etudiants);
-		Element groupes = new Element("groupes");
-		racine.addContent(groupes);
-		Element matieres = new Element("matières");
-		racine.addContent(matieres);
-		Element salles = new Element("salles");
-		racine.addContent(salles);
+		sauvegardePromotion(etudiants);
+		
+		//Ajout des groupes
+		Element gpes = new Element("groupes");
+		racine.addContent(gpes);
+		sauvegardeGroupe(gpes);
+		
+		//Ajout des matieres
+		Element mats = new Element("matières");
+		racine.addContent(mats);
+		sauvegardeMatiere(mats);
+		
+		//Ajouts des salles
+		Element sals = new Element("salles");
+		racine.addContent(sals);
+		sauvegardeSalles(sals);
+		
+		//Ajout des reservations
 		Element edt= new Element("edt");
 		racine.addContent(edt);
-
+		sauvegardeCours(edt);
+		
+		afficheXML(document);
+		
+		try
+		   {
+		      //On utilise ici un affichage classique avec getPrettyFormat()
+		      XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+		      //Test dans un autre fichier pour l'instant
+		      sortie.output(document, new FileOutputStream(ficXml2));
+		   }
+		   catch (java.io.IOException e){}
 	}
 	
+	private void sauvegardeCours(Element edt) {
+		Iterator i = cours.iterator();
+		
+		while(i.hasNext())
+		{
+			Cours c = (Cours)i.next();
+			Element reservation = new Element("réservation");
+			
+			reservation.setAttribute("date", c.getCreneau().date());
+			reservation.setAttribute("heure", c.getCreneau().heure());
+			reservation.setAttribute("durée", c.getCreneau().duree());
+			reservation.setAttribute("salle", c.getSalle().getNom_salle());
+			reservation.setAttribute("groupe", c.getGroupe().getnum_groupe());
+			reservation.setAttribute("matière", c.getMatiere().getNum_matiere());
+			
+			edt.addContent(reservation);
+		}
+	}
+
+	private void sauvegardeSalles(Element sals) {
+		Iterator i = salles.iterator();
+		while(i.hasNext())
+		{
+			Salle s = (Salle) i.next();
+			Element sal = new Element("salle");
+			sal.setAttribute("id", s.getNom_salle());
+			sal.setAttribute("taille", ""+s.getTaille());
+			
+			switch(s.getType_Salle())
+			{
+				case Salle.AMPHI : sal.setAttribute("type", "amphi"); break;
+				case Salle.COURS : sal.setAttribute("type", "cours"); break;
+				case Salle.TP : sal.setAttribute("type", "tp"); break;
+			}
+			
+			sals.addContent(sal);
+		}
+	}
+
+	private void sauvegardeMatiere(Element mats) {
+		Iterator i = matieres.iterator();
+		
+		while(i.hasNext())
+		{
+			Matiere mat =(Matiere)i.next();
+			Element matier = new Element("matière");
+			
+			matier.setAttribute("id",mat.getNum_matiere());
+			switch(mat.getType())
+			{
+				case Matiere.obligatoire: matier.setAttribute("type", "obligatoire");break;
+				case Matiere.optionnelle: matier.setAttribute("type", "facultatif");break;
+			}
+			
+			Element intitule = new Element("intitulé");
+			intitule.setText(mat.getIntitule());
+			matier.addContent(intitule);
+			
+			Element enseignements = new Element("enseignements");
+			matier.addContent(enseignements);
+			
+			Iterator j = mat.getListe_enseignement().iterator();
+			while(j.hasNext())
+			{
+				Enseignement ens = (Enseignement)j.next();
+				String typeEns="";
+				switch(ens.getType_enseignement())
+				{
+					case Enseignement.BE:typeEns ="BE";break;
+					case Enseignement.CM:typeEns ="CM";break;
+					case Enseignement.TD:typeEns ="TD";break;
+					case Enseignement.TP:typeEns ="TP";break;
+				}
+				
+				Element enseignement = new Element(typeEns);
+				enseignement.setAttribute("enseignants", ens.recupEnseignants());
+				enseignement.setAttribute("groupes", ens.recupGroupes());
+				enseignement.setAttribute("volume", ens.recupvolume());
+				
+				//Ajout de l'enseignement a la matiere
+				matier.addContent(enseignement);
+			}
+			
+			//Ajout de la matiere
+			mats.addContent(matier);
+		}	
+	}
+
+	private void sauvegardeGroupe(Element gpes) {
+		Iterator i = groupes.iterator();
+		
+		while(i.hasNext())
+		{
+			Groupe gp =(Groupe)i.next();
+			Element gpe = new Element("groupe");
+			gpe.setAttribute("id", gp.getnum_groupe());
+			gpe.setAttribute("étudiants",recupEtudiant(gp));
+			
+			gpes.addContent(gpe);
+		}
+	
+	}
+
+	private String recupEtudiant(Groupe gp) {
+		String etudiants="";
+		
+		for (int i=0; i<utilisateurs.size(); i++)
+		{
+			if(utilisateurs.elementAt(i).getClass()==Etudiant.class)
+			{
+				Etudiant etud = (Etudiant) utilisateurs.elementAt(i);
+				if (etud.estDuGroupe(gp))
+				{
+					etudiants += etud.getNum_personne()+" ";
+				}
+			}
+		}
+		return etudiants;
+	}
+
+	private void sauvegardeUtilisateurs(Element inspecteurs, Element enseignants) {
+		for (int i=0; i<utilisateurs.size(); i++)
+		{
+			if(utilisateurs.elementAt(i).getClass()==Responsable.class)
+			{
+				//Création du responsable
+				Responsable resp = (Responsable)utilisateurs.elementAt(i);
+				Element inspecteur = new Element("inspecteur");
+				Attribute id = new Attribute("id",resp.getNum_personne());
+				Attribute promotion = new Attribute("promotion",resp.getPromo().getNom_promotion());
+				
+				inspecteur.setAttribute(id);
+				inspecteur.setAttribute(promotion);
+				
+				Element nom = new Element("nom");
+				nom.setText(resp.getNom());
+				inspecteur.addContent(nom);
+				Element prenom = new Element("prénom");
+				prenom.setText(resp.getPrenom());
+				inspecteur.addContent(prenom);
+				Element mel = new Element("mèl");
+				mel.setText(resp.getEmail());
+				inspecteur.addContent(mel);
+				Element login = new Element("login");
+				login.setText(resp.getUsername());
+				inspecteur.addContent(login);
+				Element pass = new Element("pass");
+				pass.setText(resp.getPassword());
+				inspecteur.addContent(pass);
+				
+				//Ajout du responsable
+				inspecteurs.addContent(inspecteur);
+			}
+			else if (utilisateurs.elementAt(i).getClass()==Enseignant.class)
+			{
+				//création de l enseignant
+				Enseignant ens = (Enseignant)utilisateurs.elementAt(i);
+				Element enseignant = new Element("enseignant");
+				Attribute id = new Attribute("id",ens.getNum_personne());
+				
+				enseignant.setAttribute(id);
+				
+				Element nom = new Element("nom");
+				nom.setText(ens.getNom());
+				enseignant.addContent(nom);
+				Element prenom = new Element("prénom");
+				prenom.setText(ens.getPrenom());
+				enseignant.addContent(prenom);
+				Element mel = new Element("mèl");
+				mel.setText(ens.getEmail());
+				enseignant.addContent(mel);
+				Element login = new Element("login");
+				login.setText(ens.getUsername());
+				enseignant.addContent(login);
+				Element pass = new Element("pass");
+				pass.setText(ens.getPassword());
+				enseignant.addContent(pass);
+				
+				//Ajout de l'enseignant
+				enseignants.addContent(enseignant);
+			}
+		}
+		
+		
+	}
+
+	private void sauvegardePromotion(Element etudiants) {
+		Iterator i = promotions.iterator();
+		
+		while(i.hasNext())
+		{
+			Promotion promo = (Promotion)i.next();
+			Element promotion = new Element("promotion");
+			promotion.setAttribute("id", promo.getNom_promotion());
+			
+			Iterator j = promo.getListe_etudiant().iterator();
+			while(j.hasNext())
+			{
+				//Creation de l etudiant
+				Etudiant etud = (Etudiant) j.next();
+				Element etudiant = new Element("étudiant");
+				Attribute id = new Attribute("id",etud.getNum_personne());
+				
+				etudiant.setAttribute(id);
+				
+				Element nom = new Element("nom");
+				nom.setText(etud.getNom());
+				etudiant.addContent(nom);
+				Element prenom = new Element("prénom");
+				prenom.setText(etud.getPrenom());
+				etudiant.addContent(prenom);
+				Element mel = new Element("mèl");
+				mel.setText(etud.getEmail());
+				etudiant.addContent(mel);
+				Element login = new Element("login");
+				login.setText(etud.getUsername());
+				etudiant.addContent(login);
+				Element pass = new Element("pass");
+				pass.setText(etud.getPassword());
+				etudiant.addContent(pass);
+				
+				//ajout de l etudiant
+				promotion.addContent(etudiant);
+			}
+		}
+		
+	}
+
 //==============================================================
 //  Accesseurs
 //==============================================================
 	
 	/**
-	 * Fonction qui retourne une promotion à partir de sont nom
+	 * Fonction qui retourne une promotion à partir de son nom
 	 * @param name - nom de la promotion
 	 * @return la promotion correspondant
 	 * @throws Exception si la promotion n'existe pas
@@ -533,7 +786,7 @@ public class Gestion_BDD implements Serializable {
 	}
 	
 	/**
-	 * @return Returns the utilisateurs.
+	 * @return Retourne les utilisateurs.
 	 */
 	public Vector<Personne> getUtilisateurs() {
 		return utilisateurs;
@@ -612,21 +865,23 @@ public class Gestion_BDD implements Serializable {
 	 * Procedure affiche qui affiche un document xml
 	 *
 	 */
-	private void afficheXML()
+	private void afficheXML(Document doc)
 	{
 		try
 		{
 			//On utilise ici un affichage classique avec getPrettyFormat()
 			XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-			sortie.output(document, System.out);
+			sortie.output(doc, System.out);
 		}
 		catch (java.io.IOException e){}
 	}
 
 	public static void main(String[] args) 
 	{
-		Gestion_BDD bd = Gestion_BDD.getInstance(false);
+		Gestion_BDD bd = Gestion_BDD.getInstance(true);
 		bd.testAffiche();
+		System.out.println("====================================================");
+		bd.sauvegarde();
 		try {
 			bd.sauveBDD();
 		} catch (IOException e) {

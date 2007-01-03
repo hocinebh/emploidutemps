@@ -103,21 +103,21 @@
 		<groupe id="32" étudiants="6"/>
 	</groupes>
 	<matières>
-		<matière id="1">
+		<matière id="1" type="obligatoire">
 			<intitulé>mat1</intitulé>
 			<enseignements>
 				<CM enseignants="1 2 " groupes="1 2" volume="5:00"/>
 				<TD enseignants="3" groupes="3" volume="10:00"/>
 			</enseignements>
 		</matière>
-		<matière id="2">
+		<matière id="2" type="facultatif">
 			<intitulé>mat2</intitulé>
 			<enseignements>
 				<CM enseignants="1 2 " groupes="1 2" volume="5:00"/>
 				<TD enseignants="3" groupes="3" volume="10:00"/>
 			</enseignements>
 		</matière>
-		<matière id="3">
+		<matière id="3" type="obligatoire">
 			<intitulé>mat3</intitulé>
 			<enseignements>
 				<CM enseignants="1 2 " groupes="1 2" volume="5:00"/>
