@@ -3,10 +3,7 @@ package Interfaces;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import javax.swing.*;
@@ -16,7 +13,6 @@ import com.toedter.calendar.*;
 
 public class Interface_Reservation {
 
-	private GregorianCalendar DateHeureDebut;
 	private static JFrame fenetre = new JFrame();
 	static final SimpleDateFormat formatjour =  new SimpleDateFormat("dd/MM/yyyy",new Locale("fr","FR"));
 	/**
@@ -25,7 +21,6 @@ public class Interface_Reservation {
      */
 	private static void LocationFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	   Dimension frameSize = frame.getSize();
 	   frame.setLocation((screenSize.width / 2) + (420), (screenSize.height / 2) - 300);
 	}
 	
