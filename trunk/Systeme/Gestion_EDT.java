@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.*;
 
 import bdd.*;
 
@@ -14,8 +15,10 @@ public class Gestion_EDT extends Thread {
 	private Thread t;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	
-	private Personne Utilisateur;
+
+	private static final int PROMOTION =0;
+	private static final int SALLE =1;
+	private Personne utilisateur;
 	private int typeEDT;
 	private Gestion_BDD bd;
 	
@@ -28,6 +31,7 @@ public class Gestion_EDT extends Thread {
 			System.out.println("Nouveau client : "+soc);
 			this.bd = Gestion_BDD.getInstance();
 			this.soc = soc;
+			this.typeEDT=Gestion_EDT.PROMOTION;
 			
 			in = new ObjectInputStream(this.soc.getInputStream());
 		    out = new ObjectOutputStream(this.soc.getOutputStream());
@@ -78,6 +82,21 @@ public class Gestion_EDT extends Thread {
 	
 	private void execute(Signal methode) throws IOException
 	{
+		/*
+		 * signal Saisir_EDT()
+signal afficher_liste_contacts()
+signal reserver_salle(boolean)
+signal afficher_creneaux_libres(Salle)
+signal afficher_salles_libres(Creneau)
+signal Choisir_EDT()
+signal Selection_Personne(Personne)
+signal Envoyer_message(Personne,String,String)
+signal InitialiserTypeEDT(int)
+signal AfficherPromo()
+signal AfficherListeEnseignant()
+signal SelectionSpecEns(Enseignant,Specialite)
+signal SelectionCours(Creneau,Enseignant,boolean,int)
+		 */
 		if(methode.getNom().compareTo("Connexion")==0)
 		{
 			Connection((String)methode.getParametres().elementAt(0),(String)methode.getParametres().elementAt(1));
@@ -85,11 +104,29 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("Test")==0)
 		{
-			System.out.println("Bonjour la connexion a réussi");
+			System.out.println("Bonjour la connexion a reussi");
 		}
-		else if(methode.getNom().compareTo("EDT_Promotion")==0)
+		else if(methode.getNom().compareTo("visualiser_EDT")==0)
 		{
+			Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
+			if(utilisateur.getClass()==Responsable.class)
+			{
+				switch (typeEDT)
+				{
+					case Gestion_EDT.PROMOTION : Edt_Promotion(liste_cours,((Responsable)utilisateur).getPromo()); break;
+					case Gestion_EDT.SALLE : Edt_Salle(liste_cours,(Salle)methode.getParametres().firstElement());break;
+				}
+			}
+			else if(utilisateur.getClass()==Enseignant.class)
+			{
+				trie_par_jour(((Enseignant)utilisateur).getListe_cours(), liste_cours);
+			}
+			else if(utilisateur.getClass()==Etudiant.class)
+			{
+				EDT_etudiant(liste_cours);
+			}
 			
+			out.writeObject(liste_cours);		
 		}
 		else if(methode.getNom().compareTo("EDT_Promotion")==0)
 		{
@@ -101,8 +138,40 @@ public class Gestion_EDT extends Thread {
 		}
 	}
 	
+	private void EDT_etudiant(Vector<Vector<Cours>> liste_cours) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void Edt_Salle(Vector<Vector<Cours>> liste_cours, Salle salle2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void Edt_Promotion(Vector<Vector<Cours>> liste_cours, Promotion promo) {
+		// TODO Auto-generated method stub
+		
+	}
+	private void trie_par_jour(Vector<Cours> cours, Vector<Vector<Cours>> liste_cours)
+	{
+		String date="";
+		
+		for(int i =0; i<cours.size(); i++)
+		{
+			//A chaque novelle date on ajoute un vecteur de cours
+			if(cours.elementAt(i).getCreneau().getDate().compareTo(date)!=0)
+			{
+				liste_cours.add(new Vector<Cours>());
+				date = cours.elementAt(i).getCreneau().getDate();
+			}
+			
+			//On ajoute le cours au dernier vecteur de cours cree
+			liste_cours.lastElement().add(cours.elementAt(i));
+		}
+	}
+	
 	/**
-	 * Méthodes a appeler lors de la 
+	 * Methodes a appeler lors de la 
 	 * reception d'un signal
 	 * @throws IOException 
 	 */
@@ -112,11 +181,11 @@ public class Gestion_EDT extends Thread {
 		
 		for(int i=0; i<bd.getUtilisateurs().size() && !ok; i++)
 		{
-			Utilisateur=(Personne)bd.getUtilisateurs().elementAt(i);
+			utilisateur=(Personne)bd.getUtilisateurs().elementAt(i);
 			
-			if((Utilisateur.getUsername().compareTo(nom)==0))
+			if((utilisateur.getUsername().compareTo(nom)==0))
 			{
-				if(Utilisateur.getPassword().compareTo(mdp)==0)
+				if(utilisateur.getPassword().compareTo(mdp)==0)
 				{
 					ok= true;
 				}
@@ -125,24 +194,13 @@ public class Gestion_EDT extends Thread {
 		
 		out.writeBoolean(ok);
 		
-		//Si on a pas trouvé l'utilisateur
+		//Si on a pas trouvï¿½ l'utilisateur
 		if (!ok)
 		{
 			System.exit(0);
 		}
 	}
-	
-	private void Son_emploi_du_temps(){
-		
-	}
 
-	private void EDT_Salle(){
-		
-	}
-	
-	private void EDT_Promotion(){
-		
-	}
 	
 	private void Erreursaisie(){
 		
