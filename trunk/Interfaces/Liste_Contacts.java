@@ -35,7 +35,6 @@ public class Liste_Contacts {
 	 */
 	public void Init_fenetre_mail(String[] liste_emails_nom) {	
 		fenetre.setTitle("Envoyer un message");
-		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.setSize(500,500);
 		centerFrame(fenetre);
 		
@@ -88,9 +87,14 @@ public class Liste_Contacts {
 				//TODO
 				SimpleMailSender NouveauMail = new SimpleMailSender();
 				if (NouveauMail.envoimail("alex.remen@gmail.com","sadako22@free.fr",Sujet.getText(), Message.getText())==false)
-					JOptionPane.showMessageDialog(null,"Envoi du mail echoué ","Mail pas envoyé",JOptionPane.ERROR_MESSAGE);
+				{
+					JOptionPane.showMessageDialog(fenetre,"Envoi du mail echoué ","Mail pas envoyé",JOptionPane.ERROR_MESSAGE);
+				}
 				else
+				{
+					JOptionPane.showMessageDialog(fenetre,"Mail envoyé");
 					fenetre.setVisible(false);
+				}
 				
 			}
 		};
