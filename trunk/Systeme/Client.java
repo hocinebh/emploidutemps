@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import Interfaces.Interface_Connexion;
+
 public class Client {
 
 	static final int port = 8080;
@@ -16,14 +18,14 @@ public class Client {
 	
 	public Client() throws UnknownHostException, IOException
 	{
-		//Réseau local
+		//Reseau local
 		String host = InetAddress.getLocalHost().getHostAddress();
 		
-		//Réseau internet
+		//Reseau internet
 		//String host = "adresse du site"
 		
 		soc = new Socket(host,port);
-		System.out.println("Connection établie");
+		System.out.println("Connection etablie");
 		//InputStream tmp = ;
 		out = new ObjectOutputStream(soc.getOutputStream());
 		in = new ObjectInputStream(soc.getInputStream());
@@ -63,12 +65,14 @@ public class Client {
 	public static void main(String[] args) {
 		try {
 			Client c = new Client();
-			System.out.println("Client créé");
+			System.out.println("Client cree");
 			Signal s = new Signal("Test");
 			c.Signaler(s);
-			
-			c.FermerConnexion();
-			System.out.println("Fermeture client");
+			Interface_Connexion Login = new Interface_Connexion();
+			Login.affiche_login_screen(c);
+			while(true);
+/*			c.FermerConnexion();
+			System.out.println("Fermeture client");*/
 			
 			
 		} catch (UnknownHostException e) {
