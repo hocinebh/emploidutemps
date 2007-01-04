@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -51,56 +50,56 @@ public class Interface_Reservation {
 	public void Affiche_Interface_Reservation(){
 		
 		fenetre.setTitle("Reservation");
-		//fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.setSize(210,600);
 		LocationFrame(fenetre);
-		
 		JLabel LReservation = new JLabel("Reservation");
 		LReservation.setFont(new Font("Verdana",Font.BOLD,15));
 		fenetre.getContentPane().setLayout(new BorderLayout());
 		fenetre.getContentPane().add(LReservation,BorderLayout.NORTH);
-		
 		JPanel panelcenter = new JPanel();
 		panelcenter.setLayout(new GridLayout(14,1));
+		
 		/* Date */
 		JLabel Ldate = new JLabel("Date :");
 		panelcenter.add(Ldate);
-		
 		ChoixDate.setLocale(new Locale("fr","FR"));
 		ChoixDate.setDate(GregorianCalendar.getInstance().getTime());
 		panelcenter.add(ChoixDate);
+		
 		/* Heure debut */
 		JLabel Lheuredeb = new JLabel("Heure debut :");
 		panelcenter.add(Lheuredeb);
-		
+		Heuredeb.setToolTipText("hh:mm");
 		panelcenter.add(Heuredeb);
+		
 		/* Duree */
 		JLabel Lduree = new JLabel("Duree :");
 		panelcenter.add(Lduree);
 		Duree.setSelectedItem("01:15");
 		panelcenter.add(Duree);
+		
 		/* Groupe */
 		JLabel LGroupe = new JLabel("Groupe");
 		panelcenter.add(LGroupe);
-		
 		panelcenter.add(Groupe);
+		
 		/* Enseignant */
 		JLabel LEnseignant = new JLabel("Enseignant");
 		panelcenter.add(LEnseignant);
-		
 		panelcenter.add(Enseignant);
+		
 		/* Matiere */
 		JLabel LMatiere = new JLabel("Matiere");
 		panelcenter.add(LMatiere);
-		
 		panelcenter.add(Matiere);
+		
 		/* Salle */
 		JLabel LSalle = new JLabel("Salle");
 		LSalle.setHorizontalTextPosition(JLabel.CENTER);
 		panelcenter.add(LSalle);
-		
 		panelcenter.add(Salle);
 		fenetre.getContentPane().add(panelcenter,BorderLayout.CENTER);
+		
 		/* Bouttons valider et effacer */
 		JPanel ButtonPanel = new JPanel();
 		JButton Valider = new JButton("Valider");
