@@ -10,21 +10,21 @@ import java.util.*;
 
 public class Interface_EDT {
 	
-	public static GregorianCalendar maintenant = (GregorianCalendar) GregorianCalendar.getInstance();
-	public static JFrame fenetre = new JFrame();
-	private static JLabel LLundi = new JLabel();
-	private static JLabel LMardi = new JLabel();
-	private static JLabel LMercredi = new JLabel();
-	private static JLabel LJeudi = new JLabel();
-	private static JLabel LVendredi = new JLabel();
-	private static JButton LSemaine = new JButton();
-	private static JButton SemainePrec = new JButton();
-	private static JButton SemaineSuiv = new JButton();
-	private static JTextPane PLundi =  new JTextPane();
-	private static JTextPane PMardi =  new JTextPane();
-	private static JTextPane PMercredi =  new JTextPane();
-	private static JTextPane PJeudi =  new JTextPane();
-	private static JTextPane PVendredi =  new JTextPane();
+	public GregorianCalendar maintenant = (GregorianCalendar) GregorianCalendar.getInstance();
+	public JFrame fenetre = new JFrame();
+	private JLabel LLundi = new JLabel();
+	private JLabel LMardi = new JLabel();
+	private JLabel LMercredi = new JLabel();
+	private JLabel LJeudi = new JLabel();
+	private JLabel LVendredi = new JLabel();
+	private JButton LSemaine = new JButton();
+	private JButton SemainePrec = new JButton();
+	private JButton SemaineSuiv = new JButton();
+	private JTextPane PLundi =  new JTextPane();
+	private JTextPane PMardi =  new JTextPane();
+	private JTextPane PMercredi =  new JTextPane();
+	private JTextPane PJeudi =  new JTextPane();
+	private JTextPane PVendredi =  new JTextPane();
 	
 	
     private static void AddtexttoPane(String[] initString,String[] initStyles, JTextPane textPane) {
@@ -41,7 +41,7 @@ public class Interface_EDT {
             System.err.println("Couldn't insert initial text into text pane.");
         }
     }
-	public static void Addcourstojour() {
+	public void Addcourstojour() {
 		//String[] initString ={"10:00 - 11:15 \n","MDSI \n","Salle 110 \n","Daniel Marre\n","******************\n"};
 		int nbcours;
 		JTextPane textpane;
@@ -111,7 +111,7 @@ public class Interface_EDT {
 	 * @param
 	 * 
 	 */
-	public static void afficher_contenu(Jours Semaine){
+	public void afficher_contenu(Jours Semaine){
 		//On efface le contenu dans les panels
 		PLundi.setText("");
 		PMardi.setText("");
@@ -136,13 +136,13 @@ public class Interface_EDT {
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
      */
-	private static void centerFrame(JFrame frame) {
+	private void centerFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   Dimension frameSize = frame.getSize();
 	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
 	}
 	
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		
 		fenetre.setTitle("Emploi du temps");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

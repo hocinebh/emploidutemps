@@ -42,7 +42,7 @@ public class Interface_Reservation {
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
      */
-	private static void LocationFrame(JFrame frame) {
+	private void LocationFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   frame.setLocation((screenSize.width / 2) + (420), (screenSize.height / 2) - 300);
 	}
