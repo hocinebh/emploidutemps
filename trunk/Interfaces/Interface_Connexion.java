@@ -2,15 +2,20 @@ package Interfaces;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*;
+import Systeme.*;
 
 public class Interface_Connexion {
 
+	private JTextField TFlogin = new JTextField(15);
+	private JPasswordField TFmdp = new JPasswordField(15);
 	/**
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
      */
-	private static void centerFrame(JFrame frame) {
+	private void centerFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   Dimension frameSize = frame.getSize();
 	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
@@ -20,7 +25,7 @@ public class Interface_Connexion {
 	 * Methode qui affiche la fenetre de connexion
 	 *
 	 */
-	public static void main(String[] args) {
+	public void affiche_login_screen(final Client Classeclient) {
 		JFrame fenetre = new JFrame("Connexion");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.setSize(300,200);
@@ -28,8 +33,6 @@ public class Interface_Connexion {
 		
 		JLabel Llogin = new JLabel("Login");
 		JLabel Lmdp = new JLabel("Mot de passe");
-		JTextField TFlogin = new JTextField(15);
-		JPasswordField TFmdp = new JPasswordField(15);
 		JButton Valider = new JButton("Connexion");
 		GridBagLayout layout = new GridBagLayout();
 		JPanel pconnexion = new JPanel(layout);
@@ -58,12 +61,19 @@ public class Interface_Connexion {
 			public void actionPerformed(ActionEvent e)
 			{
 				//TODO envoi un signal au serveur avec 2 parametres le nom et le mdp
-				boolean test= false; //retour de envoi_signal();
+				boolean test=false;
+				try {
+					test = Classeclient.Connexion(TFlogin.getText(), TFmdp.getPassword().toString());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} //retour de envoi_signal();
 				if (test == false){
 					JOptionPane.showMessageDialog(null,"Connexion echoue","Connexion echoue",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
 					//TODO afficher son emploi du temps 
+					
 				}
 					
 			}
