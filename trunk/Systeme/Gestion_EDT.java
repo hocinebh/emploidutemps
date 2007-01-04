@@ -123,7 +123,7 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 			}
 			else if(utilisateur.getClass()==Etudiant.class)
 			{
-				EDT_etudiant(liste_cours);
+				trie_par_jour(bd.getCoursGroupes(((Etudiant)utilisateur).getGroupes()), liste_cours);
 			}
 			
 			out.writeObject(liste_cours);		
@@ -138,10 +138,6 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		}
 	}
 	
-	private void EDT_etudiant(Vector<Vector<Cours>> liste_cours) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private void Edt_Salle(Vector<Vector<Cours>> liste_cours, Salle salle2) {
 		// TODO Auto-generated method stub

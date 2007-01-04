@@ -792,6 +792,31 @@ public class Gestion_BDD {
 		return utilisateurs;
 	}
 
+	public Vector<Cours> getCoursGroupes(Vector<Groupe> liste_groupe)
+	{
+		int j;
+		boolean ok;
+		Vector<Cours> liste_cours = new Vector<Cours>();
+		
+		Iterator i = cours.iterator();
+		while(i.hasNext())
+		{
+			j=0;
+			ok = false;
+			Cours c = (Cours)i.next();
+			while(j<liste_groupe.size() && !ok)
+			{
+				if(c.getGroupe().egal(liste_groupe.elementAt(j)))
+				{
+					ok=true;
+				}
+			}
+			if(ok) liste_cours.add(c);
+		}
+		
+		return liste_cours;
+	}
+	
 //==============================================================
 //  Fonctions de chargement et de sauvegarde de la base 
 //	dans un fichier (serialization)
