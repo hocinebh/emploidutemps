@@ -12,6 +12,7 @@ public class Signal implements Serializable{
 	public Signal(String nom) {
 		super();
 		this.nom = nom;
+		this.parametres= new Vector();
 	}
 	/**
 	 * @param nom

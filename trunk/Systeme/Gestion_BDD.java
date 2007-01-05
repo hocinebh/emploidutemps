@@ -873,9 +873,10 @@ public class Gestion_BDD {
 		
 		if(cours.size()!=0)
 		{
-			pos = cherchePosition(c, 0, cours.size()-1);	
+			//pos = cherchePosition(c, 0, cours.size()-1);	
 		}
-		cours.add(pos,c);
+		//cours.add(pos,c);
+		cours.add(c);
 		
 		return ok;
 	}

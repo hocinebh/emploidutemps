@@ -20,7 +20,7 @@ public class Serveur {
 	public static void main(String[] args) {
 		try{
 		    ServerSocket ses = new ServerSocket(port);
-		    System.out.println("serveur socket cr�er");
+		    System.out.println("serveur socket creer");
 		     while(true)
 		     {     
 		    	 new Gestion_EDT(ses.accept());

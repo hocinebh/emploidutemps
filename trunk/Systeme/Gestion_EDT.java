@@ -48,7 +48,9 @@ public class Gestion_EDT extends Thread {
 	 */
 	public void run()
 	{
+		
 		try {
+			out.writeObject(true);
 			while (true)
 			{
 				Signal methode = (Signal)in.readObject();
@@ -56,7 +58,7 @@ public class Gestion_EDT extends Thread {
 				execute(methode);			
 			}
 			
-		} catch (IOException e1) {} 
+		} catch (IOException e1) {e1.printStackTrace();} 
 		  catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -192,11 +194,12 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		
 		out.writeBoolean(ok);
 		
-		//Si on a pas trouv� l'utilisateur
+		//Si on a pas trouve l'utilisateur
 		if (!ok)
 		{
 			System.exit(0);
 		}
+		System.out.println("Connexion ok!!");
 	}
 
 	private void visualiser_EDT(Signal methode) throws IOException
