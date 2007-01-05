@@ -83,24 +83,20 @@ public class Gestion_EDT extends Thread {
 	private void execute(Signal methode) throws IOException
 	{
 		/*
-		 * signal Saisir_EDT()
-signal afficher_liste_contacts()
+		 * signal ()
 signal reserver_salle(boolean)
 signal afficher_creneaux_libres(Salle)
 signal afficher_salles_libres(Creneau)
-signal Choisir_EDT()
 signal Selection_Personne(Personne)
 signal Envoyer_message(Personne,String,String)
 signal InitialiserTypeEDT(int)
-signal AfficherPromo()
 signal AfficherListeEnseignant()
 signal SelectionSpecEns(Enseignant,Specialite)
 signal SelectionCours(Creneau,Enseignant,boolean,int)
 		 */
 		if(methode.getNom().compareTo("Connexion")==0)
 		{
-			Connection((String)methode.getParametres().elementAt(0),(String)methode.getParametres().elementAt(1));
-			
+			Connection((String)methode.getParametres().elementAt(0),(String)methode.getParametres().elementAt(1));	
 		}
 		else if(methode.getNom().compareTo("Test")==0)
 		{
@@ -108,46 +104,52 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		}
 		else if(methode.getNom().compareTo("visualiser_EDT")==0)
 		{
-			Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
-			if(utilisateur.getClass()==Responsable.class)
-			{
-				switch (typeEDT)
-				{
-					case Gestion_EDT.PROMOTION : Edt_Promotion(liste_cours,((Responsable)utilisateur).getPromo()); break;
-					case Gestion_EDT.SALLE : Edt_Salle(liste_cours,(Salle)methode.getParametres().firstElement());break;
-				}
-			}
-			else if(utilisateur.getClass()==Enseignant.class)
-			{
-				trie_par_jour(((Enseignant)utilisateur).getListe_cours(), liste_cours);
-			}
-			else if(utilisateur.getClass()==Etudiant.class)
-			{
-				trie_par_jour(bd.getCoursGroupes(((Etudiant)utilisateur).getGroupes()), liste_cours);
-			}
-			
-			out.writeObject(liste_cours);		
+			//Retourne la liste des cours trier
+			visualiser_EDT(methode);	
 		}
-		else if(methode.getNom().compareTo("EDT_Promotion")==0)
+		else if(methode.getNom().compareTo("afficher_liste_contacts")==0)
+		{
+			//Retourne la liste de responsable et d'enseignant
+			out.writeObject(bd.getRespEns());
+		}
+		else if(methode.getNom().compareTo("Choisir_EDT")==0)
+		{
+			typeEDT = (Integer)methode.getParametres().firstElement();
+		}
+		else if(methode.getNom().compareTo("Saisir_EDT")==0)
+		{
+			Matiere mat = (Matiere)methode.getParametres().elementAt(0);
+			Salle salle = (Salle)methode.getParametres().elementAt(1);
+			Creneau cren = (Creneau)methode.getParametres().elementAt(2);
+			Groupe gp = (Groupe)methode.getParametres().elementAt(3);
+			Enseignant ens = (Enseignant)methode.getParametres().elementAt(4);
+			
+			try {
+				bd.addCours(new Cours(mat, salle, gp, cren, ens));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(methode.getNom().compareTo("")==0)
 		{
 			
 		}
-		else if(methode.getNom().compareTo("EDT_Promotion")==0)
+		else if(methode.getNom().compareTo("")==0)
+		{
+			
+		}
+		else if(methode.getNom().compareTo("")==0)
+		{
+			
+		}
+		else if(methode.getNom().compareTo("")==0)
 		{
 			
 		}
 	}
 	
 
-	private void Edt_Salle(Vector<Vector<Cours>> liste_cours, Salle salle2) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void Edt_Promotion(Vector<Vector<Cours>> liste_cours, Promotion promo) {
-		// TODO Auto-generated method stub
-		
-	}
 	private void trie_par_jour(Vector<Cours> cours, Vector<Vector<Cours>> liste_cours)
 	{
 		String date="";
@@ -197,6 +199,28 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		}
 	}
 
+	private void visualiser_EDT(Signal methode) throws IOException
+	{
+		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
+		if(utilisateur.getClass()==Responsable.class)
+		{
+			switch (typeEDT)
+			{
+				case Gestion_EDT.PROMOTION : trie_par_jour(bd.getCoursPromotion((Responsable)utilisateur), liste_cours);
+				case Gestion_EDT.SALLE : trie_par_jour(bd.getCoursSalle((Salle)methode.getParametres().firstElement()), liste_cours);
+			}
+		}
+		else if(utilisateur.getClass()==Enseignant.class)
+		{
+			trie_par_jour(((Enseignant)utilisateur).getListe_cours(), liste_cours);
+		}
+		else if(utilisateur.getClass()==Etudiant.class)
+		{
+			trie_par_jour(bd.getCoursGroupes(((Etudiant)utilisateur).getGroupes()), liste_cours);
+		}
+		
+		out.writeObject(liste_cours);
+	}
 	
 	private void Erreursaisie(){
 		

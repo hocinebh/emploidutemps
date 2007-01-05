@@ -7,9 +7,13 @@ import java.util.GregorianCalendar;
 
 public class Creneau implements Serializable{
 
+	public static final int AVANT = 0;
+	public static final int APRES = 1;
+	public static final int EGAL = 2;
 	private GregorianCalendar  Datedebut; //contient date et heure début
     private Time Duree;
 	
+    
 	/**
 	 * Constructeur d'un créneau
 	 * 
@@ -53,6 +57,42 @@ public class Creneau implements Serializable{
 	public String getDate()
 	{
 		return (new GregorianCalendar(Datedebut.get(GregorianCalendar.YEAR),Datedebut.get(GregorianCalendar.MONTH),Datedebut.get(GregorianCalendar.DAY_OF_MONTH))).toString();
+	}
+
+	/**
+	 * @return the datedebut
+	 */
+	public GregorianCalendar getDatedebut() {
+		return Datedebut;
+	}
+
+	/**
+	 * @param datedebut the datedebut to set
+	 */
+	public void setDatedebut(GregorianCalendar datedebut) {
+		Datedebut = datedebut;
+	}
+
+	/**
+	 * @return the duree
+	 */
+	public Time getDuree() {
+		return Duree;
+	}
+
+	/**
+	 * @param duree the duree to set
+	 */
+	public void setDuree(Time duree) {
+		Duree = duree;
+	}
+	
+	public int compare(Creneau c)
+	{
+		int retour=EGAL;
+		if(Datedebut.before(c.getDatedebut())) retour=AVANT;
+		else if(Datedebut.after(c.getDatedebut())) retour=APRES;
+		return retour;
 	}
 	
 }
