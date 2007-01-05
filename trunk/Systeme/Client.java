@@ -29,29 +29,19 @@ public class Client {
 		//InputStream tmp = ;
 		out = new ObjectOutputStream(soc.getOutputStream());
 		in = new ObjectInputStream(soc.getInputStream());
-		
-		//Boolean ok = (Boolean)in.readObject();
-		//System.out.println("ok : "+ ok);
-		recept();
-	    
+
 	}
 	
-	public boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException
+	public Boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException
 	{
 		Signal s = new Signal("Connexion");
 		s.addParametre(login);
 		s.addParametre(mdp);
 		Signaler(s);
-		Boolean ok =(Boolean)in.readObject();
-		System.out.println("ok : "+ ok);
-		return (ok);
+
+		return ((Boolean)in.readObject());
 	}
 	
-	public void recept() throws IOException, ClassNotFoundException
-	{
-		Boolean ok =(Boolean)in.readObject();
-		System.out.println("ok : "+ ok);
-	}
 	
 	public void Signaler(Signal s) throws IOException
 	{
@@ -79,10 +69,11 @@ public class Client {
 			System.out.println("Client cree");
 			Signal s = new Signal("Test");
 			c.Signaler(s);
-			//Interface_Connexion Login = new Interface_Connexion();
-			//Login.affiche_login_screen(c);
-			boolean ok =c.Connexion("toto1","toto1");
-			System.out.println("ok : "+ ok);
+
+			Interface_Connexion Login = new Interface_Connexion();
+			Login.affiche_login_screen(c);
+			//boolean ok = c.Connexion("toto1","toto1");
+			//System.out.println("ok : "+ ok);
 			while(true);
 /*			c.FermerConnexion();
 			System.out.println("Fermeture client");*/

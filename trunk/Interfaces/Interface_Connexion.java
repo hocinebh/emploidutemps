@@ -68,6 +68,10 @@ public class Interface_Connexion {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} //retour de envoi_signal();
+				catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				if (test == false){
 					JOptionPane.showMessageDialog(null,"Connexion echoue","Connexion echoue",JOptionPane.ERROR_MESSAGE);
 				}
