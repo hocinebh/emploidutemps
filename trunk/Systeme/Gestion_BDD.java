@@ -28,9 +28,12 @@ public class Gestion_BDD {
 
 	//Definition des constantes
 	private static final String ficXml ="XML/bdedt2.xml";
+	private static final String ficXml2 ="XML/bdedt3.xml";
+	private static final String nomDtd = "bdedt";
 	private static final String ficSauvegarde = "tmp/system";
 	
 	//Definition des attributs
+	private DocType dtd;
 	private File fichier;
 	private org.jdom.Document document;
 	private Element racine;
@@ -70,6 +73,8 @@ public class Gestion_BDD {
 		SAXBuilder sxb = new SAXBuilder();
 		sxb.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
+		dtd = new DocType(nomDtd,nomDtd+".dtd");
+		
 		if(chargeXml)
 		{
 			try {
@@ -371,7 +376,7 @@ public class Gestion_BDD {
 			Groupe gp = getGroupe(courant.getAttributeValue("groupe"));
 			Matiere mat = getMatiere(courant.getAttributeValue("matière"));
 
-			cours.add(new Cours(c,s,gp,mat));		
+			addCours(new Cours(c,s,gp,mat));		
 		}
 	}
 
@@ -415,13 +420,14 @@ public class Gestion_BDD {
 		racine.addContent(edt);
 		sauvegardeCours(edt);
 		
+		document.setDocType(dtd);
 		//afficheXML(document);
 		
 		try
 		   {
 		      //On utilise ici un affichage classique avec getPrettyFormat()
 		      XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-		      sortie.output(document, new FileOutputStream(ficXml));
+		      sortie.output(document, new FileOutputStream(ficXml2));
 		   }
 		   catch (java.io.IOException e){}
 	}
@@ -506,7 +512,7 @@ public class Gestion_BDD {
 				enseignement.setAttribute("volume", ens.recupvolume());
 				
 				//Ajout de l'enseignement a la matiere
-				matier.addContent(enseignement);
+				enseignements.addContent(enseignement);
 			}
 			
 			//Ajout de la matiere
@@ -566,7 +572,7 @@ public class Gestion_BDD {
 				Element prenom = new Element("prénom");
 				prenom.setText(resp.getPrenom());
 				inspecteur.addContent(prenom);
-				Element mel = new Element("mèl");
+				Element mel = new Element("mél");
 				mel.setText(resp.getEmail());
 				inspecteur.addContent(mel);
 				Element login = new Element("login");
@@ -594,7 +600,7 @@ public class Gestion_BDD {
 				Element prenom = new Element("prénom");
 				prenom.setText(ens.getPrenom());
 				enseignant.addContent(prenom);
-				Element mel = new Element("mèl");
+				Element mel = new Element("mél");
 				mel.setText(ens.getEmail());
 				enseignant.addContent(mel);
 				Element login = new Element("login");
@@ -637,9 +643,9 @@ public class Gestion_BDD {
 				Element prenom = new Element("prénom");
 				prenom.setText(etud.getPrenom());
 				etudiant.addContent(prenom);
-				Element mel = new Element("mèl");
-				mel.setText(etud.getEmail());
-				etudiant.addContent(mel);
+				//Element mel = new Element("mél");
+				//mel.setText(etud.getEmail());
+				//etudiant.addContent(mel);
 				Element login = new Element("login");
 				login.setText(etud.getUsername());
 				etudiant.addContent(login);
@@ -650,10 +656,12 @@ public class Gestion_BDD {
 				//ajout de l etudiant
 				promotion.addContent(etudiant);
 			}
+			etudiants.addContent(promotion);
 		}
 		
 	}
 
+	
 //==============================================================
 //  Accesseurs
 //==============================================================
@@ -682,6 +690,7 @@ public class Gestion_BDD {
 		return promo;
 	}
 	
+
 	/**
 	 * 
 	 * @param name
@@ -817,6 +826,115 @@ public class Gestion_BDD {
 		return liste_cours;
 	}
 	
+	public Vector<Cours> getCoursPromotion(Responsable resp)
+	{
+		Vector<Cours> liste_cours = new Vector<Cours>();
+		
+		Iterator i = cours.iterator();
+		while(i.hasNext())
+		{
+			Cours c = (Cours)i.next();
+			if(c.getGroupe().getResponsable().equals(resp))
+			{
+				liste_cours.add(c);
+			}
+		}
+		
+		return liste_cours;
+	}
+	
+	public Vector<Cours> getCoursSalle(Salle s)
+	{
+		Vector<Cours> liste_cours = new Vector<Cours>();
+		
+		Iterator i = cours.iterator();
+		while(i.hasNext())
+		{
+			Cours c = (Cours)i.next();
+			if(c.getSalle().equals(s))
+			{
+				liste_cours.add(c);
+			}
+		}
+		
+		return liste_cours;
+	}
+	
+	/**
+	 * Fonction qui ajoute un cours à la liste des cours
+	 * dans l'ordre croissant
+	 * @param c
+	 * @throws Exception 
+	 */
+	public boolean addCours(Cours c) throws Exception
+	{
+		boolean ok = false;
+		int pos = 0;
+		
+		if(cours.size()!=0)
+		{
+			pos = cherchePosition(c, 0, cours.size()-1);	
+		}
+		cours.add(pos,c);
+		
+		return ok;
+	}
+	
+	/**
+	 * Fonction qui indique la position ou inserer le cours
+	 * @param c
+	 * @param deb
+	 * @param fin
+	 * @return la position
+	 * @throws Exception 
+	 */
+	private int cherchePosition(Cours c, int deb, int fin) throws Exception
+	{
+		int pos=0;
+		
+		if(deb==fin)
+		{
+			switch(c.getCreneau().compare(cours.elementAt(deb).getCreneau()))
+			{
+				case Creneau.AVANT : pos=deb-1;break;
+				case Creneau.APRES : pos=deb+1;break;
+				case Creneau.EGAL : throw new Exception("P");
+			}
+		}
+		else
+		{
+			pos=(fin-deb)/2;
+			
+			if((pos%1)!=0) pos++;
+			
+			switch(c.getCreneau().compare(cours.elementAt(pos).getCreneau()))
+			{
+				case Creneau.AVANT : fin=pos-1;break;
+				case Creneau.APRES : deb=pos+1;break;
+				case Creneau.EGAL : pos=-1;break;
+			}			
+			pos=cherchePosition(c,deb, fin);
+			
+		}
+		
+		return pos;
+	}
+	
+	public Vector<Personne> getRespEns() {
+		Vector<Personne> liste_personne = new Vector<Personne>();
+		
+		for(int i =0; i<utilisateurs.size(); i++)
+		{
+			if(utilisateurs.elementAt(i).getClass()!= Etudiant.class)
+			{
+				liste_personne.add(utilisateurs.elementAt(i));
+			}
+		}
+		
+		return liste_personne;
+	}
+
+	
 //==============================================================
 //  Fonctions de chargement et de sauvegarde de la base 
 //	dans un fichier (serialization)
@@ -873,6 +991,8 @@ public class Gestion_BDD {
 		}
 	}
 	
+	
+	
 	public void testAffiche()
 	{
 		//Vérifications a retirer par la suite
@@ -883,7 +1003,7 @@ public class Gestion_BDD {
 		System.out.println(this.matieres.size()+" matieres");
 		System.out.println(this.cours.size()+" cours");
 		System.out.println(this.salles.size()+" salles");
-		afficheObjets(utilisateurs);
+		//afficheObjets(utilisateurs);
 	}
 	
 	/**
@@ -903,7 +1023,7 @@ public class Gestion_BDD {
 
 	public static void main(String[] args) 
 	{
-		Gestion_BDD bd = Gestion_BDD.getInstance(false);
+		Gestion_BDD bd = Gestion_BDD.getInstance(true);
 		bd.testAffiche();
 		//System.out.println("====================================================");
 		bd.sauvegarde();
@@ -914,5 +1034,7 @@ public class Gestion_BDD {
 			e.printStackTrace();
 		}
 	}
+
+
 	
 }

@@ -28,6 +28,24 @@ public class Cours implements Serializable{
 		configureEnseignant();
 	}
 	
+	/**
+	 * @param matiere
+	 * @param salle
+	 * @param groupe
+	 * @param creneau
+	 * @param enseignant
+	 */
+	public Cours(Matiere matiere, Salle salle, Groupe groupe, Creneau creneau, Enseignant enseignant) {
+		super();
+		this.matiere = matiere;
+		this.salle = salle;
+		this.groupe = groupe;
+		this.creneau = creneau;
+		this.enseignant = enseignant;
+	}
+
+
+
 	private void configureEnseignant() throws Exception
 	{
 		Iterator i = this.matiere.getListe_enseignement().iterator();
