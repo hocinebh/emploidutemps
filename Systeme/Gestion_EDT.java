@@ -50,7 +50,6 @@ public class Gestion_EDT extends Thread {
 	{
 		
 		try {
-			out.writeObject(true);
 			while (true)
 			{
 				Signal methode = (Signal)in.readObject();
@@ -58,7 +57,7 @@ public class Gestion_EDT extends Thread {
 				execute(methode);			
 			}
 			
-		} catch (IOException e1) {e1.printStackTrace();} 
+		} catch (IOException e1) {} 
 		  catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -98,7 +97,7 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		 */
 		if(methode.getNom().compareTo("Connexion")==0)
 		{
-			Connection((String)methode.getParametres().elementAt(0),(String)methode.getParametres().elementAt(1));	
+			Connection((String)methode.getParametres().elementAt(0),(String)methode.getParametres().elementAt(1));
 		}
 		else if(methode.getNom().compareTo("Test")==0)
 		{
@@ -192,7 +191,7 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 			}
 		}
 		
-		out.writeBoolean(ok);
+		out.writeObject(ok);
 		
 		//Si on a pas trouve l'utilisateur
 		if (!ok)
