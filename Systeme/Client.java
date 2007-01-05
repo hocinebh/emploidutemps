@@ -16,7 +16,7 @@ public class Client {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	
-	public Client() throws UnknownHostException, IOException
+	public Client() throws UnknownHostException, IOException, ClassNotFoundException
 	{
 		//Reseau local
 		String host = InetAddress.getLocalHost().getHostAddress();
@@ -29,17 +29,28 @@ public class Client {
 		//InputStream tmp = ;
 		out = new ObjectOutputStream(soc.getOutputStream());
 		in = new ObjectInputStream(soc.getInputStream());
+		
+		//Boolean ok = (Boolean)in.readObject();
+		//System.out.println("ok : "+ ok);
+		recept();
 	    
 	}
 	
-	public boolean Connexion(String login, String mdp) throws IOException
+	public boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException
 	{
 		Signal s = new Signal("Connexion");
 		s.addParametre(login);
 		s.addParametre(mdp);
 		Signaler(s);
-				
-		return (in.readBoolean());
+		Boolean ok =(Boolean)in.readObject();
+		System.out.println("ok : "+ ok);
+		return (ok);
+	}
+	
+	public void recept() throws IOException, ClassNotFoundException
+	{
+		Boolean ok =(Boolean)in.readObject();
+		System.out.println("ok : "+ ok);
 	}
 	
 	public void Signaler(Signal s) throws IOException
@@ -68,8 +79,10 @@ public class Client {
 			System.out.println("Client cree");
 			Signal s = new Signal("Test");
 			c.Signaler(s);
-			Interface_Connexion Login = new Interface_Connexion();
-			Login.affiche_login_screen(c);
+			//Interface_Connexion Login = new Interface_Connexion();
+			//Login.affiche_login_screen(c);
+			boolean ok =c.Connexion("toto1","toto1");
+			System.out.println("ok : "+ ok);
 			while(true);
 /*			c.FermerConnexion();
 			System.out.println("Fermeture client");*/
@@ -79,6 +92,9 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
