@@ -6,10 +6,13 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Vector;
 
 import javax.swing.*;
 
 import com.toedter.calendar.*;
+
+import Systeme.Client;
 import bdd.*;
 
 public class Interface_Reservation {
@@ -24,19 +27,19 @@ public class Interface_Reservation {
 	private String[] duree = {"00:30","00:45","01:00","01:15","01:30","01:45","02:00","02:15","02:30","02:45","03:00","03:30","04:00","05:00","06:00"};
 	private JComboBox Duree = new JComboBox(duree);
 	private JTextField Heuredeb = new JTextField("08:00");
-	JComboBox Salle = new JComboBox();
-	JTextField Matiere = new JTextField();
-	JComboBox Groupe = new JComboBox();
-	JComboBox Enseignant = new JComboBox();
+	JComboBox Salle;
+	JComboBox Matiere;
+	JComboBox Groupe;
+	JComboBox Enseignant;
 	JButton Reset = new JButton("Reset");
 	
 	
 	/* Elements d'un cours */
-	private Cours nouveaucours;
 	private Creneau nouveaucreneau;
 	private Matiere nouvellematiere;
 	private Groupe nouveaugroupe;
 	private Salle nouvellesalle;
+	private Enseignant nouvelenseignant;
 	
 	/**
      * Centre la fenetre au milieu de l'ecran
@@ -47,7 +50,7 @@ public class Interface_Reservation {
 	   frame.setLocation((screenSize.width / 2) + (420), (screenSize.height / 2) - 300);
 	}
 	
-	public void Affiche_Interface_Reservation(){
+	public void Affiche_Interface_Reservation(Vector<Enseignant> listeenseignant,Vector<Groupe> listegroupe, Vector<Matiere> listematiere, Vector<Salle> listesalle,final Client Classeclient){
 		
 		fenetre.setTitle("Reservation");
 		fenetre.setSize(210,600);
@@ -81,22 +84,27 @@ public class Interface_Reservation {
 		/* Groupe */
 		JLabel LGroupe = new JLabel("Groupe");
 		panelcenter.add(LGroupe);
+		Groupe = new JComboBox(listegroupe);
 		panelcenter.add(Groupe);
+		
 		
 		/* Enseignant */
 		JLabel LEnseignant = new JLabel("Enseignant");
 		panelcenter.add(LEnseignant);
+		Enseignant = new JComboBox(listeenseignant);
 		panelcenter.add(Enseignant);
 		
 		/* Matiere */
 		JLabel LMatiere = new JLabel("Matiere");
 		panelcenter.add(LMatiere);
+		Matiere = new JComboBox(listematiere);
 		panelcenter.add(Matiere);
 		
 		/* Salle */
 		JLabel LSalle = new JLabel("Salle");
 		LSalle.setHorizontalTextPosition(JLabel.CENTER);
 		panelcenter.add(LSalle);
+		Salle = new JComboBox(listesalle);
 		panelcenter.add(Salle);
 		fenetre.getContentPane().add(panelcenter,BorderLayout.CENTER);
 		
@@ -115,21 +123,23 @@ public class Interface_Reservation {
 				/* on cree un creneau */
 				try {
 					nouveaucreneau= new Creneau(formatjour.format(ChoixDate.getDate()),Heuredeb.getText(),Duree.getSelectedItem().toString());
+					nouvellematiere = (Matiere)Matiere.getSelectedItem();
+					nouveaugroupe = (Groupe)Groupe.getSelectedItem();
+					nouvellesalle = (Salle)Salle.getSelectedItem(); 
+					nouvelenseignant =  (Enseignant)Enseignant.getSelectedItem();
 					
-					/*matiere = new Matiere()
-					groupe = new Groupe();	
-					enseignant = new Enseignant();*/
-					//nouvellesalle = new Salle(); il faut des nouvelles methodes de selection de salle, cours, 
-					//nouveaucours= new Cours(nouveaucreneau,nouvellesalle,nouveaugroupe,nouvellematiere);
-					//addcourstolistedescours
+					//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
+					if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
+						JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
+					else 
+						JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
 					//updateEDT
-					JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
+					
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(fenetre,"Erreur de format d'entree","Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 				finally{
-					
 					Reset.doClick();
 				}
 			}
@@ -144,10 +154,10 @@ public class Interface_Reservation {
 				ChoixDate.setDate(GregorianCalendar.getInstance().getTime());
 				Heuredeb.setText("08:00");
 				Duree.setSelectedItem("01:15");
-				//Groupe.setSelectedIndex(0);
-				//Enseignant.setSelectedIndex(0);
-				Matiere.setText(null);
-				//Salle.setSelectedIndex(0);
+				Groupe.setSelectedIndex(0);
+				Enseignant.setSelectedIndex(0);
+				Matiere.setSelectedIndex(0);
+				Salle.setSelectedIndex(0);
 				
 				
 				
