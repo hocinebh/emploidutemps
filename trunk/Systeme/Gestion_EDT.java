@@ -126,6 +126,11 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 			SimpleMailSender new_mail = new SimpleMailSender();
 			out.writeObject(new_mail.envoimail(email, utilisateur.getEmail(), sujet, message));
 		}
+		else if(methode.getNom().compareTo("recuperer_listes")==0)
+		{
+			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getRespEns()};		
+			out.writeObject(table);
+		}
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
 		{
 			Matiere mat = (Matiere)methode.getParametres().elementAt(0);
