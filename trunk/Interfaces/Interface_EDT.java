@@ -146,13 +146,20 @@ public class Interface_EDT {
 	   Dimension frameSize = frame.getSize();
 	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
 	}
+	/**
+	 * 
+	 * @param ListePersonne - vector<Personne> a afficher dans le JComboBox
+	 * @param Classeclient - La classe client qui instancie tout du cote client
+	 */
 	public void init_fenetre_mail(Vector<Personne> ListePersonne,Client Classeclient){
 		
-		//String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
 		Fenetremail.Init_fenetre_mail(ListePersonne,Classeclient);
 	}
 	
-	
+	/**
+	 * 
+	 * @param Classeclient - La classe client qui instancie tout du cote client
+	 */
 	public void Afficher_EDT(Client Classeclient) {
 		
 		fenetre.setTitle("Emploi du temps");
