@@ -2,10 +2,15 @@ package Interfaces;
 
 import java.awt.*;
 import java.awt.event.*;
+
+import Systeme.Client;
 import Systeme.Jours;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.*;
+
+import bdd.Personne;
+
 import java.util.*;
 
 public class Interface_EDT {
@@ -25,7 +30,7 @@ public class Interface_EDT {
 	private JTextPane PMercredi =  new JTextPane();
 	private JTextPane PJeudi =  new JTextPane();
 	private JTextPane PVendredi =  new JTextPane();
-	
+	private Liste_Contacts Fenetremail = new Liste_Contacts();
 	
     private static void AddtexttoPane(String[] initString,String[] initStyles, JTextPane textPane) {
         StyledDocument doc = textPane.getStyledDocument();
@@ -141,22 +146,19 @@ public class Interface_EDT {
 	   Dimension frameSize = frame.getSize();
 	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
 	}
+	public void init_fenetre_mail(Vector<Personne> ListePersonne){
+		
+		//String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
+		Fenetremail.Init_fenetre_mail(ListePersonne);
+	}
 	
-	public void main(String[] args) {
+	
+	public void Afficher_EDT(Client Classeclient) {
 		
 		fenetre.setTitle("Emploi du temps");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.setSize(800,600);
 		centerFrame(fenetre);
-		
-		/* Init fenetre mail */
-		final Liste_Contacts Fenetremail = new Liste_Contacts();
-		String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
-		Fenetremail.Init_fenetre_mail(emails);
-		
-		/* Init fenetre reservation */
-		Interface_Reservation FenetreReservation = new Interface_Reservation();
-		FenetreReservation.Affiche_Interface_Reservation();
 		
 		
 		/* Trouver les jours de la semaine en cours */ 
