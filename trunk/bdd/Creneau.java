@@ -32,14 +32,16 @@ public class Creneau implements Serializable{
 		if (tmpD.length!=2) throw new Exception("Creation creneau : Erreur format duree");
 		
 		int month = Integer.parseInt(tmpJ[1]);
-		if(month==12) month=0;
+		//if(month==12) month=0;
+		month--;
 		Datedebut = new GregorianCalendar (Integer.parseInt(tmpJ[2]),month, Integer.parseInt(tmpJ[0]), Integer.parseInt(tmpH[0]), Integer.parseInt(tmpH[1]));
 		Duree = Time.valueOf(duree+":00");
 	}
 
 	public String date() {
 		int month = Datedebut.get(GregorianCalendar.MONTH);
-		if(month==0) month=12;
+		//if(month==0) month=12;
+		month++;
 		return Datedebut.get(GregorianCalendar.DAY_OF_MONTH)+"/"+month+"/"+Datedebut.get(GregorianCalendar.YEAR);
 	}
 
