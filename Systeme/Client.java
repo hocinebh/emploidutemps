@@ -123,7 +123,6 @@ public class Client {
 			Login.affiche_login_screen(c);
 			//boolean ok = c.Connexion("toto1","toto1");
 			//System.out.println("ok : "+ ok);
-			while(true);
 /*			c.FermerConnexion();
 			System.out.println("Fermeture client");*/
 			
