@@ -10,7 +10,7 @@ import Systeme.*;
 public class Interface_Connexion {
 
 	private JTextField TFlogin = new JTextField(15);
-	private JPasswordField TFmdp = new JPasswordField(15);
+	private JTextField TFmdp = new JTextField(15);
 	/**
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
@@ -26,7 +26,7 @@ public class Interface_Connexion {
 	 *
 	 */
 	public void affiche_login_screen(final Client Classeclient) {
-		JFrame fenetre = new JFrame("Connexion");
+		final JFrame fenetre = new JFrame("Connexion");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.setSize(300,200);
 		centerFrame(fenetre);
@@ -63,7 +63,7 @@ public class Interface_Connexion {
 				//TODO envoi un signal au serveur avec 2 parametres le nom et le mdp
 				boolean test=false;
 				try {
-					test = Classeclient.Connexion(TFlogin.getText(), TFmdp.getPassword().toString());
+					test = Classeclient.Connexion(TFlogin.getText(), TFmdp.getText());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -76,6 +76,16 @@ public class Interface_Connexion {
 					JOptionPane.showMessageDialog(null,"Connexion echoue","Connexion echoue",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
+					try {
+						Classeclient.Afficher_Emploi_du_temps();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					fenetre.setVisible(false);
 					//TODO afficher son emploi du temps 
 					
 				}

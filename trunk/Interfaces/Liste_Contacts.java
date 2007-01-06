@@ -2,7 +2,11 @@ package Interfaces;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
+
 import javax.swing.*;
+
+import bdd.Personne;
 
 import Systeme.SimpleMailSender;
 
@@ -33,7 +37,7 @@ public class Liste_Contacts {
 	 * 
 	 * @param liste_emails_nom - liste de tous les emails auxquels la personne peut envoyer
 	 */
-	public void Init_fenetre_mail(String[] liste_emails_nom) {	
+	public void Init_fenetre_mail(Vector<Personne>liste_emails_nom) {	
 		fenetre.setTitle("Envoyer un message");
 		fenetre.setSize(500,500);
 		centerFrame(fenetre);
