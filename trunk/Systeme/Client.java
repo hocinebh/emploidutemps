@@ -6,8 +6,14 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Vector;
+import Systeme.Signal;
+import bdd.Cours;
+import bdd.Personne;
 
 import Interfaces.Interface_Connexion;
+import Interfaces.Interface_EDT;
+import Interfaces.Interface_Reservation;
 
 public class Client {
 
@@ -30,6 +36,21 @@ public class Client {
 		out = new ObjectOutputStream(soc.getOutputStream());
 		in = new ObjectInputStream(soc.getInputStream());
 
+	}
+	
+	
+	public void Afficher_Emploi_du_temps() throws IOException, ClassNotFoundException{
+		Interface_EDT Graphic_EDT= new Interface_EDT();
+		Graphic_EDT.Afficher_EDT(this);
+		/* initialisation de la fenetre mail */
+		Signal s = new Signal("afficher_liste_contacts");
+		Signaler(s);
+		Vector<Personne> ListePersonne = (Vector<Personne>)in.readObject();
+		Graphic_EDT.init_fenetre_mail(ListePersonne);
+		/* Si c'est un inspecteur */
+		/*
+		 * Interface_Reservation FenetreReservation = new Interface_Reservation();
+		FenetreReservation.Affiche_Interface_Reservation();*/
 	}
 	
 	public Boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException

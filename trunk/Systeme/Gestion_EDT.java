@@ -97,6 +97,7 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		 */
 		if(methode.getNom().compareTo("Connexion")==0)
 		{
+			
 			Connection((String)methode.getParametres().elementAt(0),(String)methode.getParametres().elementAt(1));
 		}
 		else if(methode.getNom().compareTo("Test")==0)
@@ -177,6 +178,7 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 	private void Connection(String nom, String mdp) throws IOException
 	{
 		boolean ok=false;
+		System.out.println("Connection: "+nom+ "  " + mdp);
 		
 		for(int i=0; i<bd.getUtilisateurs().size() && !ok; i++)
 		{
@@ -194,11 +196,10 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		out.writeObject(ok);
 		
 		//Si on a pas trouve l'utilisateur
-		if (!ok)
+		/*if (!ok)
 		{
 			System.exit(0);
-		}
-		System.out.println("Connexion ok!!");
+		} */
 	}
 
 	private void visualiser_EDT(Signal methode) throws IOException
