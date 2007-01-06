@@ -9,7 +9,7 @@ public class Creneau implements Serializable{
 
 	public static final int AVANT = 0;
 	public static final int APRES = 1;
-	public static final int EGAL = 2;
+	public static final int ERREUR = 2;
 	private GregorianCalendar  Datedebut; //contient date et heure début
     private Time Duree;
 	
@@ -87,11 +87,43 @@ public class Creneau implements Serializable{
 		Duree = duree;
 	}
 	
-	public int compare(Creneau c)
+	public static String DatetoString(GregorianCalendar date) {
+		int month = date.get(GregorianCalendar.MONTH);
+		if(month==0) month=12;
+		int minute = date.get(GregorianCalendar.MINUTE);
+		String min=""+minute;
+		if(minute<10)min="0"+minute;
+		return date.get(GregorianCalendar.DAY_OF_MONTH)+"/"+month+"/"+date.get(GregorianCalendar.YEAR)+" "+date.get(GregorianCalendar.HOUR_OF_DAY)+":"+min;
+	}
+
+	
+	public GregorianCalendar getDateFin()
 	{
-		int retour=EGAL;
-		if(Datedebut.before(c.getDatedebut())) retour=AVANT;
-		else if(Datedebut.after(c.getDatedebut())) retour=APRES;
+		int heure = (Datedebut.get(GregorianCalendar.HOUR_OF_DAY)+Duree.getHours());
+		int minutes = Datedebut.get(GregorianCalendar.MINUTE)+Duree.getMinutes();
+		GregorianCalendar DateFin = new GregorianCalendar(Datedebut.get(GregorianCalendar.YEAR),Datedebut.get(GregorianCalendar.MONTH),Datedebut.get(GregorianCalendar.DAY_OF_MONTH),heure,minutes);
+		//DateFin.add(GregorianCalendar.HOUR_OF_DAY, (int) Duree.getHours());
+		//System.out.println("duree "+ +":"+Duree.getMinutes());
+		//System.out.println("deb : "+DatetoString(Datedebut)+" fin : "+DatetoString(DateFin));
+		return DateFin;
+	}
+	
+	
+	
+	public int compare(Creneau c)
+	{		
+		int retour=ERREUR;
+		System.out.println("date1 "+date()+" "+heure());
+		System.out.println("date2 "+c.date()+" "+c.heure());
+		
+		if((Datedebut.before(c.getDatedebut())) && (this.getDateFin().before(c.getDatedebut())))
+		{
+				retour=AVANT;			
+		}
+		else if((Datedebut.after(c.getDatedebut()))&& (Datedebut.after(c.getDateFin()))) 
+		{
+			retour=APRES;
+		}
 		return retour;
 	}
 	
