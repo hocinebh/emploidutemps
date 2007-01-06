@@ -52,6 +52,11 @@ public class Groupe implements Serializable {
 	{
 		return ((this.num_groupe.compareTo(g.getnum_groupe()))==0);
 	}
+
+	public String toString(){
+		return num_groupe;
+		
+	}
 	
 	
 }

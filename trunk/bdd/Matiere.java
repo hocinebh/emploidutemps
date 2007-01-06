@@ -113,7 +113,10 @@ public class Matiere implements Serializable{
 	}
 	
 	
-	
+	public String toString(){
+		return intitule;
+		
+	}
 
 	
 }
