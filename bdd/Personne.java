@@ -83,12 +83,12 @@ public abstract class Personne implements Serializable{
 		return num_personne;
 	}
 	
-
-	public String toString() {
+	/*public String toString() {
 		String text = "Personne "+num_personne+" : "+this.nom+" , "+this.prenom+"\nLogin : "+this.username+" mdp : "+this.password;
 		return text;
+	}*/
+	public String toString() {
+		String text = this.nom+", "+this.prenom+" : " +this.email;
+		return text;
 	}
-
-	
-		
 }
