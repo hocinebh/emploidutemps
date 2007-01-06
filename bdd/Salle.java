@@ -82,7 +82,9 @@ public class Salle implements Serializable{
 		this.type_Salle = type_Salle;
 	}
 	
-	
+	public String toString(){
+		return (nom_salle);
+	}
 	
 	
 }
