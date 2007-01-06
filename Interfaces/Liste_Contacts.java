@@ -2,12 +2,14 @@ package Interfaces;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.*;
 
 import bdd.Personne;
 
+import Systeme.Client;
 import Systeme.SimpleMailSender;
 
 public class Liste_Contacts {
@@ -37,7 +39,7 @@ public class Liste_Contacts {
 	 * 
 	 * @param liste_emails_nom - liste de tous les emails auxquels la personne peut envoyer
 	 */
-	public void Init_fenetre_mail(Vector<Personne>liste_emails_nom) {	
+	public void Init_fenetre_mail(Vector<Personne>liste_emails_nom,final Client Classeclient) {	
 		fenetre.setTitle("Envoyer un message");
 		fenetre.setSize(500,500);
 		centerFrame(fenetre);
@@ -46,7 +48,7 @@ public class Liste_Contacts {
 		
 		/* Choix du nom NORD */
 		JLabel LNom = new JLabel("Choix du destinataire");
-		JComboBox ListeContacts = new JComboBox(liste_emails_nom);
+		final JComboBox ListeContacts = new JComboBox(liste_emails_nom);
 		JPanel pcontacts = new JPanel();
 		
 		/* Bouton SUD*/
@@ -89,15 +91,26 @@ public class Liste_Contacts {
 			{
 				/* On envoit un signal au serveur qui envoi ensuite le mail */
 				//TODO
-				SimpleMailSender NouveauMail = new SimpleMailSender();
-				if (NouveauMail.envoimail("alex.remen@gmail.com","sadako22@free.fr",Sujet.getText(), Message.getText())==false)
-				{
-					JOptionPane.showMessageDialog(fenetre,"Envoi du mail echoué ","Mail pas envoyé",JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(fenetre,"Mail envoyé");
-					fenetre.setVisible(false);
+				
+				try {
+					if (Classeclient.Envoi_email(((Personne)(ListeContacts.getSelectedItem())).getEmail(),Sujet.getText(),Message.getText())==false)
+					{
+						JOptionPane.showMessageDialog(fenetre,"Envoi du mail echoué ","Mail pas envoyé",JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(fenetre,"Mail envoyé");
+						fenetre.setVisible(false);
+					}
+				} catch (HeadlessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 				
 			}

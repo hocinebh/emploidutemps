@@ -146,10 +146,10 @@ public class Interface_EDT {
 	   Dimension frameSize = frame.getSize();
 	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
 	}
-	public void init_fenetre_mail(Vector<Personne> ListePersonne){
+	public void init_fenetre_mail(Vector<Personne> ListePersonne,Client Classeclient){
 		
 		//String[] emails = {"Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","Cubero","Castan","Conchon","Vache","Roccacher","Danny","Exposito","Seth","Dilhac","Acco","Alex","Tonya","Marc","Matthieu","tes1t","test2","test3","Vache","Roccacher"};
-		Fenetremail.Init_fenetre_mail(ListePersonne);
+		Fenetremail.Init_fenetre_mail(ListePersonne,Classeclient);
 	}
 	
 	
