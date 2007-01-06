@@ -55,7 +55,7 @@ public class Client {
 		/* Si c'est un inspecteur */
 		
 		Interface_Reservation FenetreReservation = new Interface_Reservation();
-		//FenetreReservation.Affiche_Interface_Reservation(listeenseignant, listegroupe, listematiere, listesalle, this);
+		FenetreReservation.Affiche_Interface_Reservation(this);
 	}
 	
 	public Boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException
@@ -90,6 +90,12 @@ public class Client {
 		Signaler(s);
 		
 		return ((Boolean)in.readObject());
+	}
+	public Vector[] Recup_Listes_Reservation() throws IOException, ClassNotFoundException{
+		
+		Signal s = new Signal("recuperer_listes");
+		Signaler(s);
+		return ((Vector[])in.readObject());
 	}
 	
 	public void Signaler(Signal s) throws IOException

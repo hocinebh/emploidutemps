@@ -1046,6 +1046,22 @@ public class Gestion_BDD {
 		}
 	}
 
+	public Vector<Cours> getCours() {
+		return cours;
+	}
+
+	public Vector<Groupe> getGroupes() {
+		return groupes;
+	}
+
+	public Vector<Matiere> getMatieres() {
+		return matieres;
+	}
+
+	public Vector<Salle> getSalles() {
+		return salles;
+	}
+
 
 	
 }
