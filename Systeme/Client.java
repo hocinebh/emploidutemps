@@ -9,7 +9,12 @@ import java.net.UnknownHostException;
 import java.util.Vector;
 import Systeme.Signal;
 import bdd.Cours;
+import bdd.Creneau;
+import bdd.Enseignant;
+import bdd.Groupe;
+import bdd.Matiere;
 import bdd.Personne;
+import bdd.Salle;
 
 import Interfaces.Interface_Connexion;
 import Interfaces.Interface_EDT;
@@ -48,14 +53,15 @@ public class Client {
 		Vector<Personne> ListePersonne = (Vector<Personne>)in.readObject();
 		Graphic_EDT.init_fenetre_mail(ListePersonne,this);
 		/* Si c'est un inspecteur */
-		/*
-		 * Interface_Reservation FenetreReservation = new Interface_Reservation();
-		FenetreReservation.Affiche_Interface_Reservation();*/
+		
+		Interface_Reservation FenetreReservation = new Interface_Reservation();
+		//FenetreReservation.Affiche_Interface_Reservation(listeenseignant, listegroupe, listematiere, listesalle, this);
 	}
 	
 	public Boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException
 	{
 		Signal s = new Signal("Connexion");
+		
 		s.addParametre(login);
 		s.addParametre(mdp);
 		Signaler(s);
@@ -63,14 +69,29 @@ public class Client {
 		return ((Boolean)in.readObject());
 	}
 	
-	public boolean Envoi_email(String email, String sujet, String Message) throws IOException, ClassNotFoundException {
-	Signal s = new Signal("envoi_email");
-	s.addParametre(email);
-	s.addParametre(sujet);
-	s.addParametre(Message);
-	Signaler(s);
-	return ((Boolean)in.readObject());
+	public Boolean Ajouter_Cours(Matiere mat, Salle salle, Creneau cren, Groupe gp, Enseignant ens) throws IOException, ClassNotFoundException{
+		Signal s = new Signal("Saisir_EDT");
+		
+		s.addParametre(mat);
+		s.addParametre(salle);
+		s.addParametre(cren);
+		s.addParametre(gp);
+		s.addParametre(ens);
+		Signaler(s);
+		
+		return ((Boolean)in.readObject());
 	}
+	public Boolean Envoi_email(String email, String sujet, String Message) throws IOException, ClassNotFoundException {
+		Signal s = new Signal("envoi_email");
+		
+		s.addParametre(email);
+		s.addParametre(sujet);
+		s.addParametre(Message);
+		Signaler(s);
+		
+		return ((Boolean)in.readObject());
+	}
+	
 	public void Signaler(Signal s) throws IOException
 	{
 		out.writeObject(s);
