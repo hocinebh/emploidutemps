@@ -3,6 +3,7 @@ package Interfaces;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -50,8 +51,17 @@ public class Interface_Reservation {
 	   frame.setLocation((screenSize.width / 2) + (420), (screenSize.height / 2) - 300);
 	}
 	
-	public void Affiche_Interface_Reservation(Vector<Enseignant> listeenseignant,Vector<Groupe> listegroupe, Vector<Matiere> listematiere, Vector<Salle> listesalle,final Client Classeclient){
-		
+	public void Affiche_Interface_Reservation(final Client Classeclient){
+		Vector[] table = null;
+		try {
+			table = Classeclient.Recup_Listes_Reservation();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (ClassNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		fenetre.setTitle("Reservation");
 		fenetre.setSize(210,600);
 		LocationFrame(fenetre);
@@ -84,27 +94,27 @@ public class Interface_Reservation {
 		/* Groupe */
 		JLabel LGroupe = new JLabel("Groupe");
 		panelcenter.add(LGroupe);
-		Groupe = new JComboBox(listegroupe);
+		Groupe = new JComboBox(table[2]);
 		panelcenter.add(Groupe);
 		
 		
 		/* Enseignant */
 		JLabel LEnseignant = new JLabel("Enseignant");
 		panelcenter.add(LEnseignant);
-		Enseignant = new JComboBox(listeenseignant);
+		Enseignant = new JComboBox(table[3]);
 		panelcenter.add(Enseignant);
 		
 		/* Matiere */
 		JLabel LMatiere = new JLabel("Matiere");
 		panelcenter.add(LMatiere);
-		Matiere = new JComboBox(listematiere);
+		Matiere = new JComboBox(table[1]);
 		panelcenter.add(Matiere);
 		
 		/* Salle */
 		JLabel LSalle = new JLabel("Salle");
 		LSalle.setHorizontalTextPosition(JLabel.CENTER);
 		panelcenter.add(LSalle);
-		Salle = new JComboBox(listesalle);
+		Salle = new JComboBox(table[0]);
 		panelcenter.add(Salle);
 		fenetre.getContentPane().add(panelcenter,BorderLayout.CENTER);
 		
