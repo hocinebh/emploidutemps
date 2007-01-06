@@ -8,7 +8,7 @@ import java.util.*;
  * 
  * @author Alexander Remen et Tonya vo Thanh
  * Classe simple qui envoit un mail.
- * Elle doit etre utilis� par le serveur sur l'INSA pour que le serveur SMTP soit reconnu.
+ * Elle doit etre utilise par le serveur sur l'INSA pour que le serveur SMTP soit reconnu.
  */
 
 public class SimpleMailSender {
