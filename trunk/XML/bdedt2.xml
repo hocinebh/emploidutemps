@@ -2,20 +2,20 @@
 <!DOCTYPE bdedt SYSTEM "bdedt.dtd">
 <bdedt>
 	<inspecteurs>
-		<inspecteur id="1" promotion="4GI">
-			<nom>inspect1</nom>
-			<prénom>toto1</prénom>
-			<mél>toto1@bla</mél>
-			<login>toto1</login>
-			<pass>toto1</pass>
-		</inspecteur>
-		<inspecteur id="2" promotion="4RT">
-			<nom>inspect2</nom>
-			<prénom>toto2</prénom>
-			<mél>toto2@bla</mél>
-			<login>toto2</login>
-			<pass>toto2</pass>
-		</inspecteur>
+	    <inspecteur id="1" promotion="4GI">
+	      <nom>Remen</nom>
+	      <prénom>Alexander</prénom>
+	      <mél>alex.remen@gmail.com</mél>
+	      <login>aremen</login>
+	      <pass>toto1</pass>
+	    </inspecteur>
+	    <inspecteur id="2" promotion="4RT">
+	      <nom>Vo Thanh</nom>
+	      <prénom>Tonya</prénom>
+	      <mél>sadako22@free.fr</mél>
+	      <login>tvo_than</login>
+	      <pass>toto2</pass>
+	    </inspecteur>
 		<inspecteur id="3" promotion="4GM">
 			<nom>inspect3</nom>
 			<prénom>toto3</prénom>
