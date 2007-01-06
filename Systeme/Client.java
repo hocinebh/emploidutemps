@@ -46,7 +46,7 @@ public class Client {
 		Signal s = new Signal("afficher_liste_contacts");
 		Signaler(s);
 		Vector<Personne> ListePersonne = (Vector<Personne>)in.readObject();
-		Graphic_EDT.init_fenetre_mail(ListePersonne);
+		Graphic_EDT.init_fenetre_mail(ListePersonne,this);
 		/* Si c'est un inspecteur */
 		/*
 		 * Interface_Reservation FenetreReservation = new Interface_Reservation();
@@ -63,7 +63,14 @@ public class Client {
 		return ((Boolean)in.readObject());
 	}
 	
-	
+	public boolean Envoi_email(String email, String sujet, String Message) throws IOException, ClassNotFoundException {
+	Signal s = new Signal("envoi_email");
+	s.addParametre(email);
+	s.addParametre(sujet);
+	s.addParametre(Message);
+	Signaler(s);
+	return ((Boolean)in.readObject());
+	}
 	public void Signaler(Signal s) throws IOException
 	{
 		out.writeObject(s);

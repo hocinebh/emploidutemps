@@ -118,6 +118,14 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		{
 			typeEDT = (Integer)methode.getParametres().firstElement();
 		}
+		else if(methode.getNom().compareTo("envoi_email")==0)
+		{
+			String email = (String)methode.getParametres().elementAt(0);
+			String sujet = (String)methode.getParametres().elementAt(1);
+			String message = (String)methode.getParametres().elementAt(2);
+			SimpleMailSender new_mail = new SimpleMailSender();
+			out.writeObject(new_mail.envoimail(email, utilisateur.getEmail(), sujet, message));
+		}
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
 		{
 			Matiere mat = (Matiere)methode.getParametres().elementAt(0);

@@ -12,11 +12,16 @@ import java.util.*;
  */
 
 public class SimpleMailSender {
-
-	static boolean envoiok = true;
-	private static String smtpServer = "smtp.free.fr";
-	//private String smtpServer = "melinite.insa-toulouse.fr"
-	//private static String smtpServer = "smtp.online.no";
+	/**
+	 * // Il faut changer le nom du serveur smtp en fonction de la machine ou tourne le serveur: 
+	 *"smtp.free.fr" = serveur chez tonya et alex a toulouse
+	 *"melinite.insa-toulouse.fr" = serveur a l'insa
+	 *"smtp.online.no" = serveur chez alex en norvege
+	 */
+	static boolean envoiok = true; 
+	//private static String smtpServer = "smtp.free.fr"; //serveur chez tonya et alex a toulouse
+	//private String smtpServer = "melinite.insa-toulouse.fr" //serveur a l'insa
+	private static String smtpServer = "smtp.online.no"; //serveur chez alex en norvege
 	/**
 	 * Methode qui envoie un mail. Il faut changer le SMTP dans la source pour qu'il marche sur le serveur en compte! 
 	 * @param to : destinataire
@@ -42,7 +47,7 @@ public class SimpleMailSender {
 	    * "send" method to send the message.
 	    * @throws Exception
 	    */
-	  private static void send(String smtpServer, String to, String from
+	  private void send(String smtpServer, String to, String from
 	   , String subject, String body) throws Exception
 	  {
 
