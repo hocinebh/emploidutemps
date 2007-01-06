@@ -899,7 +899,7 @@ public class Gestion_BDD {
 			System.out.println("date2 "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(deb).getCreneau()))
 			{
-				case Creneau.AVANT : pos=deb-1;break;
+				case Creneau.AVANT : pos=deb;break;
 				case Creneau.APRES : pos=deb+1;break;
 				case Creneau.ERREUR : throw new Exception("Probleme de créneau");
 			}
@@ -910,24 +910,31 @@ public class Gestion_BDD {
 			System.out.println("test : "+val);
 			if((val%1)!=0)
 			{
-				pos=(int)val+1;
+				pos=(int)val;
 			}
 			else 
 			{
-				pos=(int)val;
+				pos=(int)val-1;
 			}
 			
 			System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
 			System.out.println("date2 "+cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(pos).getCreneau()))
 			{
-				case Creneau.AVANT : fin=pos-1;break;
-				case Creneau.APRES : deb=pos+1;break;
+				case Creneau.AVANT : pos=cherchePosition(c,deb, pos-1);break;
+				case Creneau.APRES : 
+					{
+						if(pos<fin)
+						{
+							pos=cherchePosition(c,pos+1, fin);
+						}
+						else pos++;
+						break;
+					}
 				case Creneau.ERREUR : throw new Exception("Probleme de créneau");
 			}			
-			pos=cherchePosition(c,deb, fin);	
-		}
-		
+				
+		}	
 		return pos;
 	}
 	
@@ -1015,6 +1022,7 @@ public class Gestion_BDD {
 		System.out.println(this.cours.size()+" cours");
 		System.out.println(this.salles.size()+" salles");
 		//afficheObjets(utilisateurs);
+		afficheObjets(cours);
 	}
 	
 	/**

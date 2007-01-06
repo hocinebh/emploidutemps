@@ -128,6 +128,12 @@ public class Cours implements Serializable{
 	public void setCreneau(Creneau creneau) {
 		this.creneau = creneau;
 	}
+
+
+	public String toString() {
+		
+		return "Date : "+this.creneau.date()+" "+this.creneau.heure()+", Matiere : "+this.matiere.getIntitule()+", groupe : "+groupe.getnum_groupe();
+	}
 	
 		
 	
