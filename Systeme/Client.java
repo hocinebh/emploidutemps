@@ -26,6 +26,7 @@ public class Client {
 	private Socket soc;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
+	private int typeUtilisateur;
 	
 	public Client() throws UnknownHostException, IOException, ClassNotFoundException
 	{
@@ -46,16 +47,19 @@ public class Client {
 	
 	public void Afficher_Emploi_du_temps() throws IOException, ClassNotFoundException{
 		Interface_EDT Graphic_EDT= new Interface_EDT();
-		Graphic_EDT.Afficher_EDT(this);
+		Signaler(new Signal("visualiser_EDT"));
+		Graphic_EDT.Afficher_EDT(this, (Vector<Vector<Cours>>)in.readObject());
 		/* initialisation de la fenetre mail */
 		Signal s = new Signal("afficher_liste_contacts");
 		Signaler(s);
 		Vector<Personne> ListePersonne = (Vector<Personne>)in.readObject();
 		Graphic_EDT.init_fenetre_mail(ListePersonne,this);
 		/* Si c'est un inspecteur */
-		
-		Interface_Reservation FenetreReservation = new Interface_Reservation();
-		FenetreReservation.Affiche_Interface_Reservation(this);
+		if(typeUtilisateur==Personne.RESPONSABLE)
+		{
+			Interface_Reservation FenetreReservation = new Interface_Reservation();
+			FenetreReservation.Affiche_Interface_Reservation(this);
+		}
 	}
 	
 	public Boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException
@@ -66,7 +70,10 @@ public class Client {
 		s.addParametre(mdp);
 		Signaler(s);
 
-		return ((Boolean)in.readObject());
+		Boolean ok = ((Boolean)in.readObject());
+		if(ok) typeUtilisateur = ((Integer)in.readObject());
+		
+		return ok;
 	}
 	
 	public Boolean Ajouter_Cours(Matiere mat, Salle salle, Creneau cren, Groupe gp, Enseignant ens) throws IOException, ClassNotFoundException{
@@ -107,6 +114,7 @@ public class Client {
 	public void FermerConnexion()
 	{
 		try {
+			Signaler(new Signal("close"));
 			out.close();
 			in.close();
 			soc.close();
@@ -127,10 +135,9 @@ public class Client {
 
 			Interface_Connexion Login = new Interface_Connexion();
 			Login.affiche_login_screen(c);
-			//boolean ok = c.Connexion("toto1","toto1");
-			//System.out.println("ok : "+ ok);
-/*			c.FermerConnexion();
-			System.out.println("Fermeture client");*/
+			
+			//c.FermerConnexion();
+			//System.out.println("Fermeture client");
 			
 			
 		} catch (UnknownHostException e) {

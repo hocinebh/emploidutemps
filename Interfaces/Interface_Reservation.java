@@ -95,8 +95,20 @@ public class Interface_Reservation {
 		JLabel LGroupe = new JLabel("Groupe");
 		panelcenter.add(LGroupe);
 		Groupe = new JComboBox(table[2]);
+		ActionListener modif = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					Enseignant.setSelectedItem(((Matiere)Matiere.getSelectedItem()).getEnseignant((Groupe)Groupe.getSelectedItem()));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					//e1.printStackTrace();
+				}
+			}
+		};
+		Groupe.addActionListener(modif);
 		panelcenter.add(Groupe);
-		
 		
 		/* Enseignant */
 		JLabel LEnseignant = new JLabel("Enseignant");
@@ -108,6 +120,7 @@ public class Interface_Reservation {
 		JLabel LMatiere = new JLabel("Matiere");
 		panelcenter.add(LMatiere);
 		Matiere = new JComboBox(table[1]);
+		Matiere.addActionListener(modif);
 		panelcenter.add(Matiere);
 		
 		/* Salle */
@@ -138,15 +151,25 @@ public class Interface_Reservation {
 					nouvellesalle = (Salle)Salle.getSelectedItem(); 
 					nouvelenseignant =  (Enseignant)Enseignant.getSelectedItem();
 					
-					//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
-					if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
-						JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
-					else 
-						JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
-					//updateEDT
+					//Si l'enseignnt n'est pas celui du groupe pour cette matiere
+					if(!nouvellematiere.getEnseignant(nouveaugroupe).equals(nouvelenseignant))
+					{
+						JOptionPane.showMessageDialog(fenetre,"Erreur l'enseignant n'est pas celui du groupe pour cette matière","Erreur",JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
+						if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
+							JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
+						else 
+							JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
+						//updateEDT
+					}
+						
+					
 					
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					//e1.printStackTrace();
 					JOptionPane.showMessageDialog(fenetre,"Erreur de format d'entree","Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 				finally{

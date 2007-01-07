@@ -4,6 +4,7 @@
 package bdd;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -118,5 +119,17 @@ public class Matiere implements Serializable{
 		
 	}
 
+	
+	public Enseignant getEnseignant(Groupe gp) throws Exception
+	{
+		Enseignant enseignant= null;
+		Iterator i = this.liste_enseignement.iterator();
+		
+		while(i.hasNext() && (enseignant == null))
+		{
+			enseignant=((Enseignement)i.next()).getEnseignant(gp);
+		}
+		return enseignant;
+	}
 	
 }

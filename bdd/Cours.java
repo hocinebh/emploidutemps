@@ -1,6 +1,8 @@
 package bdd;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 public class Cours implements Serializable{
@@ -48,13 +50,7 @@ public class Cours implements Serializable{
 
 	private void configureEnseignant() throws Exception
 	{
-		Iterator i = this.matiere.getListe_enseignement().iterator();
-		
-		
-		while(i.hasNext() && (enseignant == null))
-		{
-			enseignant=((Enseignement)i.next()).getEnseignant(this.groupe);
-		}
+		enseignant=matiere.getEnseignant(this.groupe);
 		if (enseignant == null) throw new Exception("Erreur cours : enseignant ou groupe inexistant");
 		enseignant.ajoutCours(this);
 	}
@@ -133,6 +129,22 @@ public class Cours implements Serializable{
 	public String toString() {
 		
 		return "Date : "+this.creneau.date()+" "+this.creneau.heure()+", Matiere : "+this.matiere.getIntitule()+", groupe : "+groupe.getnum_groupe();
+	}
+
+	public int compareJour(Date jour1) {
+		GregorianCalendar d1 = this.creneau.getDate();
+		//String jour[]=jour1.toString().split(":");
+		//System.out.println(jour1.getDay()+"/"+jour1.getMonth()+"/"+jour1.getYear());
+		GregorianCalendar d2 = new GregorianCalendar();
+		d2.setTime(jour1);
+		d2.set(GregorianCalendar.HOUR_OF_DAY, 0);
+		d2.set(GregorianCalendar.MINUTE, 0);
+		d2.set(GregorianCalendar.SECOND, 0);
+		d2.set(GregorianCalendar.MILLISECOND, 0);
+		
+		System.out.println("d1 : "+Creneau.DatetoString(d1)+" d2 : "+Creneau.DatetoString(d2));
+		
+		return d1.compareTo(d2);
 	}
 	
 		

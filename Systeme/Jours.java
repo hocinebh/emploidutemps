@@ -57,6 +57,19 @@ public class Jours {
 	public Date getJour5() {
 		return jour5;
 	}
+	public Date getJours(int i)
+	{
+		Date d=null;
+		switch (i)
+		{
+			case 1: d=jour1;break;
+			case 2:d=jour2;break;
+			case 3:d=jour3;break;
+			case 4:d=jour4;break;
+			case 5:d=jour5;break;
+		}
+		return d;
+	}
 	public String getStringJour1() {
 		return formatjour.format(jour1);
 	}

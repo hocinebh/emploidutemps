@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public abstract class Personne implements Serializable{
 
+	public static final int ETUDIANT = 0;
+	public static final int ENSEIGNANT = 1;
+	public static final int RESPONSABLE = 2;
+	
 	/*Declaration des Attributs*/
 	protected String num_personne;
 	protected String username;
