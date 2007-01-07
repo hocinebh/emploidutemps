@@ -873,7 +873,7 @@ public class Gestion_BDD {
 		
 		if(cours.size()!=0)
 		{
-			pos = cherchePosition(c, 0, cours.size()-1);	
+			pos = cherchePosition(c, 0, cours.size());	
 		}
 		cours.add(pos,c);
 		//cours.add(c);
@@ -893,10 +893,10 @@ public class Gestion_BDD {
 	{
 		int pos=0;
 		
-		if(deb==fin)
+		if(deb==(fin-1))
 		{
-			System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			System.out.println("date2 "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
+			//System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
+			//System.out.println("date2 "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(deb).getCreneau()))
 			{
 				case Creneau.AVANT : pos=deb;break;
@@ -907,7 +907,7 @@ public class Gestion_BDD {
 		else
 		{
 			float val= (fin-deb)/(float)2;
-			System.out.println("test : "+val);
+			//System.out.println("test : "+val);
 			if((val%1)!=0)
 			{
 				pos=(int)val;
@@ -917,14 +917,14 @@ public class Gestion_BDD {
 				pos=(int)val-1;
 			}
 			
-			System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			System.out.println("date2 "+cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
+			//System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
+			//System.out.println("date2 "+cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(pos).getCreneau()))
 			{
-				case Creneau.AVANT : pos=cherchePosition(c,deb, pos-1);break;
+				case Creneau.AVANT : pos=cherchePosition(c,deb, pos);break;
 				case Creneau.APRES : 
 					{
-						if(pos<fin)
+						if((pos+1)<(fin-1))
 						{
 							pos=cherchePosition(c,pos+1, fin);
 						}
@@ -939,18 +939,40 @@ public class Gestion_BDD {
 	}
 	
 	public Vector<Personne> getRespEns() {
+		Vector<Personne> liste_personne = getResp();
+		
+		liste_personne.addAll(getEns());
+		
+		return liste_personne;
+	}
+	
+	public Vector<Personne> getEns() {
 		Vector<Personne> liste_personne = new Vector<Personne>();
 		
 		for(int i =0; i<utilisateurs.size(); i++)
 		{
-			if(utilisateurs.elementAt(i).getClass()!= Etudiant.class)
+			if(utilisateurs.elementAt(i).getClass()!= Etudiant.class  && utilisateurs.elementAt(i).getClass()!= Responsable.class)
 			{
 				liste_personne.add(utilisateurs.elementAt(i));
 			}
 		}
-		
 		return liste_personne;
 	}
+	
+	public Vector<Personne> getResp() {
+		Vector<Personne> liste_personne = new Vector<Personne>();
+		
+		for(int i =0; i<utilisateurs.size(); i++)
+		{
+			if(utilisateurs.elementAt(i).getClass()!= Etudiant.class  && utilisateurs.elementAt(i).getClass()!= Enseignant.class)
+			{
+				liste_personne.add(utilisateurs.elementAt(i));
+			}
+		}
+		return liste_personne;
+	}
+	
+	
 
 	
 //==============================================================
@@ -1068,6 +1090,29 @@ public class Gestion_BDD {
 
 	public Vector<Salle> getSalles() {
 		return salles;
+	}
+
+	
+	public Cours getCours(Creneau creneau, Salle salle) {
+		Boolean ok=false;
+		int i =0;
+		
+		while(i<cours.size() && !ok)
+		{
+			if(cours.elementAt(i).getCreneau().equals(creneau) && cours.elementAt(i).getSalle().equals(salle))
+			{
+				ok= true;
+			}
+			else i++;
+		}
+		
+		if(ok)return cours.elementAt(i);
+		else return null;
+	}
+
+	
+	public Boolean supprime_cours(Cours cours2) {
+		return cours.remove(cours2);
 	}
 
 

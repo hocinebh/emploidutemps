@@ -83,18 +83,6 @@ public class Gestion_EDT extends Thread {
 	
 	private void execute(Signal methode) throws IOException
 	{
-		/*
-		 * signal ()
-signal reserver_salle(boolean)
-signal afficher_creneaux_libres(Salle)
-signal afficher_salles_libres(Creneau)
-signal Selection_Personne(Personne)
-signal Envoyer_message(Personne,String,String)
-signal InitialiserTypeEDT(int)
-signal AfficherListeEnseignant()
-signal SelectionSpecEns(Enseignant,Specialite)
-signal SelectionCours(Creneau,Enseignant,boolean,int)
-		 */
 		if(methode.getNom().compareTo("Connexion")==0)
 		{
 			
@@ -128,23 +116,20 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		}
 		else if(methode.getNom().compareTo("recuperer_listes")==0)
 		{
-			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getRespEns()};		
+			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getEns()};		
 			out.writeObject(table);
 		}
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
 		{
-			Matiere mat = (Matiere)methode.getParametres().elementAt(0);
-			Salle salle = (Salle)methode.getParametres().elementAt(1);
-			Creneau cren = (Creneau)methode.getParametres().elementAt(2);
-			Groupe gp = (Groupe)methode.getParametres().elementAt(3);
-			Enseignant ens = (Enseignant)methode.getParametres().elementAt(4);
-			
-			try {
-				bd.addCours(new Cours(mat, salle, gp, cren, ens));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Saisir_EDT(methode);
+		}
+		else if(methode.getNom().compareTo("Modifier_EDT")==0)
+		{
+			Modifier_EDT(methode);
+		}
+		else if(methode.getNom().compareTo("Supprimer_EDT")==0)
+		{
+			Supprimer_EDT((Cours)methode.getParametres().firstElement());
 		}
 		else if(methode.getNom().compareTo("")==0)
 		{
@@ -154,16 +139,60 @@ signal SelectionCours(Creneau,Enseignant,boolean,int)
 		{
 			
 		}
-		else if(methode.getNom().compareTo("")==0)
-		{
-			
-		}
-		else if(methode.getNom().compareTo("")==0)
-		{
-			
-		}
+		
+		//A la fin de chaque signal on sauvegarde la nouvelle base de donnees
+		bd.sauveBDD();
 	}
 	
+
+	private void Supprimer_EDT(Cours cours) throws IOException {
+		Boolean ok = bd.supprime_cours(cours);
+		out.writeObject(ok);
+	}
+
+	private void Saisir_EDT(Signal methode) throws IOException {
+		Boolean ok= true;
+		
+		Matiere mat = (Matiere)methode.getParametres().elementAt(0);
+		Salle salle = (Salle)methode.getParametres().elementAt(1);
+		Creneau cren = (Creneau)methode.getParametres().elementAt(2);
+		Groupe gp = (Groupe)methode.getParametres().elementAt(3);
+		Enseignant ens = (Enseignant)methode.getParametres().elementAt(4);
+		
+		try {
+			bd.addCours(new Cours(mat, salle, gp, cren, ens));
+		} catch (Exception e) {
+			ok=false;
+		}
+		
+		out.writeObject(ok);
+	}
+
+	private void Modifier_EDT(Signal methode) throws IOException {
+		Boolean ok = true;
+		
+		Matiere mat = (Matiere)methode.getParametres().elementAt(0);
+		Salle salle = (Salle)methode.getParametres().elementAt(1);
+		Creneau cren = (Creneau)methode.getParametres().elementAt(2);
+		Groupe gp = (Groupe)methode.getParametres().elementAt(3);
+		Enseignant ens = (Enseignant)methode.getParametres().elementAt(4);
+		
+		Cours c = bd.getCours(cren, salle);
+		if(c==null) ok=false; //cours inexistant pas de modification
+		else if (!(c.getGroupe().getResponsable().equals(utilisateur)))
+		{
+			ok=false;
+		}
+		else
+		{
+			c.setMatiere(mat);
+			c.setEnseignant(ens);
+			c.setGroupe(gp);
+		}
+		
+		out.writeObject(ok);
+		
+	}
 
 	private void trie_par_jour(Vector<Cours> cours, Vector<Vector<Cours>> liste_cours)
 	{

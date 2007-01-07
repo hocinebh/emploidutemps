@@ -133,9 +133,10 @@
     <salle id="4" taille="15" type="tp" />
   </salles>
   <edt>
+    <réservation date="7/1/2007" heure="8:00" durée="01:15" salle="3" groupe="3" matière="3" />
     <réservation date="22/10/2007" heure="8:00" durée="01:15" salle="1" groupe="1" matière="1" />
-    <réservation date="22/11/2007" heure="8:00" durée="01:15" salle="2" groupe="2" matière="2" />
     <réservation date="22/12/2007" heure="8:00" durée="01:15" salle="3" groupe="3" matière="3" />
+    <réservation date="22/11/2007" heure="8:00" durée="01:15" salle="2" groupe="2" matière="2" />
   </edt>
 </bdedt>
 

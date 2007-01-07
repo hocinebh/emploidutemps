@@ -135,5 +135,6 @@
 		<réservation date="22/10/2007" salle="1" heure="8:00" durée="1:15" groupe="1" matière="1"/>
 		<réservation date="22/11/2007" salle="2" heure="8:00" durée="1:15" groupe="2" matière="2"/>
 		<réservation date="22/12/2007" salle="3" heure="8:00" durée="1:15" groupe="3" matière="3"/>
+		<réservation date="07/01/2007" salle="3" heure="8:00" durée="1:15" groupe="3" matière="3"/>
 	</edt>
 </bdedt>
