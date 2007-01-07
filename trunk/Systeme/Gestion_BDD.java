@@ -33,7 +33,6 @@ public class Gestion_BDD {
 	private static final String ficSauvegarde = "tmp/system";
 	
 	//Definition des attributs
-	private DocType dtd;
 	private File fichier;
 	private org.jdom.Document document;
 	private Element racine;
@@ -72,8 +71,6 @@ public class Gestion_BDD {
 		//SAXBuilder sxb = new SAXBuilder(true);
 		SAXBuilder sxb = new SAXBuilder();
 		sxb.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-		dtd = new DocType(nomDtd,nomDtd+".dtd");
 		
 		if(chargeXml)
 		{
@@ -420,7 +417,7 @@ public class Gestion_BDD {
 		racine.addContent(edt);
 		sauvegardeCours(edt);
 		
-		document.setDocType(dtd);
+		document.setDocType(new DocType(nomDtd,nomDtd+".dtd"));
 		//afficheXML(document);
 		
 		try
@@ -819,6 +816,7 @@ public class Gestion_BDD {
 				{
 					ok=true;
 				}
+				j++;
 			}
 			if(ok) liste_cours.add(c);
 		}
@@ -901,7 +899,13 @@ public class Gestion_BDD {
 			{
 				case Creneau.AVANT : pos=deb;break;
 				case Creneau.APRES : pos=deb+1;break;
-				case Creneau.ERREUR : throw new Exception("Probleme de créneau");
+				case Creneau.ERREUR : 
+				{
+					if(c.getGroupe()==cours.elementAt(deb).getGroupe() || c.getSalle()==cours.elementAt(deb).getSalle())
+					{
+						throw new Exception("Probleme de créneau");
+					}
+				}
 			}
 		}
 		else
@@ -923,15 +927,21 @@ public class Gestion_BDD {
 			{
 				case Creneau.AVANT : pos=cherchePosition(c,deb, pos);break;
 				case Creneau.APRES : 
+				{
+					if((pos+1)<(fin-1))
 					{
-						if((pos+1)<(fin-1))
-						{
-							pos=cherchePosition(c,pos+1, fin);
-						}
-						else pos++;
-						break;
+						pos=cherchePosition(c,pos+1, fin);
 					}
-				case Creneau.ERREUR : throw new Exception("Probleme de créneau");
+					else pos++;
+					break;
+				}
+				case Creneau.ERREUR : 
+				{
+					if(c.getGroupe()==cours.elementAt(deb).getGroupe() || c.getSalle()==cours.elementAt(deb).getSalle())
+					{
+						throw new Exception("Probleme de créneau");
+					}
+				}
 			}			
 				
 		}	
@@ -971,9 +981,6 @@ public class Gestion_BDD {
 		}
 		return liste_personne;
 	}
-	
-	
-
 	
 //==============================================================
 //  Fonctions de chargement et de sauvegarde de la base 
@@ -1030,8 +1037,7 @@ public class Gestion_BDD {
 			System.out.println((i.next()).toString());
 		}
 	}
-	
-	
+		
 	
 	public void testAffiche()
 	{

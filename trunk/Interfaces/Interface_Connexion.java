@@ -26,8 +26,11 @@ public class Interface_Connexion {
 	 *
 	 */
 	public void affiche_login_screen(final Client Classeclient) {
+		Actions action = new Actions(Classeclient);
+		
 		final JFrame fenetre = new JFrame("Connexion");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.addWindowListener(action.getFermerWindows());
 		fenetre.setSize(300,200);
 		centerFrame(fenetre);
 		
@@ -36,26 +39,11 @@ public class Interface_Connexion {
 		JButton Valider = new JButton("Connexion");
 		GridBagLayout layout = new GridBagLayout();
 		JPanel pconnexion = new JPanel(layout);
-		
-		
 				
 		JMenuBar menu = new JMenuBar();
 		JMenu mfichier = new JMenu("Fichier");
 		JMenuItem quitter = new JMenuItem("Quitter");
-		
-		
-		ActionListener fermer = new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				int r = JOptionPane.showConfirmDialog(null,"Veux tu vraiment quitter? Tu vas regretter...","Fermeture",JOptionPane.YES_NO_OPTION);
-				if (r == JOptionPane.YES_OPTION){
-					System.exit(1);
-				}
 				
-			}
-		};
-		
 		ActionListener valider = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -93,7 +81,7 @@ public class Interface_Connexion {
 			}
 		};
 		Valider.addActionListener(valider);
-		quitter.addActionListener(fermer);
+		quitter.addActionListener(action.getFermerButton());
 		mfichier.add(quitter);
 		menu.add(mfichier);
 		

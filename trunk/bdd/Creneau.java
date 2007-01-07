@@ -51,16 +51,25 @@ public class Creneau implements Serializable{
 		if(minute<10)min="0"+minute;
 		return Datedebut.get(GregorianCalendar.HOUR_OF_DAY)+":"+min;
 	}
+	public String heureFin()
+	{
+		int heure = (Datedebut.get(GregorianCalendar.HOUR_OF_DAY)+Duree.getHours());
+		int minutes = Datedebut.get(GregorianCalendar.MINUTE)+Duree.getMinutes();
+		String min=""+minutes;
+		if(minutes<10)min="0"+minutes;
+		
+		return heure+":"+min;		
+	}
 
 	public String duree() {
 		return Duree.toString().substring(0, 5);
 	}
 	
-	public String getDate()
+	public GregorianCalendar getDate()
 	{
-		return (new GregorianCalendar(Datedebut.get(GregorianCalendar.YEAR),Datedebut.get(GregorianCalendar.MONTH),Datedebut.get(GregorianCalendar.DAY_OF_MONTH))).toString();
+		return new GregorianCalendar(Datedebut.get(GregorianCalendar.YEAR),Datedebut.get(GregorianCalendar.MONTH),Datedebut.get(GregorianCalendar.DAY_OF_MONTH));
 	}
-
+	
 	/**
 	 * @return the datedebut
 	 */
@@ -91,7 +100,7 @@ public class Creneau implements Serializable{
 	
 	public static String DatetoString(GregorianCalendar date) {
 		int month = date.get(GregorianCalendar.MONTH);
-		if(month==0) month=12;
+		month++;
 		int minute = date.get(GregorianCalendar.MINUTE);
 		String min=""+minute;
 		if(minute<10)min="0"+minute;

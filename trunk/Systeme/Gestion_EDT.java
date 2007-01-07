@@ -19,6 +19,7 @@ public class Gestion_EDT extends Thread {
 	private static final int PROMOTION =0;
 	private static final int SALLE =1;
 	private Personne utilisateur;
+	private int typeUtilisateur;
 	private int typeEDT;
 	private Gestion_BDD bd;
 	
@@ -62,11 +63,6 @@ public class Gestion_EDT extends Thread {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		finally // finally se produira le plus souvent lors de la deconnexion du client
-	    {
-	      FermerConnexion();
-	    }
-
 	}
 	
 	private void FermerConnexion()
@@ -85,7 +81,6 @@ public class Gestion_EDT extends Thread {
 	{
 		if(methode.getNom().compareTo("Connexion")==0)
 		{
-			
 			Connection((String)methode.getParametres().elementAt(0),(String)methode.getParametres().elementAt(1));
 		}
 		else if(methode.getNom().compareTo("Test")==0)
@@ -122,6 +117,7 @@ public class Gestion_EDT extends Thread {
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
 		{
 			Saisir_EDT(methode);
+			bd.testAffiche();
 		}
 		else if(methode.getNom().compareTo("Modifier_EDT")==0)
 		{
@@ -131,9 +127,14 @@ public class Gestion_EDT extends Thread {
 		{
 			Supprimer_EDT((Cours)methode.getParametres().firstElement());
 		}
-		else if(methode.getNom().compareTo("")==0)
+		else if(methode.getNom().compareTo("close")==0)
 		{
-			
+			if(utilisateur.getClass()==Responsable.class)
+			{
+				bd.sauveBDD();
+				bd.sauvegarde();
+			}
+			FermerConnexion();
 		}
 		else if(methode.getNom().compareTo("")==0)
 		{
@@ -201,10 +202,10 @@ public class Gestion_EDT extends Thread {
 		for(int i =0; i<cours.size(); i++)
 		{
 			//A chaque novelle date on ajoute un vecteur de cours
-			if(cours.elementAt(i).getCreneau().getDate().compareTo(date)!=0)
+			if(cours.elementAt(i).getCreneau().getDate().toString().compareTo(date)!=0)
 			{
 				liste_cours.add(new Vector<Cours>());
-				date = cours.elementAt(i).getCreneau().getDate();
+				date = cours.elementAt(i).getCreneau().getDate().toString();
 			}
 			
 			//On ajoute le cours au dernier vecteur de cours cree
@@ -237,6 +238,20 @@ public class Gestion_EDT extends Thread {
 		
 		out.writeObject(ok);
 		
+		if(ok)
+		{
+			typeUtilisateur = Personne.RESPONSABLE;
+			if(utilisateur.getClass()==Etudiant.class)
+			{
+				typeUtilisateur= Personne.ETUDIANT;
+			}
+			else if(utilisateur.getClass()==Enseignant.class)
+			{
+				typeUtilisateur= Personne.RESPONSABLE;
+			}
+			out.writeObject(typeUtilisateur);
+		}
+		
 		//Si on a pas trouve l'utilisateur
 		/*if (!ok)
 		{
@@ -247,21 +262,27 @@ public class Gestion_EDT extends Thread {
 	private void visualiser_EDT(Signal methode) throws IOException
 	{
 		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
-		if(utilisateur.getClass()==Responsable.class)
+		switch(typeUtilisateur)
 		{
-			switch (typeEDT)
+			case Personne.RESPONSABLE :
 			{
-				case Gestion_EDT.PROMOTION : trie_par_jour(bd.getCoursPromotion((Responsable)utilisateur), liste_cours);
-				case Gestion_EDT.SALLE : trie_par_jour(bd.getCoursSalle((Salle)methode.getParametres().firstElement()), liste_cours);
+				switch (typeEDT)
+				{
+					case Gestion_EDT.PROMOTION : trie_par_jour(bd.getCoursPromotion((Responsable)utilisateur), liste_cours);break;
+					case Gestion_EDT.SALLE : trie_par_jour(bd.getCoursSalle((Salle)methode.getParametres().firstElement()), liste_cours);break;
+				}
+				break;
 			}
-		}
-		else if(utilisateur.getClass()==Enseignant.class)
-		{
-			trie_par_jour(((Enseignant)utilisateur).getListe_cours(), liste_cours);
-		}
-		else if(utilisateur.getClass()==Etudiant.class)
-		{
-			trie_par_jour(bd.getCoursGroupes(((Etudiant)utilisateur).getGroupes()), liste_cours);
+			case Personne.ENSEIGNANT :
+			{
+				trie_par_jour(((Enseignant)utilisateur).getListe_cours(), liste_cours);
+				break;
+			}
+			case Personne.ETUDIANT :
+			{
+				trie_par_jour(bd.getCoursGroupes(((Etudiant)utilisateur).getGroupes()), liste_cours);
+				break;
+			}
 		}
 		
 		out.writeObject(liste_cours);

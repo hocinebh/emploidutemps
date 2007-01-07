@@ -3,13 +3,12 @@ package Interfaces;
 import java.awt.*;
 import java.awt.event.*;
 
-import Systeme.Client;
-import Systeme.Jours;
+import Systeme.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.*;
 
-import bdd.Personne;
+import bdd.*;
 
 import java.util.*;
 
@@ -31,6 +30,7 @@ public class Interface_EDT {
 	private JTextPane PJeudi =  new JTextPane();
 	private JTextPane PVendredi =  new JTextPane();
 	private Liste_Contacts Fenetremail = new Liste_Contacts();
+	private Vector<Vector<Cours>> liste_cours;
 	
     private static void AddtexttoPane(String[] initString,String[] initStyles, JTextPane textPane) {
         StyledDocument doc = textPane.getStyledDocument();
@@ -46,30 +46,33 @@ public class Interface_EDT {
             System.err.println("Couldn't insert initial text into text pane.");
         }
     }
-	public void Addcourstojour() {
+	public void Addcourstojour(Vector<Vector<Cours>> tabCours) {
 		//String[] initString ={"10:00 - 11:15 \n","MDSI \n","Salle 110 \n","Daniel Marre\n","******************\n"};
 		int nbcours;
 		JTextPane textpane;
 		
 		/* Calculer le nombre de cours */
-		nbcours =6;
+		//nbcours =6;
 		for(int jours=0;jours<5;jours++){
+			Vector<Cours> listec = tabCours.elementAt(jours);
+			nbcours = listec.size();
+			
 			String[] SJour = new String[5*nbcours];
 			String[] StyleJour = new String[5*nbcours];
 			for (int i=0;i<=(nbcours*5)-1;i=i+5){
 				//on va chercher les cours a afficher pour chaque jour
 				//horaire
-
-				SJour[i]="10:00-11:15"+"\n";
+				Cours c = listec.elementAt(i);
+				SJour[i]=c.getCreneau().heure()+"-"+c.getCreneau().heureFin()+"\n";
 				StyleJour[i]="horaire";
 				//la matiere
-				SJour[i+1]="MDSI"+"\n";
+				SJour[i+1]=c.getMatiere().getIntitule()+"\n";
 				StyleJour[i+1]="cours";
 				//la salle
-				SJour[i+2]="Salle 110"+"\n";
+				SJour[i+2]="Salle "+c.getSalle().getNom_salle()+"\n";
 				StyleJour[i+2]="salle";
 				//le prof
-				SJour[i+3]="Daniel Marre"+"\n";
+				SJour[i+3]=c.getEnseignant().getNom()+"\n";
 				StyleJour[i+3]="prof";
 				//le delimitement
 				SJour[i+4]="******************"+"\n";
@@ -132,7 +135,42 @@ public class Interface_EDT {
 		LSemaine.setText(" Semaine: "+ Semaine.getStringSemaine());
 		SemainePrec.setText(" Semaine " + Semaine.getStringSemaineprec());
 		SemaineSuiv.setText(" Semaine " + Semaine.getStringSemaineproch());
-		Addcourstojour();
+		
+		Vector<Vector<Cours>> tabCours = new Vector<Vector<Cours>>();
+		
+		int j=1, i=0;
+		//System.out.println(Semaine.getJours(j));
+		Date jour = Semaine.getJours(j);
+		while(i< liste_cours.size() && j<6)
+		{
+			Cours c = liste_cours.elementAt(i).firstElement();
+			int test =c.compareJour(jour);
+			if(test==0)
+			{
+				tabCours.add(liste_cours.elementAt(i));
+				j++;
+				jour = Semaine.getJours(j);
+				i++;
+			}
+			else if(test<0)
+			{
+				i++;
+			}
+			else if(test>0) //liste_cours[i] apres le jour 
+			{
+				tabCours.add(new Vector<Cours>());
+				j++;
+				jour = Semaine.getJours(j);
+				
+			}
+		}
+		
+		while(tabCours.size()<5)
+		{
+			tabCours.add(new Vector<Cours>());
+		}
+		
+		Addcourstojour(tabCours);
 		
 	}
 	
@@ -160,13 +198,14 @@ public class Interface_EDT {
 	 * 
 	 * @param Classeclient - La classe client qui instancie tout du cote client
 	 */
-	public void Afficher_EDT(Client Classeclient) {
-		
+	public void Afficher_EDT(Client Classeclient, Vector<Vector<Cours>> cours) {
+		Actions action = new Actions(Classeclient);
+		liste_cours = cours;
 		fenetre.setTitle("Emploi du temps");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.addWindowListener(action.getFermerWindows());
 		fenetre.setSize(800,600);
 		centerFrame(fenetre);
-		
 		
 		/* Trouver les jours de la semaine en cours */ 
 		Jours Semaine = new Jours(maintenant);
@@ -178,7 +217,6 @@ public class Interface_EDT {
 		headerpane.add(SemainePrec,BorderLayout.WEST);
 		headerpane.add(LSemaine,BorderLayout.CENTER);
 		headerpane.add(SemaineSuiv,BorderLayout.EAST);
-		
 		
 		/* Labels jours CENTER */
 		afficher_contenu(Semaine);
@@ -252,21 +290,8 @@ public class Interface_EDT {
 			}
 		};
 		envoiemail.addActionListener(actionmail);
-		
-		
-		
-		ActionListener fermer = new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				int r = JOptionPane.showConfirmDialog(null,"Veux tu vraiment quitter?","Fermeture",JOptionPane.YES_NO_OPTION);
-				if (r == JOptionPane.YES_OPTION){
-					System.exit(1);
-				}
-				
-			}
-		};
-		quitter.addActionListener(fermer);
+			
+		quitter.addActionListener(action.getFermerButton());
 		
 		ActionListener SemaineSuivante = new ActionListener()
 		{
