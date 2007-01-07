@@ -110,13 +110,11 @@ public class Creneau implements Serializable{
 		return DateFin;
 	}
 	
-	
-	
 	public int compare(Creneau c)
 	{		
 		int retour=ERREUR;
-		System.out.println("date1 "+date()+" "+heure());
-		System.out.println("date2 "+c.date()+" "+c.heure());
+		//System.out.println("date1 "+date()+" "+heure());
+		//System.out.println("date2 "+c.date()+" "+c.heure());
 		
 		if((Datedebut.before(c.getDatedebut())) && (this.getDateFin().before(c.getDatedebut())))
 		{
