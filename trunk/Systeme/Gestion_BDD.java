@@ -415,7 +415,7 @@ public class Gestion_BDD {
 		//Ajout des reservations
 		Element edt= new Element("edt");
 		racine.addContent(edt);
-		sauvegardeCours(edt);
+		sauvegardeCours(edt, cours);
 		
 		document.setDocType(new DocType(nomDtd,nomDtd+".dtd"));
 		//afficheXML(document);
@@ -429,8 +429,8 @@ public class Gestion_BDD {
 		   catch (java.io.IOException e){}
 	}
 	
-	private void sauvegardeCours(Element edt) {
-		Iterator i = cours.iterator();
+	public static void sauvegardeCours(Element edt, Vector<Cours> listeCours) {
+		Iterator i = listeCours.iterator();
 		
 		while(i.hasNext())
 		{
@@ -669,7 +669,7 @@ public class Gestion_BDD {
 	 * @return la promotion correspondant
 	 * @throws Exception si la promotion n'existe pas
 	 */
-	private Promotion getPromotion(String name) throws Exception
+	public Promotion getPromotion(String name) throws Exception
 	{
 		Promotion promo= null;
 		boolean trouve = false;
@@ -1077,7 +1077,7 @@ public class Gestion_BDD {
 	 * Procedure affiche qui affiche un document xml
 	 *
 	 */
-	private void afficheXML(Document doc)
+	public static void afficheXML(Document doc)
 	{
 		try
 		{

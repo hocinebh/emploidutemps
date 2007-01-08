@@ -51,8 +51,15 @@ public class Client {
 		return  (Vector<Vector<Cours>>)in.readObject();
 	}
 	
-	public Vector<Vector<Cours>> recupererEDT() throws IOException, ClassNotFoundException{
-		Signaler(new Signal("recuperer_EDT"));
+	public Vector<Vector<Cours>> recupererEDT(String promo) throws IOException, ClassNotFoundException{
+		Signal s;
+		if(promo.compareTo("")==0) s = new Signal("recuperer_EDT"); 
+		else 
+		{
+			s = new Signal("recuperer_EDT_Promo");
+			s.addParametre(promo);
+		}
+		Signaler(s);
 		return (Vector<Vector<Cours>>)in.readObject();
 	}
 	
