@@ -50,6 +50,12 @@ public class Client {
 		Signaler(sig_visu);
 		return  (Vector<Vector<Cours>>)in.readObject();
 	}
+	
+	public Vector<Vector<Cours>> recupererEDT() throws IOException, ClassNotFoundException{
+		Signaler(new Signal("recuperer_EDT"));
+		return (Vector<Vector<Cours>>)in.readObject();
+	}
+	
 	/**
 	 * 
 	 * @throws IOException

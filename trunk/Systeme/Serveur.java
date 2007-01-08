@@ -8,16 +8,25 @@ import java.util.Vector;
  * Serveur
  *
  */
-public class Serveur {
+public class Serveur extends Thread{
 
 	static final int port = 8080;
 	
 	//Création d'un singleton
 	private static Serveur instance = new Serveur();
-	private Serveur(){}
-	public static Serveur getInstance(){return instance;}
+	private Thread t;
+	private Serveur()
+	{
+		t = new Thread(this);
+		t.start();
+	}
+	public static void lanceServeur()
+	{
+		if(instance==null){instance=new Serveur();}
+	}
 	
-	public static void main(String[] args) {
+	public void run()
+	{
 		try{
 		    ServerSocket ses = new ServerSocket(port);
 		    System.out.println("serveur socket creer");
@@ -28,6 +37,10 @@ public class Serveur {
 	     }catch(Exception e){
 	        e.printStackTrace();
 	     }
+	}
+	
+	public static void main(String[] args) {
+		Serveur.lanceServeur();
 	}
 	
 }
