@@ -91,7 +91,6 @@ public class Gestion_EDT extends Thread {
 		{
 			//Retourne la liste des cours trier
 			Jours semaine = (Jours)methode.getParametres().elementAt(0);
-			bd.testAffiche();
 			visualiser_EDT(methode,semaine);
 			
 		}
