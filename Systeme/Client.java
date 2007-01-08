@@ -44,11 +44,22 @@ public class Client {
 
 	}
 	
-	
+	public  Vector<Vector<Cours>> recuperercoursdelasemaine(Jours semaine) throws IOException, ClassNotFoundException{
+		Signal sig_visu = new Signal("visualiser_EDT");
+		sig_visu.addParametre(semaine);
+		Signaler(sig_visu);
+		return  (Vector<Vector<Cours>>)in.readObject();
+	}
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void Afficher_Emploi_du_temps() throws IOException, ClassNotFoundException{
 		Interface_EDT Graphic_EDT= new Interface_EDT();
-		Signaler(new Signal("visualiser_EDT"));
-		Graphic_EDT.Afficher_EDT(this, (Vector<Vector<Cours>>)in.readObject());
+		
+		
+		Graphic_EDT.Afficher_EDT(this);
 		/* initialisation de la fenetre mail */
 		Signal s = new Signal("afficher_liste_contacts");
 		Signaler(s);
