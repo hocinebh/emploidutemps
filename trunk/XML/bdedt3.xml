@@ -153,7 +153,7 @@
     <matière id="4" type="facultatif">
       <intitulé>mat4</intitulé>
       <enseignements>
-        <CM enseignants="1 2 3" groupes="2 21 22" volume="05:00" />
+        <CM enseignants="1 2 3" groupes="1 21 22" volume="05:00" />
       </enseignements>
     </matière>
   </matières>
@@ -167,12 +167,15 @@
     <réservation date="9/1/2007" heure="8:00" durée="01:15" salle="3" groupe="3" matière="3" />
     <réservation date="8/1/2007" heure="8:00" durée="01:15" salle="2" groupe="1" matière="1" />
     <réservation date="8/1/2007" heure="9:30" durée="01:15" salle="3" groupe="1" matière="1" />
-    <réservation date="8/1/2007" heure="11:00" durée="01:15" salle="1" groupe="1" matière="1" />
     <réservation date="8/1/2007" heure="15:30" durée="01:15" salle="2" groupe="21" matière="1" />
-    <réservation date="9/1/2007" heure="8:00" durée="02:30" salle="4" groupe="22" matière="4" />
-    <réservation date="22/10/2007" heure="8:00" durée="01:15" salle="1" groupe="1" matière="1" />
-    <réservation date="22/11/2007" heure="8:00" durée="01:15" salle="2" groupe="2" matière="2" />
-    <réservation date="22/12/2007" heure="8:00" durée="01:15" salle="3" groupe="3" matière="3" />
+    <réservation date="8/1/2007" heure="11:00" durée="01:15" salle="1" groupe="1" matière="1" />
+    <réservation date="9/1/2007" heure="8:00" durée="02:30" salle="4" groupe="1" matière="4" />
+    <réservation date="10/1/2007" heure="8:00" durée="01:15" salle="1" groupe="1" matière="1" />
+    <réservation date="10/1/2007" heure="14:00" durée="01:15" salle="1" groupe="1" matière="1" />
+    <réservation date="11/1/2007" heure="8:00" durée="01:15" salle="2" groupe="2" matière="2" />
+    <réservation date="12/1/2007" heure="8:00" durée="01:15" salle="3" groupe="3" matière="3" />
+    <réservation date="11/1/2007" heure="12:15" durée="01:15" salle="2" groupe="2" matière="2" />
+    <réservation date="12/1/2007" heure="15:30" durée="01:15" salle="3" groupe="1" matière="3" />
   </edt>
 </bdedt>
 
