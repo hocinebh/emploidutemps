@@ -131,7 +131,7 @@
 		<matière id="1" type="obligatoire">
 			<intitulé>MDSI</intitulé>
 			<enseignements>
-				<CM enseignants="1 2" groupes="1 2" volume="5:00"/>
+				<CM enseignants="1 2 3" groupes="1 2 21" volume="5:00"/>
 				<TD enseignants="3" groupes="3" volume="10:00"/>
 			</enseignements>
 		</matière>
@@ -169,7 +169,9 @@
 		<réservation date="08/01/2007" salle="2" heure="8:00" durée="1:15" groupe="1" matière="1"/>
 		<réservation date="08/01/2007" salle="3" heure="09:30" durée="1:15" groupe="1" matière="1"/>
 		<réservation date="08/01/2007" salle="1" heure="11:00" durée="1:15" groupe="1" matière="1"/>
+		
 		<réservation date="08/01/2007" salle="2" heure="15:30" durée="1:15" groupe="21" matière="1"/>
+		
 		<réservation date="09/01/2007" salle="4" heure="8:00" durée="2:30" groupe="22" matière="4"/>
 		<réservation date="09/01/2007" salle="3" heure="8:00" durée="1:15" groupe="3" matière="3"/>
 	</edt>
