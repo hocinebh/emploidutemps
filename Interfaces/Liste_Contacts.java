@@ -10,7 +10,6 @@ import javax.swing.*;
 import bdd.Personne;
 
 import Systeme.Client;
-import Systeme.SimpleMailSender;
 
 public class Liste_Contacts {
 
