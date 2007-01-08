@@ -121,7 +121,6 @@ public class Creneau implements Serializable{
 	
 	public int compare(Creneau c)
 	{		
-		//double difference= c.getDatedebut().getTime().getTime() - this.getDateFin
 		int retour=ERREUR;
 		
 		//System.out.println("date1 "+date()+" "+heure());
