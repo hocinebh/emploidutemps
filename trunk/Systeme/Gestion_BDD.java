@@ -893,8 +893,8 @@ public class Gestion_BDD {
 		
 		if(deb==(fin-1))
 		{
-			//System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			//System.out.println("date2 "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
+			System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
+			System.out.println("date2 "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(deb).getCreneau()))
 			{
 				case Creneau.AVANT : pos=deb;break;
@@ -911,7 +911,7 @@ public class Gestion_BDD {
 		else
 		{
 			float val= (fin-deb)/(float)2;
-			//System.out.println("test : "+val);
+			System.out.println("test : "+val%1);
 			if((val%1)!=0)
 			{
 				pos=(int)val;
@@ -921,20 +921,11 @@ public class Gestion_BDD {
 				pos=(int)val-1;
 			}
 			
-			//System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			//System.out.println("date2 "+cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
+			System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
+			System.out.println("date2 "+cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(pos).getCreneau()))
 			{
 				case Creneau.AVANT : pos=cherchePosition(c,deb, pos);break;
-				case Creneau.APRES : 
-				{
-					if((pos+1)<(fin-1))
-					{
-						pos=cherchePosition(c,pos+1, fin);
-					}
-					else pos++;
-					break;
-				}
 				case Creneau.ERREUR : 
 				{
 					if(c.getGroupe()==cours.elementAt(deb).getGroupe() || c.getSalle()==cours.elementAt(deb).getSalle())
@@ -1049,7 +1040,7 @@ public class Gestion_BDD {
 		System.out.println(this.matieres.size()+" matieres");
 		System.out.println(this.cours.size()+" cours");
 		System.out.println(this.salles.size()+" salles");
-		//afficheObjets(utilisateurs);
+		afficheObjets(utilisateurs);
 		afficheObjets(cours);
 	}
 	

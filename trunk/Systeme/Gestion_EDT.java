@@ -90,7 +90,10 @@ public class Gestion_EDT extends Thread {
 		else if(methode.getNom().compareTo("visualiser_EDT")==0)
 		{
 			//Retourne la liste des cours trier
-			visualiser_EDT(methode);	
+			Jours semaine = (Jours)methode.getParametres().elementAt(0);
+			bd.testAffiche();
+			visualiser_EDT(methode,semaine);
+			
 		}
 		else if(methode.getNom().compareTo("afficher_liste_contacts")==0)
 		{
@@ -259,9 +262,10 @@ public class Gestion_EDT extends Thread {
 		} */
 	}
 
-	private void visualiser_EDT(Signal methode) throws IOException
+	private void visualiser_EDT(Signal methode,Jours Semaine) throws IOException
 	{
 		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
+		
 		switch(typeUtilisateur)
 		{
 			case Personne.RESPONSABLE :
@@ -285,7 +289,43 @@ public class Gestion_EDT extends Thread {
 			}
 		}
 		
-		out.writeObject(liste_cours);
+		/* on recupere seulement ceux de la semaine desiree */
+		Vector<Vector<Cours>> tabCours = new Vector<Vector<Cours>>();
+		
+		int j=1, i=0;
+		//System.out.println(Semaine.getJours(j));
+		Date jour = Semaine.getJours(j);
+		while(i< liste_cours.size() && j<6)
+		{
+			Cours c = liste_cours.elementAt(i).firstElement();
+			int test =c.compareJour(jour);
+			if(test==0)
+			{
+				tabCours.add(liste_cours.elementAt(i));
+				j++;
+				jour = Semaine.getJours(j);
+				i++;
+			}
+			else if(test<0)
+			{
+				i++;
+			}
+			else if(test>0) //liste_cours[i] apres le jour 
+			{
+				tabCours.add(new Vector<Cours>());
+				j++;
+				jour = Semaine.getJours(j);
+				
+			}
+		}
+		
+		while(tabCours.size()<5)
+		{
+			tabCours.add(new Vector<Cours>());
+		}
+		
+		
+		out.writeObject(tabCours);
 	}
 	
 	private void Erreursaisie(){

@@ -1,9 +1,10 @@
 package Systeme;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Jours {
+public class Jours implements Serializable{
 	
 	
 	private Date jour1;
