@@ -121,16 +121,19 @@ public class Creneau implements Serializable{
 	
 	public int compare(Creneau c)
 	{		
+		//double difference= c.getDatedebut().getTime().getTime() - this.getDateFin
 		int retour=ERREUR;
+		
 		//System.out.println("date1 "+date()+" "+heure());
 		//System.out.println("date2 "+c.date()+" "+c.heure());
 		
-		if((Datedebut.before(c.getDatedebut())) && (this.getDateFin().before(c.getDatedebut())))
+		if((this.Datedebut.before(c.getDatedebut())) && (this.getDateFin().before(c.getDatedebut())))
 		{
 				retour=AVANT;			
 		}
-		else if((Datedebut.after(c.getDatedebut()))&& (Datedebut.after(c.getDateFin()))) 
+		else if((this.Datedebut.after(c.getDatedebut()))&& (this.Datedebut.after(c.getDateFin()))) 
 		{
+			//TODO 
 			retour=APRES;
 		}
 		return retour;
