@@ -889,16 +889,33 @@ public class Gestion_BDD {
 	 */
 	private int cherchePosition(Cours c, int deb, int fin) throws Exception
 	{
+		fin--;
 		int pos=0;
-		
-		if(deb==(fin-1))
+		//System.out.println("deb: "+deb +" et fin: "+fin);
+		if((fin-deb)<2)
 		{
-			System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			System.out.println("date2 "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
+			//System.out.println("date du cours a inserer "+c.getCreneau().date()+" "+c.getCreneau().heure());
+			//System.out.println("date du cours au debut "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(deb).getCreneau()))
 			{
 				case Creneau.AVANT : pos=deb;break;
-				case Creneau.APRES : pos=deb+1;break;
+				case Creneau.APRES : 
+				{
+					switch(c.getCreneau().compare(cours.elementAt(fin).getCreneau()))
+					{
+					case Creneau.APRES : pos = fin+1;
+					break;
+					case Creneau.AVANT : pos = deb;
+					break;
+					case Creneau.ERREUR : 
+						if(c.getGroupe()==cours.elementAt(deb).getGroupe() || c.getSalle()==cours.elementAt(deb).getSalle())
+						{
+							throw new Exception("Probleme de créneau");
+						}
+						break;
+					}
+					break;
+				}
 				case Creneau.ERREUR : 
 				{
 					if(c.getGroupe()==cours.elementAt(deb).getGroupe() || c.getSalle()==cours.elementAt(deb).getSalle())
@@ -910,19 +927,20 @@ public class Gestion_BDD {
 		}
 		else
 		{
-			float val= (fin-deb)/(float)2;
-			System.out.println("test : "+val%1);
+			float val = (fin+deb)/(float)2;
 			if((val%1)!=0)
 			{
 				pos=(int)val;
 			}
 			else 
 			{
-				pos=(int)val-1;
+				pos=(int)val+1;
 			}
-			
-			System.out.println("date1 "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			System.out.println("date2 "+cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
+			pos = (fin+deb)/2;
+			//System.out.println("deb("+deb+") "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
+			//System.out.println("c "+c.getCreneau().date()+" "+c.getCreneau().heure());
+			//System.out.println("pos ("+pos+")" +cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
+			//System.out.println("fin("+fin+")" +cours.elementAt(fin).getCreneau().date()+" "+cours.elementAt(fin).getCreneau().heure());
 			switch(c.getCreneau().compare(cours.elementAt(pos).getCreneau()))
 			{
 				case Creneau.AVANT : pos=cherchePosition(c,deb, pos);break;
@@ -933,9 +951,20 @@ public class Gestion_BDD {
 						throw new Exception("Probleme de créneau");
 					}
 				}
+				case Creneau.APRES : 
+				{
+					if((pos+1)<(fin))
+					{
+						pos=cherchePosition(c,pos+1, fin+1);
+					}
+					else pos++;
+					break;
+					
+				}
+				default:break;
 			}			
 				
-		}	
+		}
 		return pos;
 	}
 	
