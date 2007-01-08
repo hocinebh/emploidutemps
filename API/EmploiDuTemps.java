@@ -16,7 +16,7 @@ import Systeme.*;
 
 public class EmploiDuTemps implements Edt {
 	
-	private static final String fichierXml ="XML/bdedtApi"; 
+	private static final String fichierXml ="XML/bdedtApi.xml"; 
 	/**
 	 * 
 	 */
@@ -91,6 +91,14 @@ public class EmploiDuTemps implements Edt {
 	public static void main(String[] args)
 	{
 		EmploiDuTemps edt = new EmploiDuTemps();
-		Session s= edt.créerSession("tvo_than", "toto2");
+		Session s= edt.créerSession("tvo_than", "toto2"); 
+		
+		try {
+			OutputStream outStreamXML = new FileOutputStream("XML/testEdt.xml");
+			s.getEDT(outStreamXML);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

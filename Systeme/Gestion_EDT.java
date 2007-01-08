@@ -98,6 +98,19 @@ public class Gestion_EDT extends Thread {
 		{
 			out.writeObject(recuperer_EDT(methode));
 		}
+		else if(methode.getNom().compareTo("recuperer_EDT")==0)
+		{
+			Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
+			Responsable resp;
+			try {
+				resp = (bd.getPromotion((String)methode.getParametres().firstElement())).getResp();
+				trie_par_jour(bd.getCoursPromotion(resp), liste_cours);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			out.writeObject(liste_cours);
+		}
 		else if(methode.getNom().compareTo("afficher_liste_contacts")==0)
 		{
 			//Retourne la liste de responsable et d'enseignant
