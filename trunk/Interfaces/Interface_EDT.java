@@ -2,8 +2,10 @@ package Interfaces;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 import Systeme.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.*;
@@ -30,7 +32,8 @@ public class Interface_EDT {
 	private JTextPane PJeudi =  new JTextPane();
 	private JTextPane PVendredi =  new JTextPane();
 	private Liste_Contacts Fenetremail = new Liste_Contacts();
-	private Vector<Vector<Cours>> liste_cours;
+	private Vector<Vector<Cours>> liste_cours= new Vector<Vector<Cours>>();
+	private Client Classeclient;
 	
     private static void AddtexttoPane(String[] initString,String[] initStyles, JTextPane textPane) {
         StyledDocument doc = textPane.getStyledDocument();
@@ -56,13 +59,15 @@ public class Interface_EDT {
 		for(int jours=0;jours<5;jours++){
 			Vector<Cours> listec = tabCours.elementAt(jours);
 			nbcours = listec.size();
-			
-			String[] SJour = new String[5*nbcours];
-			String[] StyleJour = new String[5*nbcours];
-			for (int i=0;i<=(nbcours*5)-1;i=i+5){
+			System.out.println(""+nbcours);
+			String[] SJour = new String[6*nbcours];
+			String[] StyleJour = new String[6*nbcours];
+			int j =0;
+			for (int i=0;i<=(nbcours*6)-1;i=i+6){
 				//on va chercher les cours a afficher pour chaque jour
 				//horaire
-				Cours c = listec.elementAt(i);
+				System.out.print(""+i);
+				Cours c = listec.elementAt(j);
 				SJour[i]=c.getCreneau().heure()+"-"+c.getCreneau().heureFin()+"\n";
 				StyleJour[i]="horaire";
 				//la matiere
@@ -74,9 +79,13 @@ public class Interface_EDT {
 				//le prof
 				SJour[i+3]=c.getEnseignant().getNom()+"\n";
 				StyleJour[i+3]="prof";
+				//le groupe
+				SJour[i+4]="Groupe "+c.getGroupe().getnum_groupe()+"\n";
+				StyleJour[i+4]="groupe";
 				//le delimitement
-				SJour[i+4]="******************"+"\n";
-				StyleJour[i+4]="cours";
+				SJour[i+5]="******************"+"\n";
+				StyleJour[i+5]="cours";
+				j++;
 			}
 	        
 			switch(jours) {
@@ -100,16 +109,25 @@ public class Interface_EDT {
                         getStyle(StyleContext.DEFAULT_STYLE);
 
         StyleConstants.setAlignment(def, StyleConstants.ALIGN_CENTER);
-		doc.setParagraphAttributes(0, 0, def, true);
-        Style regular = doc.addStyle("horaire", def);
+        StyleConstants.setItalic(def, false);
         StyleConstants.setFontFamily(def, "SansSerif");
-
+        doc.setParagraphAttributes(0, 0, def, true);
+        
+        Style regular = doc.addStyle("horaire", def);
+        StyleConstants.setBold(regular,true);
+        
         Style s = doc.addStyle("salle", regular);
         StyleConstants.setItalic(s, true);
-
-        s = doc.addStyle("prof", regular);
+        
+        Style pr = doc.addStyle("prof", regular);
+        StyleConstants.setFontSize(pr, 10);
+        
+        s = doc.addStyle("groupe", regular);
         StyleConstants.setFontSize(s, 10);
 
+        Style cs = doc.addStyle("cours", regular);
+        StyleConstants.setBold(cs, true);
+        
         s = doc.addStyle("cours", regular);
         StyleConstants.setBold(s, true);
        
@@ -135,45 +153,25 @@ public class Interface_EDT {
 		LSemaine.setText(" Semaine: "+ Semaine.getStringSemaine());
 		SemainePrec.setText(" Semaine " + Semaine.getStringSemaineprec());
 		SemaineSuiv.setText(" Semaine " + Semaine.getStringSemaineproch());
-		
-		Vector<Vector<Cours>> tabCours = new Vector<Vector<Cours>>();
-		
-		int j=1, i=0;
-		//System.out.println(Semaine.getJours(j));
-		Date jour = Semaine.getJours(j);
-		while(i< liste_cours.size() && j<6)
-		{
-			Cours c = liste_cours.elementAt(i).firstElement();
-			int test =c.compareJour(jour);
-			if(test==0)
-			{
-				tabCours.add(liste_cours.elementAt(i));
-				j++;
-				jour = Semaine.getJours(j);
-				i++;
-			}
-			else if(test<0)
-			{
-				i++;
-			}
-			else if(test>0) //liste_cours[i] apres le jour 
-			{
-				tabCours.add(new Vector<Cours>());
-				j++;
-				jour = Semaine.getJours(j);
-				
-			}
-		}
-		
-		while(tabCours.size()<5)
-		{
-			tabCours.add(new Vector<Cours>());
-		}
-		
-		Addcourstojour(tabCours);
+		addtolisteCours(Semaine);
 		
 	}
 	
+	public void addtolisteCours(Jours Semaine){
+		try {
+			liste_cours = (Classeclient.recuperercoursdelasemaine(Semaine));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		Addcourstojour(liste_cours);
+	}
 	
 	/**
      * Centre la fenetre au milieu de l'ecran
@@ -182,7 +180,7 @@ public class Interface_EDT {
 	private void centerFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   Dimension frameSize = frame.getSize();
-	   frame.setLocation((screenSize.width / 2) - (frameSize.width / 2), (screenSize.height / 2) - (frameSize.height / 2));
+	   frame.setLocation((screenSize.width / 2) - ((frameSize.width +210)/ 2), (screenSize.height / 2) - (frameSize.height / 2));
 	}
 	/**
 	 * 
@@ -198,9 +196,9 @@ public class Interface_EDT {
 	 * 
 	 * @param Classeclient - La classe client qui instancie tout du cote client
 	 */
-	public void Afficher_EDT(Client Classeclient, Vector<Vector<Cours>> cours) {
+	public void Afficher_EDT(Client notreClasseclient) {
+		Classeclient = notreClasseclient;
 		Actions action = new Actions(Classeclient);
-		liste_cours = cours;
 		fenetre.setTitle("Emploi du temps");
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetre.addWindowListener(action.getFermerWindows());

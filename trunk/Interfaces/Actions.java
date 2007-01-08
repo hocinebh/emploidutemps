@@ -23,7 +23,7 @@ public class Actions {
 	
 	private void fermeture()
 	{
-		int r = JOptionPane.showConfirmDialog(null,"Veux tu vraiment quitter? Tu vas regretter...","Fermeture",JOptionPane.YES_NO_OPTION);
+		int r = JOptionPane.showConfirmDialog(null,"Veux tu vraiment quitter?","Fermeture",JOptionPane.YES_NO_OPTION);
 		if (r == JOptionPane.YES_OPTION){
 			Classeclient.FermerConnexion();
 			System.exit(1);

@@ -48,7 +48,7 @@ public class Interface_Reservation {
      */
 	private void LocationFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	   frame.setLocation((screenSize.width / 2) + (420), (screenSize.height / 2) - 300);
+	   frame.setLocation((screenSize.width / 2) + (420-105), (screenSize.height / 2) - 300);
 	}
 	
 	public void Affiche_Interface_Reservation(final Client Classeclient){
