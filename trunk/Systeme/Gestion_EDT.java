@@ -126,9 +126,7 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("recuperer_listes")==0)
 		{
-			//Vector ReservationsSalles = new Vector<Cours>();
-			//ReservationsSalles= bd.getCoursGroupes(null); //TODO Remplir de cours ou matiere, enseignant et groupe = vide
-			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getEns()};//,ReservationsSalles		
+			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getEns(),bd.getCoursPromotion((Responsable)utilisateur)};//		
 			out.writeObject(table);
 		}
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
@@ -146,10 +144,13 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("close")==0)
 		{
-			if(utilisateur.getClass()==Responsable.class)
-			{
-				bd.sauveBDD();
-				bd.sauvegarde();
+			if (utilisateur!=null)
+			{	
+				if(utilisateur.getClass()==Responsable.class)
+				{
+					bd.sauveBDD();
+					bd.sauvegarde();
+				}
 			}
 			FermerConnexion();
 		}
@@ -257,14 +258,14 @@ public class Gestion_EDT extends Thread {
 		
 		if(ok)
 		{
-			typeUtilisateur = Personne.RESPONSABLE;
-			if(utilisateur.getClass()==Etudiant.class)
+			typeUtilisateur = Personne.ETUDIANT;
+			if(utilisateur.getClass()==Responsable.class)
 			{
-				typeUtilisateur= Personne.ETUDIANT;
+				typeUtilisateur= Personne.RESPONSABLE;
 			}
 			else if(utilisateur.getClass()==Enseignant.class)
 			{
-				typeUtilisateur= Personne.RESPONSABLE;
+				typeUtilisateur= Personne.ENSEIGNANT;
 			}
 			out.writeObject(typeUtilisateur);
 		}
@@ -280,11 +281,11 @@ public class Gestion_EDT extends Thread {
 	{
 		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
 		
-		switch(typeUtilisateur)
+		switch(this.typeUtilisateur)
 		{
 			case Personne.RESPONSABLE :
 			{
-				switch (typeEDT)
+				switch (this.typeEDT)
 				{
 					case Gestion_EDT.PROMOTION : trie_par_jour(bd.getCoursPromotion((Responsable)utilisateur), liste_cours);break;
 					case Gestion_EDT.SALLE : trie_par_jour(bd.getCoursSalle((Salle)methode.getParametres().firstElement()), liste_cours);break;
