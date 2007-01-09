@@ -28,11 +28,12 @@ public class Interface_Reservation {
 	private String[] duree = {"00:30","00:45","01:00","01:15","01:30","01:45","02:00","02:15","02:30","02:45","03:00","03:30","04:00","05:00","06:00"};
 	private JComboBox Duree = new JComboBox(duree);
 	private JTextField Heuredeb = new JTextField("08:00");
-	JComboBox Salle;
-	JComboBox Matiere;
-	JComboBox Groupe;
-	JComboBox Enseignant;
-	JButton Reset = new JButton("Reset");
+	private JComboBox ModifReservSalle;
+	private JComboBox Salle;
+	private JComboBox Matiere;
+	private JComboBox Groupe;
+	private JComboBox Enseignant;
+	private JButton Reset = new JButton("Reset");
 	
 	
 	/* Elements d'un cours */
@@ -70,7 +71,7 @@ public class Interface_Reservation {
 		fenetre.getContentPane().setLayout(new BorderLayout());
 		fenetre.getContentPane().add(LReservation,BorderLayout.NORTH);
 		JPanel panelcenter = new JPanel();
-		panelcenter.setLayout(new GridLayout(14,1));
+		panelcenter.setLayout(new GridLayout(16,1));
 		
 		/* Date */
 		JLabel Ldate = new JLabel("Date :");
@@ -94,6 +95,7 @@ public class Interface_Reservation {
 		/* Groupe */
 		JLabel LGroupe = new JLabel("Groupe");
 		panelcenter.add(LGroupe);
+		table[2].add(0,null);
 		Groupe = new JComboBox(table[2]);
 		ActionListener modif = new ActionListener()
 		{
@@ -113,12 +115,14 @@ public class Interface_Reservation {
 		/* Enseignant */
 		JLabel LEnseignant = new JLabel("Enseignant");
 		panelcenter.add(LEnseignant);
+		table[3].add(0, null);
 		Enseignant = new JComboBox(table[3]);
 		panelcenter.add(Enseignant);
 		
 		/* Matiere */
 		JLabel LMatiere = new JLabel("Matiere");
 		panelcenter.add(LMatiere);
+		table[1].add(0,null);
 		Matiere = new JComboBox(table[1]);
 		Matiere.addActionListener(modif);
 		panelcenter.add(Matiere);
@@ -130,6 +134,14 @@ public class Interface_Reservation {
 		Salle = new JComboBox(table[0]);
 		panelcenter.add(Salle);
 		fenetre.getContentPane().add(panelcenter,BorderLayout.CENTER);
+		
+		/* Reservations Salles*/
+		JLabel LReservSalle = new JLabel("Modifier reservations Salles");
+		panelcenter.add(LReservSalle);
+		//table[4].addAll(0,null);
+		//ModifReservSalle = new JComboBox(table[4]);
+		
+		
 		
 		/* Bouttons valider et effacer */
 		JPanel ButtonPanel = new JPanel();
@@ -150,26 +162,36 @@ public class Interface_Reservation {
 					nouveaugroupe = (Groupe)Groupe.getSelectedItem();
 					nouvellesalle = (Salle)Salle.getSelectedItem(); 
 					nouvelenseignant =  (Enseignant)Enseignant.getSelectedItem();
-					
-					//Si l'enseignnt n'est pas celui du groupe pour cette matiere
-					if(!nouvellematiere.getEnseignant(nouveaugroupe).equals(nouvelenseignant))
+					if(nouvelenseignant != null && nouvellematiere != null && nouveaugroupe != null)
 					{
-						JOptionPane.showMessageDialog(fenetre,"Erreur l'enseignant n'est pas celui du groupe pour cette matière","Erreur",JOptionPane.ERROR_MESSAGE);
+						//Si l'enseignnt n'est pas celui du groupe pour cette matiere
+						if(!nouvellematiere.getEnseignant(nouveaugroupe).equals(nouvelenseignant))
+						{
+							JOptionPane.showMessageDialog(fenetre,"Erreur l'enseignant n'est pas celui du groupe pour cette matière","Erreur",JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
+							if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
+								JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
+							else 
+								JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
+							//updateEDT
+						}
 					}
 					else
 					{
-						//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
+//						on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
 						if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
 							JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
 						else 
 							JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
-						//updateEDT
 					}
-						
 					
 					
 				} catch (Exception e1) {
 					//e1.printStackTrace();
+					
 					JOptionPane.showMessageDialog(fenetre,"Erreur de format d'entree","Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 				finally{

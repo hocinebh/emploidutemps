@@ -211,14 +211,27 @@ public class Interface_EDT {
 		/* Labels et boutons NORD */
 		JPanel headerpane = new JPanel();
 		headerpane.setLayout(new BorderLayout());
-		LSemaine.setBackground(new Color(255,255,255));
+		LSemaine.setBackground(new Color(72,164,255));
 		headerpane.add(SemainePrec,BorderLayout.WEST);
 		headerpane.add(LSemaine,BorderLayout.CENTER);
 		headerpane.add(SemaineSuiv,BorderLayout.EAST);
 		
-		/* Labels jours CENTER */
+		
 		afficher_contenu(Semaine);
 
+		
+		
+		/* Contenu panels jours */
+		LLundi.setBorder(new LineBorder(new Color(0,0,0)));
+		LLundi.setBackground(new Color(115,167,230));
+		LMardi.setBorder(new LineBorder(new Color(0,0,0)));
+		LMardi.setBackground(new Color(115,167,230));
+		LMercredi.setBorder(new LineBorder(new Color(0,0,0)));
+		LMercredi.setBackground(new Color(115,167,230));
+		LJeudi.setBorder(new LineBorder(new Color(0,0,0)));
+		LJeudi.setBackground(new Color(115,167,230));
+		LVendredi.setBorder(new LineBorder(new Color(0,0,0)));
+		LVendredi.setBackground(new Color(115,167,230));
 		JPanel JoursSemaine = new JPanel();
 		JoursSemaine.setLayout(new GridLayout(1,5));
 		JoursSemaine.add(LLundi);
@@ -227,13 +240,6 @@ public class Interface_EDT {
 		JoursSemaine.add(LJeudi);
 		JoursSemaine.add(LVendredi);
 		
-		/* Contenu panels jours */
-		LLundi.setBorder(new LineBorder(new Color(0,0,0)));
-		LMardi.setBorder(new LineBorder(new Color(0,0,0)));
-		LMercredi.setBorder(new LineBorder(new Color(0,0,0)));
-		LJeudi.setBorder(new LineBorder(new Color(0,0,0)));
-		LVendredi.setBorder(new LineBorder(new Color(0,0,0)));
-				
 		JPanel toppanel = new JPanel();
 		toppanel.setLayout(new BorderLayout());
 		toppanel.add(headerpane,BorderLayout.NORTH);
@@ -255,11 +261,11 @@ public class Interface_EDT {
 		PMercredi.setEditable(false);
 		PJeudi.setEditable(false);
 		PVendredi.setEditable(false);
-		PLundi.setBackground(Color.GREEN);
-		PMardi.setBackground(Color.PINK);
-		PMercredi.setBackground(Color.lightGray);
-		PJeudi.setBackground(new Color(100,156,100));
-		PVendredi.setBackground(new Color(200,100,54));
+		PLundi.setBackground(new Color(72,164,255));
+		PMardi.setBackground(new Color(115,167,230));
+		PMercredi.setBackground(new Color(72,164,255));
+		PJeudi.setBackground(new Color(115,167,230));
+		PVendredi.setBackground(new Color(72,164,255));
 		contenu.add(PLundi);
 		contenu.add(PMardi);
 		contenu.add(PMercredi);
