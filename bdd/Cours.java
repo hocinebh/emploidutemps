@@ -128,7 +128,7 @@ public class Cours implements Serializable{
 
 	public String toString() {
 		
-		return "Date : "+this.creneau.date()+" "+this.creneau.heure()+", Matiere : "+this.matiere.getIntitule()+", groupe : "+groupe.getnum_groupe();
+		return "Date : "+this.creneau.date()+" "+this.creneau.heure()+", Matiere : "+this.matiere+", groupe : "+this.groupe;
 	}
 
 	public int compareJour(Date jour1) {

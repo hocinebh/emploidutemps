@@ -92,7 +92,9 @@ public abstract class Personne implements Serializable{
 		return text;
 	}*/
 	public String toString() {
-		String text = this.nom+", "+this.prenom+" : " +this.email;
+		String text = "";
+		if(this!=null)
+		text = this.nom+", "+this.prenom+" : " +this.email;
 		return text;
 	}
 }

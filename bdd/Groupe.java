@@ -54,7 +54,9 @@ public class Groupe implements Serializable {
 	}
 
 	public String toString(){
-		return num_groupe;
+		if (this != null) 
+			return num_groupe;
+		else return "";
 		
 	}
 	
