@@ -139,7 +139,7 @@ public class Interface_Reservation {
 		JLabel LReservSalle = new JLabel("Modifier reservations Salles");
 		panelcenter.add(LReservSalle);
 		//table[4].addAll(0,null);
-		//ModifReservSalle = new JComboBox(table[4]);
+		ModifReservSalle = new JComboBox();
 		
 		
 		
