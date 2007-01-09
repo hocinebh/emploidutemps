@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.IOException;
 
 import javax.swing.*;
+
 import Systeme.*;
 
 public class Interface_Connexion {
@@ -29,7 +30,7 @@ public class Interface_Connexion {
 		Actions action = new Actions(Classeclient);
 		
 		final JFrame fenetre = new JFrame("Connexion");
-		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		fenetre.addWindowListener(action.getFermerWindows());
 		fenetre.setSize(300,200);
 		centerFrame(fenetre);

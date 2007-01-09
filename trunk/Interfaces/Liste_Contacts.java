@@ -144,6 +144,7 @@ public class Liste_Contacts {
 		/* Le label sujet et textbox sujet au nord dans le centre de la fenetre */
 		//messagenord.setLayout(new BorderLayout());
 		messagenord.add(LSujet,BorderLayout.CENTER);
+		Sujet.setText("[EDT]");
 		messagenord.add(Sujet,BorderLayout.EAST);
 		
 		/* Les textbox sujet et message est sur la fenetre */

@@ -200,7 +200,7 @@ public class Interface_EDT {
 		Classeclient = notreClasseclient;
 		Actions action = new Actions(Classeclient);
 		fenetre.setTitle("Emploi du temps");
-		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		fenetre.addWindowListener(action.getFermerWindows());
 		fenetre.setSize(800,600);
 		centerFrame(fenetre);
