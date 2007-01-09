@@ -28,6 +28,7 @@ public class Actions {
 			Classeclient.FermerConnexion();
 			System.exit(1);
 		}
+		
 	}
 
 

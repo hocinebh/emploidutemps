@@ -20,7 +20,8 @@ public class Interface_Reservation {
 
 	
 	private final SimpleDateFormat formatjour =  new SimpleDateFormat("dd/MM/yyyy",new Locale("fr","FR"));
-	
+	private Client Classeclient;
+	private Vector[] table;
 	
 	/* Elements de l'interface */
 	private JFrame fenetre = new JFrame();
@@ -34,6 +35,8 @@ public class Interface_Reservation {
 	private JComboBox Groupe;
 	private JComboBox Enseignant;
 	private JButton Reset = new JButton("Reset");
+	private JButton Valider;
+	private JButton Modifier; 
 	
 	
 	/* Elements d'un cours */
@@ -43,17 +46,58 @@ public class Interface_Reservation {
 	private Salle nouvellesalle;
 	private Enseignant nouvelenseignant;
 	
-	/**
-     * Centre la fenetre au milieu de l'ecran
-     * @param frame - la fenetre
-     */
-	private void LocationFrame(JFrame frame) {
-	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	   frame.setLocation((screenSize.width / 2) + (420-105), (screenSize.height / 2) - 300);
+	
+	/*
+	 *Methode qui reserve le cours a partir des données qu'il va chercher dans l'interface graphique 
+	 *
+	 */
+	private void reserver_cours(){
+		try {
+			nouveaucreneau= new Creneau(formatjour.format(ChoixDate.getDate()),Heuredeb.getText(),Duree.getSelectedItem().toString());
+			nouvellematiere = (Matiere)Matiere.getSelectedItem();
+			nouveaugroupe = (Groupe)Groupe.getSelectedItem();
+			nouvellesalle = (Salle)Salle.getSelectedItem(); 
+			nouvelenseignant =  (Enseignant)Enseignant.getSelectedItem();
+			if(nouvelenseignant != null && nouvellematiere != null && nouveaugroupe != null)
+			{
+				//Si l'enseignnt n'est pas celui du groupe pour cette matiere
+				if(!nouvellematiere.getEnseignant(nouveaugroupe).equals(nouvelenseignant))
+				{
+					JOptionPane.showMessageDialog(fenetre,"Erreur l'enseignant n'est pas celui du groupe pour cette matière","Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
+					if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
+						JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
+					else 
+						JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
+					//updateEDT
+				}
+			}
+			else
+			{
+//				on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
+				if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
+					JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
+				else 
+					JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
+			}
+			
+			
+		} catch (Exception e1) {
+			//e1.printStackTrace();
+			
+			JOptionPane.showMessageDialog(fenetre,"Erreur de format d'entree","Erreur",JOptionPane.ERROR_MESSAGE);
+		}
+		finally{
+			Reset.doClick();
+			update_comboboxes();
+		}
 	}
 	
-	public void Affiche_Interface_Reservation(final Client Classeclient){
-		Vector[] table = null;
+	private void update_comboboxes(){
+		table = null;
 		try {
 			table = Classeclient.Recup_Listes_Reservation();
 		} catch (IOException e2) {
@@ -63,7 +107,28 @@ public class Interface_Reservation {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
+		/*ModifReservSalle = null;
+		if (table[4]!= null)
+			table[4].add(0,null);
+		ModifReservSalle = new JComboBox(table[4]);*/
+	}
+	/**
+     * Centre la fenetre au milieu de l'ecran
+     * @param frame - la fenetre
+     */
+	private void LocationFrame(JFrame frame) {
+	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	   frame.setLocation((screenSize.width / 2) + (420-105), (screenSize.height / 2) - 300);
+	}
+	
+	public void Affiche_Interface_Reservation(Client classeclient){
+		Classeclient = classeclient;
+		update_comboboxes();
+		
 		fenetre.setTitle("Reservation");
+		Actions action = new Actions(Classeclient);
+		fenetre.addWindowListener(action.getFermerWindows());
+		fenetre.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		fenetre.setSize(210,600);
 		LocationFrame(fenetre);
 		JLabel LReservation = new JLabel("Reservation");
@@ -72,6 +137,14 @@ public class Interface_Reservation {
 		fenetre.getContentPane().add(LReservation,BorderLayout.NORTH);
 		JPanel panelcenter = new JPanel();
 		panelcenter.setLayout(new GridLayout(16,1));
+		
+		/* Reservations */
+		JLabel LReservSalle = new JLabel("Modifier reservations");
+		panelcenter.add(LReservSalle);
+		if (table[4]!= null)
+			table[4].add(0,null);
+		ModifReservSalle = new JComboBox(table[4]);
+		panelcenter.add(ModifReservSalle);
 		
 		/* Date */
 		JLabel Ldate = new JLabel("Date :");
@@ -135,68 +208,24 @@ public class Interface_Reservation {
 		panelcenter.add(Salle);
 		fenetre.getContentPane().add(panelcenter,BorderLayout.CENTER);
 		
-		/* Reservations Salles*/
-		JLabel LReservSalle = new JLabel("Modifier reservations Salles");
-		panelcenter.add(LReservSalle);
-		//table[4].addAll(0,null);
-		ModifReservSalle = new JComboBox();
-		
-		
-		
-		/* Bouttons valider et effacer */
+				/* Bouttons valider et effacer */
 		JPanel ButtonPanel = new JPanel();
-		JButton Valider = new JButton("Valider");
-		ButtonPanel.add(Reset);
-		ButtonPanel.add(Valider);
+		ButtonPanel.setLayout(new BorderLayout());
+		
+		Valider = new JButton("Valider");
+		ButtonPanel.add(Reset,BorderLayout.SOUTH);
+		ButtonPanel.add(Valider,BorderLayout.EAST);
 		fenetre.getContentPane().add(ButtonPanel,BorderLayout.SOUTH);
+		Modifier = new JButton("Modifier");
+		Modifier.setEnabled(false);
+		ButtonPanel.add(Modifier,BorderLayout.WEST);
 		
 		/* Action Valider */
 		ActionListener valider = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				/* on cree un creneau */
-				try {
-					nouveaucreneau= new Creneau(formatjour.format(ChoixDate.getDate()),Heuredeb.getText(),Duree.getSelectedItem().toString());
-					nouvellematiere = (Matiere)Matiere.getSelectedItem();
-					nouveaugroupe = (Groupe)Groupe.getSelectedItem();
-					nouvellesalle = (Salle)Salle.getSelectedItem(); 
-					nouvelenseignant =  (Enseignant)Enseignant.getSelectedItem();
-					if(nouvelenseignant != null && nouvellematiere != null && nouveaugroupe != null)
-					{
-						//Si l'enseignnt n'est pas celui du groupe pour cette matiere
-						if(!nouvellematiere.getEnseignant(nouveaugroupe).equals(nouvelenseignant))
-						{
-							JOptionPane.showMessageDialog(fenetre,"Erreur l'enseignant n'est pas celui du groupe pour cette matière","Erreur",JOptionPane.ERROR_MESSAGE);
-						}
-						else
-						{
-							//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
-							if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
-								JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
-							else 
-								JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
-							//updateEDT
-						}
-					}
-					else
-					{
-//						on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
-						if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
-							JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
-						else 
-							JOptionPane.showMessageDialog(fenetre,"Erreur dans l'enregistrement","Erreur",JOptionPane.ERROR_MESSAGE);
-					}
-					
-					
-				} catch (Exception e1) {
-					//e1.printStackTrace();
-					
-					JOptionPane.showMessageDialog(fenetre,"Erreur de format d'entree","Erreur",JOptionPane.ERROR_MESSAGE);
-				}
-				finally{
-					Reset.doClick();
-				}
+				reserver_cours();
 			}
 		};
 		Valider.addActionListener(valider);
@@ -213,12 +242,53 @@ public class Interface_Reservation {
 				Enseignant.setSelectedIndex(0);
 				Matiere.setSelectedIndex(0);
 				Salle.setSelectedIndex(0);
-				
+				ModifReservSalle.setSelectedIndex(0);				
+			}
+		};
+		Reset.addActionListener(reset);
+		
+		/* Action Charger Modification*/
+		ActionListener changerComboBoxmodification = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Cours coursamodifier = (Cours) ModifReservSalle.getSelectedItem();
+				if (coursamodifier!= null)
+				{
+					Valider.setEnabled(false);
+					Modifier.setEnabled(true);
+					ChoixDate.setDate(coursamodifier.getCreneau().getDate().getTime());
+					Heuredeb.setText(new SimpleDateFormat("HH:mm",new Locale("fr","FR")).format(coursamodifier.getCreneau().getDatedebut().getTime()));
+					Duree.setSelectedItem(coursamodifier.getCreneau().getDuree().toString());
+					Groupe.setSelectedItem(coursamodifier.getGroupe());
+					Enseignant.setSelectedItem(coursamodifier.getEnseignant());
+					Matiere.setSelectedItem(coursamodifier.getMatiere());
+					Salle.setSelectedItem(coursamodifier.getSalle());
+				}
+				else{
+					Valider.setEnabled(true);
+					Modifier.setEnabled(false);
+					Reset.doClick();
+				}
+			}
+		};
+		ModifReservSalle.addActionListener(changerComboBoxmodification);
+		
+		
+		/* Action modifier */
+		ActionListener modifier = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				//on enleve le cours a modifier et on rajoute un nouveau
+				Cours coursaenlever = (Cours) ModifReservSalle.getSelectedItem();
+				//on reserve le cours demandé
+				reserver_cours();
 				
 				
 			}
 		};
-		Reset.addActionListener(reset);
+		Modifier.addActionListener(modifier);
 		
 		fenetre.setVisible(true);
 	}
