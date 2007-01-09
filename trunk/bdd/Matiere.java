@@ -115,7 +115,9 @@ public class Matiere implements Serializable{
 	
 	
 	public String toString(){
+		if(this!=null)
 		return intitule;
+		else return "";
 		
 	}
 
