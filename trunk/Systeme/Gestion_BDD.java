@@ -807,16 +807,23 @@ public class Gestion_BDD {
 		Iterator i = cours.iterator();
 		while(i.hasNext())
 		{
-			j=0;
 			ok = false;
 			Cours c = (Cours)i.next();
-			while(j<liste_groupe.size() && !ok)
-			{
-				if(c.getGroupe().egal(liste_groupe.elementAt(j)))
-				{
+			if (liste_groupe == null){
+				if(c.getGroupe()==null && c.getEnseignant() ==null && c.getMatiere() == null)
 					ok=true;
+			}
+			else
+			{
+				j=0;
+				while(j<liste_groupe.size() && !ok)
+				{
+					if(c.getGroupe().egal(liste_groupe.elementAt(j)))
+					{
+						ok=true;
+					}
+					j++;
 				}
-				j++;
 			}
 			if(ok) liste_cours.add(c);
 		}

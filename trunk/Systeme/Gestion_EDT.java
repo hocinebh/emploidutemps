@@ -96,10 +96,6 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("recuperer_EDT")==0)
 		{
-			out.writeObject(recuperer_EDT(methode));
-		}
-		else if(methode.getNom().compareTo("recuperer_EDT")==0)
-		{
 			Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
 			Responsable resp;
 			try {
@@ -130,7 +126,9 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("recuperer_listes")==0)
 		{
-			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getEns()};		
+			//Vector ReservationsSalles = new Vector<Cours>();
+			//ReservationsSalles= bd.getCoursGroupes(null); //TODO Remplir de cours ou matiere, enseignant et groupe = vide
+			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getEns()};//,ReservationsSalles		
 			out.writeObject(table);
 		}
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
@@ -278,7 +276,7 @@ public class Gestion_EDT extends Thread {
 		} */
 	}
 
-	private Vector<Vector<Cours>> recuperer_EDT(Signal methode)
+	private void visualiser_EDT(Signal methode,Jours Semaine) throws IOException
 	{
 		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
 		
@@ -304,14 +302,6 @@ public class Gestion_EDT extends Thread {
 				break;
 			}
 		}
-		
-		return(liste_cours);
-	}
-
-	
-	private void visualiser_EDT(Signal methode,Jours Semaine) throws IOException
-	{
-		Vector<Vector<Cours>> liste_cours = recuperer_EDT(methode);
 		
 		/* on recupere seulement ceux de la semaine desiree */
 		Vector<Vector<Cours>> tabCours = new Vector<Vector<Cours>>();
