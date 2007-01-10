@@ -120,7 +120,11 @@ public class Matiere implements Serializable{
 		else return "";
 		
 	}
-
+	
+	public boolean egal(Matiere mat)
+	{
+		return (num_matiere.compareTo(mat.getNum_matiere())==0);
+	}
 	
 	public Enseignant getEnseignant(Groupe gp) throws Exception
 	{

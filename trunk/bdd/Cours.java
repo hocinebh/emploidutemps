@@ -128,7 +128,7 @@ public class Cours implements Serializable{
 
 	public String toString() {
 		
-		return "Date : "+this.creneau.date()+" "+this.creneau.heure()+", Matiere : "+this.matiere+", groupe : "+this.groupe;
+		return this.creneau.date()+" ("+this.creneau.heure()+"-"+this.creneau.heureFin()+") "+this.matiere+" , gr. "+this.groupe;
 	}
 
 	public int compareJour(Date jour1) {
@@ -147,6 +147,17 @@ public class Cours implements Serializable{
 		return d1.compareTo(d2);
 	}
 	
+	public boolean equals (Cours lecours){
+		boolean retour = false;
+		
+		if (lecours.getCreneau().egal(this.getCreneau()))
+			retour=true;
+		if(lecours.getSalle().egal(this.getSalle()))
+			retour=true;
+		
+		return retour;
+		
+	}
 		
 	
 }
