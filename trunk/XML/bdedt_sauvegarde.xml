@@ -2,20 +2,20 @@
 <!DOCTYPE bdedt SYSTEM "bdedt.dtd">
 <bdedt>
 	<inspecteurs>
-		<inspecteur id="1" promotion="4GI">
-			<nom>Remen</nom>
-			<prénom>Alexander</prénom>
-			<mél>alex.remen@gmail.com</mél>
-			<login>aremen</login>
-			<pass>toto1</pass>
-		</inspecteur>
-		<inspecteur id="2" promotion="4RT">
-			<nom>inspect2</nom>
-			<prénom>toto2</prénom>
-			<mél>toto2@bla</mél>
-			<login>toto2</login>
-			<pass>toto2</pass>
-		</inspecteur>
+	    <inspecteur id="1" promotion="4GI">
+	      <nom>Remen</nom>
+	      <prénom>Alexander</prénom>
+	      <mél>alex.remen@gmail.com</mél>
+	      <login>aremen</login>
+	      <pass>toto1</pass>
+	    </inspecteur>
+	    <inspecteur id="2" promotion="4RT">
+	      <nom>Vo Thanh</nom>
+	      <prénom>Tonya</prénom>
+	      <mél>sadako22@free.fr</mél>
+	      <login>tvo_than</login>
+	      <pass>toto2</pass>
+	    </inspecteur>
 		<inspecteur id="3" promotion="4GM">
 			<nom>inspect3</nom>
 			<prénom>toto3</prénom>
@@ -26,10 +26,10 @@
 	</inspecteurs>
 	<enseignants>
 		<enseignant id="1">
-			<nom>enseign1</nom>
-			<prénom>titi1</prénom>
-			<mél>titi1@bla</mél>
-			<login>titi1</login>
+			<nom>Marre</nom>
+			<prénom>Daniel</prénom>
+			<mél>daniel.marre@insa-toulouse.fr</mél>
+			<login>dmarre</login>
 			<pass>titi1</pass>
 		</enseignant>
 		<enseignant id="2">
@@ -45,6 +45,13 @@
 			<mél>titi3@bla</mél>
 			<login>titi3</login>
 			<pass>titi3</pass>
+		</enseignant>
+		<enseignant id="4">
+			<nom>enseign4</nom>
+			<prénom>titi4</prénom>
+			<mél>titi4@bla</mél>
+			<login>titi4</login>
+			<pass>titi4</pass>
 		</enseignant>
 	</enseignants>
 	<étudiants>
@@ -75,8 +82,6 @@
 					<login>lala4</login>
 					<pass>lala4</pass>
 				</étudiant>
-		</promotion>
-		<promotion id="4GM">
 				<étudiant id="5">
 					<nom>etud5</nom>
 					<prénom>lala5</prénom>
@@ -89,24 +94,44 @@
 					<login>lala6</login>
 					<pass>lala6</pass>
 				</étudiant>
+				<étudiant id="7">
+					<nom>etud7</nom>
+					<prénom>lala7</prénom>
+					<login>lala7</login>
+					<pass>lala7</pass>
+				</étudiant>
+		</promotion>
+		<promotion id="4GM">
+				<étudiant id="8">
+					<nom>etud8</nom>
+					<prénom>lala8</prénom>
+					<login>lala8</login>
+					<pass>lala8</pass>
+				</étudiant>
+				<étudiant id="9">
+					<nom>etud9</nom>
+					<prénom>lala9</prénom>
+					<login>lala9</login>
+					<pass>lala9</pass>
+				</étudiant>
 		</promotion>
 	</étudiants>
 	<groupes>
 		<groupe id="1" étudiants="1 2"/>
 		<groupe id="11" étudiants="1"/>
 		<groupe id="12" étudiants="2"/>
-		<groupe id="2" étudiants="3 4"/>
-		<groupe id="21" étudiants="3"/>
-		<groupe id="22" étudiants="4"/>
-		<groupe id="3" étudiants="5 6"/>
-		<groupe id="31" étudiants="5"/>
-		<groupe id="32" étudiants="6"/>
+		<groupe id="2" étudiants="3 4 5 6 7"/>
+		<groupe id="21" étudiants="3 4 5"/>
+		<groupe id="22" étudiants="6 7"/>
+		<groupe id="3" étudiants="8 9"/>
+		<groupe id="31" étudiants="8"/>
+		<groupe id="32" étudiants="9"/>
 	</groupes>
 	<matières>
 		<matière id="1" type="obligatoire">
-			<intitulé>mat1</intitulé>
+			<intitulé>MDSI</intitulé>
 			<enseignements>
-				<CM enseignants="1 2 " groupes="1 2" volume="5:00"/>
+				<CM enseignants="1 2 3" groupes="1 2 21" volume="5:00"/>
 				<TD enseignants="3" groupes="3" volume="10:00"/>
 			</enseignements>
 		</matière>
@@ -120,8 +145,14 @@
 		<matière id="3" type="obligatoire">
 			<intitulé>mat3</intitulé>
 			<enseignements>
-				<CM enseignants="1 2 " groupes="1 2" volume="5:00"/>
+				<CM enseignants="4 2 1" groupes="1 2 21" volume="5:00"/>
 				<TD enseignants="3" groupes="3" volume="10:00"/>
+			</enseignements>
+		</matière>
+		<matière id="4" type="obligatoire">
+			<intitulé>mat4</intitulé>
+			<enseignements>
+				<CM enseignants="1 2 3" groupes="1 21 22" volume="5:00"/>
 			</enseignements>
 		</matière>
 	</matières>
@@ -132,8 +163,19 @@
 		<salle taille="15" id="4" type="tp"/>
 	</salles>
 	<edt>
-		<réservation date="22/10/2007" salle="1" heure="8:00" durée="1:15" groupe="1" matière="1"/>
-		<réservation date="22/11/2007" salle="2" heure="8:00" durée="1:15" groupe="2" matière="2"/>
-		<réservation date="22/12/2007" salle="3" heure="8:00" durée="1:15" groupe="3" matière="3"/>
+		<réservation date="10/01/2007" salle="1" heure="14:00" durée="1:15" groupe="1" matière="1"/>
+		<réservation date="11/01/2007" salle="2" heure="12:15" durée="1:15" groupe="2" matière="2"/>
+		<réservation date="12/01/2007" salle="3" heure="15:30" durée="1:15" groupe="1" matière="3"/>
+		<réservation date="10/01/2007" salle="1" heure="8:00" durée="1:15" groupe="1" matière="1"/>
+		<réservation date="11/01/2007" salle="2" heure="8:00" durée="1:15" groupe="2" matière="2"/>
+		<réservation date="12/01/2007" salle="3" heure="8:00" durée="1:15" groupe="3" matière="3"/>
+		<réservation date="08/01/2007" salle="2" heure="8:00" durée="1:15" groupe="1" matière="1"/>
+		<réservation date="08/01/2007" salle="3" heure="09:30" durée="1:15" groupe="1" matière="1"/>
+		<réservation date="08/01/2007" salle="1" heure="11:00" durée="1:15" groupe="1" matière="1"/>
+		
+		<réservation date="08/01/2007" salle="2" heure="15:30" durée="1:15" groupe="21" matière="1"/>
+		
+		<réservation date="09/01/2007" salle="4" heure="8:00" durée="2:30" groupe="1" matière="4"/>
+		<réservation date="09/01/2007" salle="3" heure="8:00" durée="1:15" groupe="3" matière="3"/>
 	</edt>
 </bdedt>

@@ -137,5 +137,12 @@ public class Creneau implements Serializable{
 		}
 		return retour;
 	}
+
+	public boolean egal(Creneau creneau) {
+		Boolean ok = true;
+		if(Datedebut.compareTo(creneau.getDatedebut())!=0) ok=false;
+		if(Duree.compareTo(creneau.getDuree())!=0) ok= false;
+		return ok;
+	}
 	
 }

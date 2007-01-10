@@ -35,12 +35,5 @@ public class Responsable extends Enseignant {
 	public void setPromo(Promotion promo) {
 		this.promo = promo;
 	}
-	
-	
-
-	
-	
-	
-	
 
 }

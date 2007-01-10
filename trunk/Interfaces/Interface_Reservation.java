@@ -58,10 +58,11 @@ public class Interface_Reservation {
 			nouveaugroupe = (Groupe)Groupe.getSelectedItem();
 			nouvellesalle = (Salle)Salle.getSelectedItem(); 
 			nouvelenseignant =  (Enseignant)Enseignant.getSelectedItem();
+			boolean ok = false;
 			if(nouvelenseignant != null && nouvellematiere != null && nouveaugroupe != null)
 			{
 				//Si l'enseignnt n'est pas celui du groupe pour cette matiere
-				if(!nouvellematiere.getEnseignant(nouveaugroupe).equals(nouvelenseignant))
+				if(!nouvellematiere.getEnseignant(nouveaugroupe).egal(nouvelenseignant))
 				{
 					JOptionPane.showMessageDialog(fenetre,"Erreur l'enseignant n'est pas celui du groupe pour cette matière","Erreur",JOptionPane.ERROR_MESSAGE);
 				}
@@ -77,7 +78,7 @@ public class Interface_Reservation {
 			}
 			else
 			{
-//				on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
+				//on demande la classe client d'envoyer un signal au serveur qui va ajouter le nouceau cours
 				if (Classeclient.Ajouter_Cours(nouvellematiere,nouvellesalle,nouveaucreneau, nouveaugroupe, nouvelenseignant)==true)
 					JOptionPane.showMessageDialog(fenetre,"Cours pris en compte");
 				else 

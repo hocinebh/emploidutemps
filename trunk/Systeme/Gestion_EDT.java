@@ -90,6 +90,7 @@ public class Gestion_EDT extends Thread {
 		else if(methode.getNom().compareTo("visualiser_EDT")==0)
 		{
 			//Retourne la liste des cours trier
+			bd.testAffiche();
 			Jours semaine = (Jours)methode.getParametres().elementAt(0);
 			visualiser_EDT(methode,semaine);
 			
@@ -126,7 +127,7 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("recuperer_listes")==0)
 		{
-			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupes(),bd.getEns(),bd.getCoursPromotion((Responsable)utilisateur)};//		
+			Vector[] table = {bd.getSalles(),bd.getMatieres(),bd.getGroupesResp((Responsable)utilisateur),bd.getEns(),bd.getCoursPromotion((Responsable)utilisateur)};//		
 			out.writeObject(table);
 		}
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
@@ -198,7 +199,7 @@ public class Gestion_EDT extends Thread {
 		
 		Cours c = bd.getCours(cren, salle);
 		if(c==null) ok=false; //cours inexistant pas de modification
-		else if (!(c.getGroupe().getResponsable().equals(utilisateur)))
+		else if (!(c.getGroupe().getResponsable().egal((Responsable)utilisateur)))
 		{
 			ok=false;
 		}
@@ -342,13 +343,4 @@ public class Gestion_EDT extends Thread {
 		
 		out.writeObject(tabCours);
 	}
-	
-	private void Erreursaisie(){
-		
-	}
-	
-	private void AfficherSpecEns(Enseignant ens, Groupe group){
-		
-	}
-    
 }
