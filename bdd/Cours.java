@@ -142,7 +142,7 @@ public class Cours implements Serializable{
 		d2.set(GregorianCalendar.SECOND, 0);
 		d2.set(GregorianCalendar.MILLISECOND, 0);
 		
-		System.out.println("d1 : "+Creneau.DatetoString(d1)+" d2 : "+Creneau.DatetoString(d2));
+		//System.out.println("d1 : "+Creneau.DatetoString(d1)+" d2 : "+Creneau.DatetoString(d2));
 		
 		return d1.compareTo(d2);
 	}

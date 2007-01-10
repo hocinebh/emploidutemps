@@ -85,6 +85,10 @@ public class Salle implements Serializable{
 	public String toString(){
 		return (nom_salle);
 	}
+
+	public boolean egal(Salle salle) {
+		return (this.nom_salle.compareTo(salle.getNom_salle())==0);
+	}
 	
 	
 }

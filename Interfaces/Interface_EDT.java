@@ -32,7 +32,7 @@ public class Interface_EDT {
 	private JTextPane PJeudi =  new JTextPane();
 	private JTextPane PVendredi =  new JTextPane();
 	private Liste_Contacts Fenetremail = new Liste_Contacts();
-	private Vector<Vector<Cours>> liste_cours= new Vector<Vector<Cours>>();
+	//private Vector<Vector<Cours>> liste_cours= new Vector<Vector<Cours>>();
 	private Client Classeclient;
 	
     private static void AddtexttoPane(String[] initString,String[] initStyles, JTextPane textPane) {
@@ -59,14 +59,14 @@ public class Interface_EDT {
 		for(int jours=0;jours<5;jours++){
 			Vector<Cours> listec = tabCours.elementAt(jours);
 			nbcours = listec.size();
-			System.out.println(""+nbcours);
+			//System.out.println(""+nbcours);
 			String[] SJour = new String[6*nbcours];
 			String[] StyleJour = new String[6*nbcours];
 			int j =0;
 			for (int i=0;i<=(nbcours*6)-1;i=i+6){
 				//on va chercher les cours a afficher pour chaque jour
 				//horaire
-				System.out.print(""+i);
+				//System.out.print(""+i);
 				Cours c = listec.elementAt(j);
 				SJour[i]=c.getCreneau().heure()+"-"+c.getCreneau().heureFin()+"\n";
 				StyleJour[i]="horaire";
@@ -159,7 +159,9 @@ public class Interface_EDT {
 	
 	public void addtolisteCours(Jours Semaine){
 		try {
-			liste_cours = (Classeclient.recuperercoursdelasemaine(Semaine));
+			
+			Vector<Vector<Cours>> liste_cours = (Classeclient.recuperercoursdelasemaine(Semaine));
+			Addcourstojour(liste_cours);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -168,9 +170,6 @@ public class Interface_EDT {
 			e.printStackTrace();
 		}
 		
-		
-		
-		Addcourstojour(liste_cours);
 	}
 	
 	/**
@@ -216,10 +215,7 @@ public class Interface_EDT {
 		headerpane.add(LSemaine,BorderLayout.CENTER);
 		headerpane.add(SemaineSuiv,BorderLayout.EAST);
 		
-		
 		afficher_contenu(Semaine);
-
-		
 		
 		/* Contenu panels jours */
 		LLundi.setBorder(new LineBorder(new Color(0,0,0)));
@@ -296,6 +292,16 @@ public class Interface_EDT {
 		envoiemail.addActionListener(actionmail);
 			
 		quitter.addActionListener(action.getFermerButton());
+		
+		ActionListener SemaineEnCours = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Jours Semaine = new Jours(maintenant);
+				afficher_contenu(Semaine);
+			}
+		};
+		this.LSemaine.addActionListener(SemaineEnCours);
 		
 		ActionListener SemaineSuivante = new ActionListener()
 		{

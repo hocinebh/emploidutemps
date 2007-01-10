@@ -28,7 +28,7 @@ public class Gestion_BDD {
 
 	//Definition des constantes
 	private static final String ficXml ="XML/bdedt2.xml";
-	private static final String ficXml2 ="XML/bdedt3.xml";
+	private static final String ficXml2 ="XML/bdedt2.xml";
 	private static final String nomDtd = "bdedt";
 	private static final String ficSauvegarde = "tmp/system";
 	
@@ -841,7 +841,7 @@ public class Gestion_BDD {
 			Cours c = (Cours)i.next();
 			if(c.getGroupe()!=null)
 			{
-				if(c.getGroupe().getResponsable().equals(resp))
+				if(c.getGroupe().getResponsable().egal(resp))
 				{
 					liste_cours.add(c);
 				}
@@ -849,6 +849,23 @@ public class Gestion_BDD {
 		}
 		
 		return liste_cours;
+	}
+
+	public Vector<Groupe> getGroupesResp(Responsable resp)
+	{
+		Vector<Groupe> liste_groupe = new Vector<Groupe>();
+		
+		Iterator i = groupes.iterator();
+		while(i.hasNext())
+		{
+			Groupe g = (Groupe)i.next();
+			if(g.getResponsable().egal(resp))
+			{
+					liste_groupe.add(g);
+			}
+		}
+		
+		return liste_groupe;
 	}
 	
 	public Vector<Cours> getCoursSalle(Salle s)
@@ -859,7 +876,7 @@ public class Gestion_BDD {
 		while(i.hasNext())
 		{
 			Cours c = (Cours)i.next();
-			if(c.getSalle().equals(s))
+			if(c.getSalle().egal(s))
 			{
 				liste_cours.add(c);
 			}
@@ -879,14 +896,70 @@ public class Gestion_BDD {
 		boolean ok = false;
 		int pos = 0;
 		
-		if(cours.size()!=0)
-		{
-			pos = cherchePosition(c, 0, cours.size());	
-		}
+		//if(cours.size()!=0)
+		//{
+			pos = cherchePosition2(c, 0, cours.size());	
+		//}
 		cours.add(pos,c);
 		//cours.add(c);
 		
 		return ok;
+	}
+
+	private int cherchePosition2(Cours c, int deb, int nbElts) throws Exception
+	{
+		int pos=0;
+		//System.out.println("*********************");
+		//System.out.println("deb: "+deb +" et nbElts: "+nbElts);
+		//System.out.println("date du cours a inserer "+c.getCreneau().date()+" "+c.getCreneau().heure());
+		
+		if(nbElts<=0)
+		{
+			pos = deb;
+		}
+		else if(nbElts==1)
+		{
+			//System.out.println("date du cours au debut "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
+			
+			switch(cours.elementAt(deb).getCreneau().compare(c.getCreneau()))
+			{
+				case Creneau.AVANT : pos=deb+1;break;
+				case Creneau.APRES : pos=deb;break;
+				case Creneau.ERREUR : 
+				{
+					if(c.getGroupe().egal(cours.elementAt(deb).getGroupe()) || c.getSalle().egal(cours.elementAt(deb).getSalle()) || c.getEnseignant().egal(cours.elementAt(deb).getEnseignant()))
+					{
+						throw new Exception("Probleme de créneau");
+					}
+					pos= deb+1;
+				}
+			}
+		}
+		else
+		{
+			pos = deb+(nbElts/2);
+
+			//System.out.println("deb("+deb+") "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
+			//System.out.println("c "+c.getCreneau().date()+" "+c.getCreneau().heure());
+			//System.out.println("pos ("+pos+")" +cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
+			//System.out.println("fin("+fin+")" +cours.elementAt(fin).getCreneau().date()+" "+cours.elementAt(fin).getCreneau().heure());
+			switch(cours.elementAt(pos).getCreneau().compare(c.getCreneau()))
+			{
+				case Creneau.AVANT : pos=cherchePosition2(c,pos+1, nbElts-(pos-deb+1));break;
+				case Creneau.APRES : pos = cherchePosition2(c,deb,pos-deb);break;
+				case Creneau.ERREUR : 
+				{
+					if(c.getGroupe().egal(cours.elementAt(pos).getGroupe()) || c.getSalle().egal(cours.elementAt(pos).getSalle()) || c.getEnseignant().egal(cours.elementAt(pos).getEnseignant()))
+						{
+						throw new Exception("Probleme de créneau");
+					}
+					pos=pos+1;
+				}
+			}			
+				
+		}
+		//System.out.println("Position finale : "+pos);
+		return pos;
 	}
 	
 	/**
@@ -1055,14 +1128,14 @@ public class Gestion_BDD {
 	public void testAffiche()
 	{
 		//Vérifications a retirer par la suite
-		System.out.println("Fin chargement");
+		/*System.out.println("Fin chargement");
 		System.out.println(this.utilisateurs.size()+" utilisateurs");
 		System.out.println(this.promotions.size()+" promotions");
 		System.out.println(this.groupes.size()+" groupes");
 		System.out.println(this.matieres.size()+" matieres");
 		System.out.println(this.cours.size()+" cours");
 		System.out.println(this.salles.size()+" salles");
-		afficheObjets(utilisateurs);
+		afficheObjets(utilisateurs);*/
 		afficheObjets(cours);
 	}
 	
@@ -1118,7 +1191,7 @@ public class Gestion_BDD {
 		
 		while(i<cours.size() && !ok)
 		{
-			if(cours.elementAt(i).getCreneau().equals(creneau) && cours.elementAt(i).getSalle().equals(salle))
+			if(cours.elementAt(i).getCreneau().egal(creneau) && cours.elementAt(i).getSalle().egal(salle))
 			{
 				ok= true;
 			}
