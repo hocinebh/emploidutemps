@@ -28,7 +28,7 @@ public class Gestion_BDD {
 
 	//Definition des constantes
 	private static final String ficXml ="XML/bdedt2.xml";
-	private static final String ficXml2 ="XML/bdedt3.xml";
+	private static final String ficXml2 ="XML/bdedt2.xml";
 	private static final String nomDtd = "bdedt";
 	private static final String ficSauvegarde = "tmp/system";
 	
