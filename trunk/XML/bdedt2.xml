@@ -171,6 +171,7 @@
     <réservation date="9/1/2007" heure="8:00" durée="02:30" salle="4" groupe="1" matière="4" />
     <réservation date="10/1/2007" heure="8:00" durée="01:15" salle="1" groupe="1" matière="1" />
     <réservation date="10/1/2007" heure="8:00" durée="02:00" salle="3" groupe="2" matière="3" />
+    <réservation date="10/1/2007" heure="8:00" durée="01:15" salle="2" groupe="22" matière="4" />
     <réservation date="10/1/2007" heure="14:00" durée="01:15" salle="1" groupe="1" matière="1" />
     <réservation date="11/1/2007" heure="8:00" durée="01:15" salle="2" groupe="2" matière="2" />
     <réservation date="11/1/2007" heure="12:15" durée="01:15" salle="2" groupe="2" matière="2" />
