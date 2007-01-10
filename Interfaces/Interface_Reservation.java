@@ -40,6 +40,7 @@ public class Interface_Reservation {
 	private JComboBox Groupe;
 	private JComboBox Enseignant;
 	private JButton Reset = new JButton("Reset");
+	private JButton Supprimer = new JButton("Supprimer");
 	private JButton Valider;
 	private JButton Modifier;
 	private DefaultComboBoxModel comboboxmodel = new DefaultComboBoxModel();
@@ -220,17 +221,19 @@ public class Interface_Reservation {
 		panelcenter.add(Salle);
 		fenetre.getContentPane().add(panelcenter,BorderLayout.CENTER);
 		
-				/* Bouttons valider et effacer */
+				/* Bouttons valider, modifier, effacer et supprimer*/
 		JPanel ButtonPanel = new JPanel();
 		ButtonPanel.setLayout(new BorderLayout());
 		
 		Valider = new JButton("Valider");
-		ButtonPanel.add(Reset,BorderLayout.SOUTH);
+		ButtonPanel.add(Reset,BorderLayout.NORTH);
 		ButtonPanel.add(Valider,BorderLayout.EAST);
 		fenetre.getContentPane().add(ButtonPanel,BorderLayout.SOUTH);
 		Modifier = new JButton("Modifier");
 		Modifier.setEnabled(false);
 		ButtonPanel.add(Modifier,BorderLayout.WEST);
+		Supprimer.setEnabled(false);
+		ButtonPanel.add(Supprimer,BorderLayout.SOUTH);
 		
 		/* Action Valider */
 		ActionListener valider = new ActionListener()
@@ -260,14 +263,17 @@ public class Interface_Reservation {
 		};
 		Reset.addActionListener(reset);
 		
-		/* Action Charger Modification*/
+		/* Action selection dans la liste des reservations */
 		ActionListener changerComboBoxmodification = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				Cours coursamodifier = (Cours) ModifReservSalle.getSelectedItem();
+				/* Si on choisit un cours a modifier ou a supprimer dans la liste on veut afficher ce cours dans les autres combobox
+				 * et on veut que le bouton modifier soit appuyable ainsi que le bouton supprimer */
 				if (coursamodifier!= null)
 				{
+					Supprimer.setEnabled(true);
 					Valider.setEnabled(false);
 					Modifier.setEnabled(true);
 					ChoixDate.setDate(coursamodifier.getCreneau().getDate().getTime());
@@ -279,6 +285,7 @@ public class Interface_Reservation {
 					Salle.setSelectedItem(coursamodifier.getSalle());
 				}
 				else{
+					Supprimer.setEnabled(false);
 					Valider.setEnabled(true);
 					Modifier.setEnabled(false);
 					Reset.doClick();
@@ -295,13 +302,54 @@ public class Interface_Reservation {
 			{
 				//on enleve le cours a modifier et on rajoute un nouveau
 				Cours coursaenlever = (Cours) ModifReservSalle.getSelectedItem();
-				//on reserve le cours demandé
-				reserver_cours();
+				try {
+					if(!Classeclient.Supprimer_cours(coursaenlever))
+						JOptionPane.showMessageDialog(fenetre,"Impossible de supprimer ce cours","Erreur",JOptionPane.ERROR_MESSAGE);
+					else
+					{
+					//on reserve le cours demandé
+					reserver_cours();
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				
 			}
 		};
 		Modifier.addActionListener(modifier);
+		
+		/* Action supprimer */
+		ActionListener supprimer = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				//on enleve le cours a modifier et on rajoute un nouveau
+				Cours coursaenlever = (Cours) ModifReservSalle.getSelectedItem();
+				try {
+					if(!Classeclient.Supprimer_cours(coursaenlever))
+						JOptionPane.showMessageDialog(fenetre,"Impossible de supprimer ce cours","Erreur",JOptionPane.ERROR_MESSAGE);
+					else
+					{
+						Reset.doClick();
+						update_comboboxes();
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		};
+		Supprimer.addActionListener(supprimer);
 		
 		fenetre.setVisible(true);
 	}
