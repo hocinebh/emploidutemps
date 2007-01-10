@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -15,7 +16,11 @@ import com.toedter.calendar.*;
 
 import Systeme.Client;
 import bdd.*;
-
+/**
+ * 
+ * @author Alexander Remen
+ *
+ */
 public class Interface_Reservation {
 
 	
@@ -36,8 +41,8 @@ public class Interface_Reservation {
 	private JComboBox Enseignant;
 	private JButton Reset = new JButton("Reset");
 	private JButton Valider;
-	private JButton Modifier; 
-	
+	private JButton Modifier;
+	private DefaultComboBoxModel comboboxmodel = new DefaultComboBoxModel();
 	
 	/* Elements d'un cours */
 	private Creneau nouveaucreneau;
@@ -108,10 +113,16 @@ public class Interface_Reservation {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		/*ModifReservSalle = null;
+		Vector<Cours> liste_cours=table[4];
+		comboboxmodel.removeAllElements();
 		if (table[4]!= null)
 			table[4].add(0,null);
-		ModifReservSalle = new JComboBox(table[4]);*/
+		int i =0;
+		while (i<table[4].size())
+		{
+			comboboxmodel.addElement(liste_cours.elementAt(i));
+			i++;
+		}
 	}
 	/**
      * Centre la fenetre au milieu de l'ecran
@@ -142,9 +153,9 @@ public class Interface_Reservation {
 		/* Reservations */
 		JLabel LReservSalle = new JLabel("Modifier reservations");
 		panelcenter.add(LReservSalle);
-		if (table[4]!= null)
-			table[4].add(0,null);
-		ModifReservSalle = new JComboBox(table[4]);
+		/*if (table[4]!= null)
+			table[4].add(0,null);*/
+		ModifReservSalle = new JComboBox(comboboxmodel);
 		panelcenter.add(ModifReservSalle);
 		
 		/* Date */
@@ -243,6 +254,7 @@ public class Interface_Reservation {
 				Enseignant.setSelectedIndex(0);
 				Matiere.setSelectedIndex(0);
 				Salle.setSelectedIndex(0);
+				if (comboboxmodel.getSize()!=0)
 				ModifReservSalle.setSelectedIndex(0);				
 			}
 		};

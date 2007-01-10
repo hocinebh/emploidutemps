@@ -7,7 +7,11 @@ import java.io.IOException;
 import javax.swing.*;
 
 import Systeme.*;
-
+/**
+ * 
+ * @author Alexander Remen
+ *
+ */
 public class Interface_Connexion {
 
 	private JTextField TFlogin = new JTextField(15);
