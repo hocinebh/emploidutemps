@@ -10,7 +10,11 @@ import javax.swing.*;
 import bdd.Personne;
 
 import Systeme.Client;
-
+/**
+ * 
+ * @author Alexander Remen
+ *
+ */
 public class Liste_Contacts {
 
 	private final JFrame fenetre = new JFrame();

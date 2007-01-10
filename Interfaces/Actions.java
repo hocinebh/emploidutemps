@@ -9,7 +9,11 @@ import javax.swing.JOptionPane;
 
 import Systeme.*;
 
-public class Actions {
+/**
+ * 
+ * @author Alexander Remen
+ *
+ */public class Actions {
 
 	private Client Classeclient;
 	

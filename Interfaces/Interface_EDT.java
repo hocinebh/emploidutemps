@@ -13,7 +13,11 @@ import javax.swing.text.*;
 import bdd.*;
 
 import java.util.*;
-
+/**
+ * 
+ * @author Alexander Remen
+ *
+ */
 public class Interface_EDT {
 	
 	public GregorianCalendar maintenant = (GregorianCalendar) GregorianCalendar.getInstance();
