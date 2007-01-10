@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bdedt>
+  <inspecteurs>
+    <inspecteur id="1" promotion="4GI">
+      <nom>Remen</nom>
+      <prénom>Alexander</prénom>
+      <mél>alex.remen@gmail.com</mél>
+    </inspecteur>
+    <inspecteur id="2" promotion="4RT">
+      <nom>Vo Thanh</nom>
+      <prénom>Tonya</prénom>
+      <mél>sadako22@free.fr</mél>
+    </inspecteur>
+    <inspecteur id="3" promotion="4GM">
+      <nom>inspect3</nom>
+      <prénom>toto3</prénom>
+      <mél>toto3@bla</mél>
+    </inspecteur>
+  </inspecteurs>
+  <enseignants>
+    <enseignant id="1">
+      <nom>Marre</nom>
+      <prénom>Daniel</prénom>
+      <mél>daniel.marre@insa-toulouse.fr</mél>
+    </enseignant>
+    <enseignant id="2">
+      <nom>enseign2</nom>
+      <prénom>titi2</prénom>
+      <mél>titi2@bla</mél>
+    </enseignant>
+    <enseignant id="3">
+      <nom>enseign3</nom>
+      <prénom>titi3</prénom>
+      <mél>titi3@bla</mél>
+    </enseignant>
+    <enseignant id="4">
+      <nom>enseign4</nom>
+      <prénom>titi4</prénom>
+      <mél>titi4@bla</mél>
+    </enseignant>
+  </enseignants>
+</bdedt>
+

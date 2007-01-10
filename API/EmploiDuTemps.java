@@ -95,7 +95,14 @@ public class EmploiDuTemps implements Edt {
 		
 		try {
 			OutputStream outStreamXML = new FileOutputStream("XML/testEdt.xml");
-			s.getEDT(outStreamXML,"4RT");
+			OutputStream outStreamXML2 = new FileOutputStream("XML/testEdt2.xml");
+			OutputStream outStreamXML3 = new FileOutputStream("XML/testEdt3.xml");
+			OutputStream outStreamXML4 = new FileOutputStream("XML/testEdt4.xml");
+			s.getEDT(outStreamXML);
+			s.getEDT(outStreamXML2,"4RT");
+			s.getEmail(outStreamXML3);
+			s.getRéservation(outStreamXML4, "3");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

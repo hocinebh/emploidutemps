@@ -16,8 +16,8 @@ public class Gestion_EDT extends Thread {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 
-	private static final int PROMOTION =0;
-	private static final int SALLE =1;
+	public static final int PROMOTION =0;
+	public static final int SALLE =1;
 	private Personne utilisateur;
 	private int typeUtilisateur;
 	private int typeEDT;
@@ -62,6 +62,9 @@ public class Gestion_EDT extends Thread {
 		  catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -77,7 +80,7 @@ public class Gestion_EDT extends Thread {
 		}
 	}
 	
-	private void execute(Signal methode) throws IOException
+	private void execute(Signal methode) throws Exception
 	{
 		if(methode.getNom().compareTo("Connexion")==0)
 		{
@@ -108,7 +111,7 @@ public class Gestion_EDT extends Thread {
 				trie_par_jour(bd.getCoursPromotion(resp), liste_cours);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			out.writeObject(liste_cours);
 		}
@@ -136,7 +139,27 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("Saisir_EDT")==0)
 		{
-			Saisir_EDT(methode);
+			Matiere mat = (Matiere)methode.getParametres().elementAt(0);
+			Salle salle = (Salle)methode.getParametres().elementAt(1);
+			Creneau cren = (Creneau)methode.getParametres().elementAt(2);
+			Groupe gp = (Groupe)methode.getParametres().elementAt(3);
+			Enseignant ens = (Enseignant)methode.getParametres().elementAt(4);
+			Saisir_EDT(mat, salle,cren,gp,ens);
+			bd.testAffiche();
+		}
+		else if(methode.getNom().compareTo("Saisir_EDT2")==0)
+		{
+			try {
+				Matiere mat = bd.getMatiere((String)methode.getParametres().elementAt(0));
+				Salle salle = bd.getSalle((String)methode.getParametres().elementAt(1));
+				Creneau cren = (Creneau)methode.getParametres().elementAt(2);
+				Groupe gp = bd.getGroupe((String)methode.getParametres().elementAt(3));
+				Saisir_EDT(mat, salle,cren,gp,null);
+			} catch (Exception e) {
+				out.writeObject(false);
+				out.writeObject(e);
+			}
+			
 			bd.testAffiche();
 		}
 		else if(methode.getNom().compareTo("Modifier_EDT")==0)
@@ -159,9 +182,9 @@ public class Gestion_EDT extends Thread {
 			}
 			FermerConnexion();
 		}
-		else if(methode.getNom().compareTo("")==0)
+		else if(methode.getNom().compareTo("Recuperer_Email")==0)
 		{
-			
+			out.writeObject(bd.getUtilisateurs());
 		}
 		
 		//A la fin de chaque signal on sauvegarde la nouvelle base de donnees
@@ -174,22 +197,15 @@ public class Gestion_EDT extends Thread {
 		out.writeObject(ok);
 	}
 
-	private void Saisir_EDT(Signal methode) throws IOException {
-		Boolean ok= true;
-		
-		Matiere mat = (Matiere)methode.getParametres().elementAt(0);
-		Salle salle = (Salle)methode.getParametres().elementAt(1);
-		Creneau cren = (Creneau)methode.getParametres().elementAt(2);
-		Groupe gp = (Groupe)methode.getParametres().elementAt(3);
-		Enseignant ens = (Enseignant)methode.getParametres().elementAt(4);
-		
+	private void Saisir_EDT(Matiere mat, Salle salle, Creneau cren, Groupe gp, Enseignant ens) throws IOException {
 		try {
-			bd.addCours(new Cours(mat, salle, gp, cren, ens));
+			if(ens!=null)bd.addCours(new Cours(mat, salle, gp, cren, ens));
+			else bd.addCours(new Cours(cren, salle, gp, mat));
+			out.writeObject(true);
 		} catch (Exception e) {
-			ok=false;
+			out.writeObject(false);
+			out.writeObject(e);
 		}
-		
-		out.writeObject(ok);
 	}
 
 	private void Modifier_EDT(Signal methode) throws IOException {
@@ -282,7 +298,7 @@ public class Gestion_EDT extends Thread {
 		} */
 	}
 
-	private Vector<Vector<Cours>> recuperer_EDT(Signal methode)
+	private Vector<Vector<Cours>> recuperer_EDT(Signal methode) throws Exception
 	{
 		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
 		
@@ -293,7 +309,7 @@ public class Gestion_EDT extends Thread {
 				switch (this.typeEDT)
 				{
 					case Gestion_EDT.PROMOTION : trie_par_jour(bd.getCoursPromotion((Responsable)utilisateur), liste_cours);break;
-					case Gestion_EDT.SALLE : trie_par_jour(bd.getCoursSalle((Salle)methode.getParametres().firstElement()), liste_cours);break;
+					case Gestion_EDT.SALLE : trie_par_jour(bd.getCoursSalle(bd.getSalle((String)methode.getParametres().firstElement())), liste_cours);break;
 				}
 				break;
 			}
@@ -312,7 +328,7 @@ public class Gestion_EDT extends Thread {
 		return liste_cours;
 	}
 	
-	private void visualiser_EDT(Signal methode,Jours Semaine) throws IOException
+	private void visualiser_EDT(Signal methode,Jours Semaine) throws Exception
 	{
 		Vector<Vector<Cours>> liste_cours = recuperer_EDT(methode);
 		

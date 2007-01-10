@@ -395,7 +395,7 @@ public class Gestion_BDD {
 		racine.addContent(inspecteurs);
 		Element enseignants = new Element("enseignants");
 		racine.addContent(enseignants);
-		sauvegardeUtilisateurs(inspecteurs, enseignants);
+		sauvegardeUtilisateurs(inspecteurs, enseignants,utilisateurs,false);
 		
 		//Ajout des promotions
 		Element etudiants = new Element("étudiants");
@@ -558,13 +558,13 @@ public class Gestion_BDD {
 		return etudiants.substring(0, etudiants.length()-1);
 	}
 
-	private void sauvegardeUtilisateurs(Element inspecteurs, Element enseignants) {
-		for (int i=0; i<utilisateurs.size(); i++)
+	public static void sauvegardeUtilisateurs(Element inspecteurs, Element enseignants, Vector<Personne> listeUtilisateurs, Boolean email) {
+		for (int i=0; i<listeUtilisateurs.size(); i++)
 		{
-			if(utilisateurs.elementAt(i).getClass()==Responsable.class)
+			if(listeUtilisateurs.elementAt(i).getClass()==Responsable.class)
 			{
 				//Création du responsable
-				Responsable resp = (Responsable)utilisateurs.elementAt(i);
+				Responsable resp = (Responsable)listeUtilisateurs.elementAt(i);
 				Element inspecteur = new Element("inspecteur");
 				Attribute id = new Attribute("id",resp.getNum_personne());
 				Attribute promotion = new Attribute("promotion",resp.getPromo().getNom_promotion());
@@ -581,20 +581,24 @@ public class Gestion_BDD {
 				Element mel = new Element("mél");
 				mel.setText(resp.getEmail());
 				inspecteur.addContent(mel);
-				Element login = new Element("login");
-				login.setText(resp.getUsername());
-				inspecteur.addContent(login);
-				Element pass = new Element("pass");
-				pass.setText(resp.getPassword());
-				inspecteur.addContent(pass);
+				if(!email)
+				{
+					Element login = new Element("login");
+					login.setText(resp.getUsername());
+					inspecteur.addContent(login);
+					Element pass = new Element("pass");
+					pass.setText(resp.getPassword());
+					inspecteur.addContent(pass);
+				}
+				
 				
 				//Ajout du responsable
 				inspecteurs.addContent(inspecteur);
 			}
-			else if (utilisateurs.elementAt(i).getClass()==Enseignant.class)
+			else if (listeUtilisateurs.elementAt(i).getClass()==Enseignant.class)
 			{
 				//création de l enseignant
-				Enseignant ens = (Enseignant)utilisateurs.elementAt(i);
+				Enseignant ens = (Enseignant)listeUtilisateurs.elementAt(i);
 				Element enseignant = new Element("enseignant");
 				Attribute id = new Attribute("id",ens.getNum_personne());
 				
@@ -609,12 +613,16 @@ public class Gestion_BDD {
 				Element mel = new Element("mél");
 				mel.setText(ens.getEmail());
 				enseignant.addContent(mel);
-				Element login = new Element("login");
-				login.setText(ens.getUsername());
-				enseignant.addContent(login);
-				Element pass = new Element("pass");
-				pass.setText(ens.getPassword());
-				enseignant.addContent(pass);
+				
+				if(!email)
+				{
+					Element login = new Element("login");
+					login.setText(ens.getUsername());
+					enseignant.addContent(login);
+					Element pass = new Element("pass");
+					pass.setText(ens.getPassword());
+					enseignant.addContent(pass);
+				}
 				
 				//Ajout de l'enseignant
 				enseignants.addContent(enseignant);
@@ -703,7 +711,7 @@ public class Gestion_BDD {
 	 * @return
 	 * @throws Exception
 	 */
-	private Groupe getGroupe(String name) throws Exception
+	public Groupe getGroupe(String name) throws Exception
 	{
 		Groupe gp= null;
 		boolean trouve = false;
@@ -764,7 +772,7 @@ public class Gestion_BDD {
 		return enseignant;
 	}
 
-	private Salle getSalle(String name) throws Exception
+	public Salle getSalle(String name) throws Exception
 	{
 		Salle s= null;
 		boolean trouve = false;
@@ -782,7 +790,7 @@ public class Gestion_BDD {
 		return s;
 	}
 
-	private Matiere getMatiere(String name) throws Exception
+	public Matiere getMatiere(String name) throws Exception
 	{
 		Matiere mat= null;
 		boolean trouve = false;
@@ -799,6 +807,7 @@ public class Gestion_BDD {
 		if(!trouve) throw new Exception("Matiere inexistante");
 		return mat;
 	}
+
 	
 	/**
 	 * @return Retourne les utilisateurs.
@@ -971,6 +980,7 @@ public class Gestion_BDD {
 						throw new Exception("Probleme de créneau");
 					}
 					pos=pos+1;
+					break;
 				}
 			}			
 				
@@ -1084,6 +1094,8 @@ public class Gestion_BDD {
 		}
 		return liste_personne;
 	}
+	
+	
 	
 //==============================================================
 //  Fonctions de chargement et de sauvegarde de la base 

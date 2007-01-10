@@ -86,6 +86,25 @@ public class Client {
 		}
 	}
 	
+	public void Choisir_EDT(int type)
+	{
+		Signal s = new Signal("Choisir_EDT");
+		s.addParametre(type);
+		try {
+			Signaler(s);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public Vector<Personne> Recuperer_Email() throws IOException, ClassNotFoundException
+	{
+		Signal s = new Signal("Recuperer_Email");
+		Signaler(s);
+		return ((Vector<Personne>)(in.readObject()));
+	}
+	
 	public Boolean Connexion(String login, String mdp) throws IOException, ClassNotFoundException
 	{
 		Signal s = new Signal("Connexion");
@@ -110,7 +129,25 @@ public class Client {
 		s.addParametre(ens);
 		Signaler(s);
 		
-		return ((Boolean)in.readObject());
+		Boolean ok = ((Boolean)in.readObject());
+		if(!ok){Exception e=((Exception)in.readObject());}
+		
+		return ok;
+	}
+	
+	public Boolean Ajouter_Cours(String matiere, String salle, Creneau creneau, String groupe) throws Exception {
+		Signal s = new Signal("Saisir_EDT2");
+		
+		s.addParametre(matiere);
+		s.addParametre(salle);
+		s.addParametre(creneau);
+		s.addParametre(groupe);
+		Signaler(s);
+		
+		Boolean ok = ((Boolean)in.readObject());
+		if(!ok) throw ((Exception)in.readObject());
+		return ok;
+		
 	}
 	public Boolean Envoi_email(String email, String sujet, String Message) throws IOException, ClassNotFoundException {
 		Signal s = new Signal("envoi_email");
@@ -176,5 +213,7 @@ public class Client {
 		}
 		
 	}
+
+	
 
 }
