@@ -370,13 +370,8 @@ public class Gestion_BDD {
 			Element courant = (Element)i.next();
 			Creneau c = new Creneau(courant.getAttributeValue("date"), courant.getAttributeValue("heure"), courant.getAttributeValue("durée"));
 			Salle s = getSalle(courant.getAttributeValue("salle"));
-			
-			Groupe gp=null;
-			String groupe = courant.getAttributeValue("groupe");
-			if(groupe.compareTo("")!=0)gp = getGroupe(groupe);
-			Matiere mat=null;
-			String matiere = courant.getAttributeValue("matière");
-			if(groupe.compareTo("")!=0) mat = getMatiere(matiere);
+			Groupe gp = getGroupe(courant.getAttributeValue("groupe"));
+			Matiere mat = getMatiere(courant.getAttributeValue("matière"));
 
 			addCours(new Cours(c,s,gp,mat));		
 		}
@@ -446,12 +441,8 @@ public class Gestion_BDD {
 			reservation.setAttribute("heure", c.getCreneau().heure());
 			reservation.setAttribute("durée", c.getCreneau().duree());
 			reservation.setAttribute("salle", c.getSalle().getNom_salle());
-			String gp ="";
-			if(c.getGroupe()!=null)gp= c.getGroupe().getnum_groupe();
-			reservation.setAttribute("groupe", gp);
-			String mat ="";
-			if(c.getMatiere()!=null)mat= c.getMatiere().getNum_matiere();
-			reservation.setAttribute("matière", mat);
+			reservation.setAttribute("groupe", c.getGroupe().getnum_groupe());
+			reservation.setAttribute("matière", c.getMatiere().getNum_matiere());
 			
 			edt.addContent(reservation);
 		}
@@ -945,11 +936,7 @@ public class Gestion_BDD {
 				case Creneau.APRES : pos=deb;break;
 				case Creneau.ERREUR : 
 				{
-					boolean ok= true;
-					
-					ok = ( ok && c.getGroupe()!=null && !c.getGroupe().egal(cours.elementAt(deb).getGroupe()));
-					ok = (ok && c.getEnseignant()!=null && !c.getEnseignant().egal(cours.elementAt(deb).getEnseignant()));
-					if(!ok || c.getSalle().egal(cours.elementAt(deb).getSalle()))
+					if(c.getGroupe().egal(cours.elementAt(deb).getGroupe()) || c.getSalle().egal(cours.elementAt(deb).getSalle()) || c.getEnseignant().egal(cours.elementAt(deb).getEnseignant()))
 					{
 						throw new Exception("Probleme de créneau");
 					}
@@ -971,12 +958,8 @@ public class Gestion_BDD {
 				case Creneau.APRES : pos = cherchePosition2(c,deb,pos-deb);break;
 				case Creneau.ERREUR : 
 				{
-					boolean ok= true;
-					
-					ok = ( ok && c.getGroupe()!=null && !c.getGroupe().egal(cours.elementAt(pos).getGroupe()));
-					ok = (ok && c.getEnseignant()!=null && !c.getEnseignant().egal(cours.elementAt(pos).getEnseignant()));
-					if(!ok || c.getSalle().egal(cours.elementAt(pos).getSalle()))
-					{
+					if(c.getGroupe().egal(cours.elementAt(pos).getGroupe()) || c.getSalle().egal(cours.elementAt(pos).getSalle()) || c.getEnseignant().egal(cours.elementAt(pos).getEnseignant()))
+						{
 						throw new Exception("Probleme de créneau");
 					}
 					pos=pos+1;
@@ -1233,7 +1216,18 @@ public class Gestion_BDD {
 
 	
 	public Boolean supprime_cours(Cours cours2) {
-		return cours.remove(cours2);
+		boolean ok = false;
+		int i = 0;
+		while(i<cours.size() && !ok)
+		{
+			if(cours.elementAt(i).equals(cours2))
+			{
+				ok = cours.remove(cours.elementAt(i));
+			}
+			i++;
+		}
+		
+		return ok; 
 	}
 
 
