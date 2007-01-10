@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<traceSéquenceTest>
+<initialiserBase>true</initialiserBase>
+<créerSession idSession='sessionBlancheNeige' login='blanche' pass='neige'>true</créerSession>
+<estOuverte idSession='sessionBlancheNeige'>true</estOuverte>
+<fermerSession idSession='sessionBlancheNeige'></fermerSession>
+<sauvegarderBase><?xml version="1.0" encoding="UTF-8"?><bdedt>
+    <inspecteurs>
+     <inspecteur id="i1" promotion="2006-GI-4">
+      <nom>Blanche</nom><prÃ©nom>Neige</prÃ©nom><mÃ©l>BlancheNeige@insa-tlse.fr</mÃ©l><login>blanche</login><pass>neige</pass></inspecteur>
+    </inspecteurs>
+    <enseignants>
+    </enseignants>
+    <Ã©tudiants>
+     <promotion id="2006-GI-4">
+     </promotion>
+    </Ã©tudiants>
+    <groupes>
+    </groupes>
+    <matiÃ¨res>
+    </matiÃ¨res>
+    <salles>
+     <salle id="GEI-110" taille="24" type="tp"/>
+    </salles>
+    <edt>
+    </edt></bdedt></sauvegarderBase>
+<initialiserBase>true</initialiserBase>
+<créerSession idSession='sessionBlancheNeige' login='blanche' pass='neige'>true</créerSession>
+<estOuverte idSession='sessionBlancheNeige'>true</estOuverte>
+<getEdt idSession='sessionBlancheNeige'><?xml version="1.0" encoding="UTF-8"?>
+<edt />
+
+</getEdt>
+<créerSession idSession='sessionSimplet' login='simplet' pass='simp'>true</créerSession>
+<getEdt idSession='sessionSimplet' promo='2006-GI-4'>exception java.lang.Exception: Aucune connexion ouverte</getEdt>
+<getEdt idSession='sessionSimplet'>exception java.lang.Exception: Aucune connexion ouverte</getEdt>
+<getEdt idSession='sessionBlancheNeige'><?xml version="1.0" encoding="UTF-8"?>
+<edt />
+
+</getEdt>
+<getRéservation idSession='s1' salle='Fourier'>exception java.lang.NullPointerException</getRéservation>
+<setRéservation idSession='sessionBlancheNeige' date='28/10/2006' heure='10:00' durée='1h15' salle='Fourier' groupe='55' matière='me5-1'>exception java.lang.Exception: Creation creneau : Erreur format duree</setRéservation>
+<getEmail idSession='sessionSimplet'>exception java.lang.Exception: Aucune connexion ouverte</getEmail>
+<fermerSession idSession='sessionSimplet'>exception java.lang.Exception: Connexion déja fermer</fermerSession>
+<fermerSession idSession='sessionBlancheNeige'></fermerSession>
+<estOuverte idSession='sessionBlancheNeige'>true</estOuverte>
+<sauvegarderBase><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bdedt SYSTEM "bdedt.dtd">
+
+<bdedt>
+  <inspecteurs>
+    <inspecteur id="i1" promotion="2006-GI-4">
+      <nom>Blanche</nom>
+      <prÃ©nom>Neige</prÃ©nom>
+      <mÃ©l>BlancheNeige@insa-tlse.fr</mÃ©l>
+      <login>blanche</login>
+      <pass>neige</pass>
+    </inspecteur>
+    <inspecteur id="i1" promotion="2006-GI-4">
+      <nom>Blanche</nom>
+      <prÃ©nom>Neige</prÃ©nom>
+      <mÃ©l>BlancheNeige@insa-tlse.fr</mÃ©l>
+      <login>blanche</login>
+      <pass>neige</pass>
+    </inspecteur>
+  </inspecteurs>
+  <enseignants />
+  <Ã©tudiants>
+    <promotion id="2006-GI-4" />
+    <promotion id="2006-GI-4" />
+  </Ã©tudiants>
+  <groupes />
+  <matiÃ¨res />
+  <salles>
+    <salle id="GEI-110" taille="24" type="tp" />
+    <salle id="GEI-110" taille="24" type="tp" />
+  </salles>
+  <edt />
+</bdedt>
+
+</sauvegarderBase>
+</traceSéquenceTest>

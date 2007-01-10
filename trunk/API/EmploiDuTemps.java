@@ -15,7 +15,7 @@ import Interfaces.Interface_Connexion;
 import Systeme.*;
 
 public class EmploiDuTemps implements Edt {
-	
+	private Gestion_BDD bd; 
 	private static final String fichierXml ="XML/bdedtApi.xml"; 
 	/**
 	 * 
@@ -23,14 +23,17 @@ public class EmploiDuTemps implements Edt {
 	public EmploiDuTemps() {
 		//On lance le serveur
 		Serveur.lanceServeur();
+		System.out.println("lancement serveur");
 	}
 
 	public Session créerSession(String login, String pass) {
+		System.out.println("creerSession");
 		Client c = null;
 		boolean ok = false;
 		try {
 			c = new Client();
 			ok=c.Connexion(login, pass);
+			if(ok)System.out.println("Client : "+login+" connecté");
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,6 +48,7 @@ public class EmploiDuTemps implements Edt {
 	}
 
 	public boolean initialiserBase(InputStream inStreamXML) {
+		System.out.println("InitialiserBase");
 		boolean ok = true;
 		try {
 			//On ecrit dans le fichier utiliser au chargement de la bdd
@@ -53,8 +57,14 @@ public class EmploiDuTemps implements Edt {
 			fichier.createNewFile();
 			
 			FileOutputStream fos = new FileOutputStream(fichier);
-			fos.write(inStreamXML.read());
+			while(inStreamXML.available()>0) fos.write(inStreamXML.read());
+			bd= Gestion_BDD.getInstance();
+			bd.chargement();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			ok= false;
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			ok= false;
@@ -63,6 +73,7 @@ public class EmploiDuTemps implements Edt {
 	}
 
 	public boolean sauvegarderBase(OutputStream outStreamXML){
+		System.out.println("sauvegarderBase");
 		boolean ok = true; 
 		File fichier = new File(fichierXml);
 		if(!fichier.exists())
@@ -74,7 +85,7 @@ public class EmploiDuTemps implements Edt {
 		{
 			try {
 				FileInputStream fis = new FileInputStream(fichier);
-				outStreamXML.write(fis.read());
+				while(fis.available()>0)outStreamXML.write(fis.read());
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
