@@ -27,7 +27,7 @@ public class Cours implements Serializable{
 		this.groupe = groupe;
 		this.matiere = matiere;
 		this.enseignant = null;
-		configureEnseignant();
+		if(groupe!=null)configureEnseignant();
 	}
 	
 	/**
