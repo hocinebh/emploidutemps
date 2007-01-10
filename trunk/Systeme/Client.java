@@ -119,6 +119,16 @@ public class Client {
 		return ok;
 	}
 	
+	public Boolean Supprimer_cours(Cours cours_a_supprimer) throws IOException, ClassNotFoundException
+	{
+		Signal s = new Signal("Supprimer_EDT");
+		
+		s.addParametre(cours_a_supprimer);
+		Signaler(s);
+
+		return (Boolean)in.readObject();
+	}
+	
 	public Boolean Ajouter_Cours(Matiere mat, Salle salle, Creneau cren, Groupe gp, Enseignant ens) throws IOException, ClassNotFoundException{
 		Signal s = new Signal("Saisir_EDT");
 		
