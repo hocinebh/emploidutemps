@@ -30,7 +30,7 @@ public class EmploiDuTemps implements Edt {
 		boolean ok = false;
 		try {
 			c = new Client();
-			ok=true;
+			ok=c.Connexion(login, pass);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,7 +95,7 @@ public class EmploiDuTemps implements Edt {
 		
 		try {
 			OutputStream outStreamXML = new FileOutputStream("XML/testEdt.xml");
-			s.getEDT(outStreamXML);
+			s.getEDT(outStreamXML,"4RT");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -97,6 +97,10 @@ public class Gestion_EDT extends Thread {
 		}
 		else if(methode.getNom().compareTo("recuperer_EDT")==0)
 		{
+			out.writeObject(this.recuperer_EDT(methode));
+		}
+		else if(methode.getNom().compareTo("recuperer_EDT_Promo")==0)
+		{
 			Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
 			Responsable resp;
 			try {
@@ -278,7 +282,7 @@ public class Gestion_EDT extends Thread {
 		} */
 	}
 
-	private void visualiser_EDT(Signal methode,Jours Semaine) throws IOException
+	private Vector<Vector<Cours>> recuperer_EDT(Signal methode)
 	{
 		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
 		
@@ -304,6 +308,13 @@ public class Gestion_EDT extends Thread {
 				break;
 			}
 		}
+		
+		return liste_cours;
+	}
+	
+	private void visualiser_EDT(Signal methode,Jours Semaine) throws IOException
+	{
+		Vector<Vector<Cours>> liste_cours = recuperer_EDT(methode);
 		
 		/* on recupere seulement ceux de la semaine desiree */
 		Vector<Vector<Cours>> tabCours = new Vector<Vector<Cours>>();
