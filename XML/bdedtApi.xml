@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bdedt SYSTEM "bdedt.dtd">
+
+<bdedt>
+  <inspecteurs>
+    <inspecteur id="i1" promotion="2006-GI-4">
+      <nom>Blanche</nom>
+      <prénom>Neige</prénom>
+      <mél>BlancheNeige@insa-tlse.fr</mél>
+      <login>blanche</login>
+      <pass>neige</pass>
+    </inspecteur>
+    <inspecteur id="i1" promotion="2006-GI-4">
+      <nom>Blanche</nom>
+      <prénom>Neige</prénom>
+      <mél>BlancheNeige@insa-tlse.fr</mél>
+      <login>blanche</login>
+      <pass>neige</pass>
+    </inspecteur>
+  </inspecteurs>
+  <enseignants />
+  <étudiants>
+    <promotion id="2006-GI-4" />
+    <promotion id="2006-GI-4" />
+  </étudiants>
+  <groupes />
+  <matières />
+  <salles>
+    <salle id="GEI-110" taille="24" type="tp" />
+    <salle id="GEI-110" taille="24" type="tp" />
+  </salles>
+  <edt />
+</bdedt>
+

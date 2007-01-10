@@ -29,7 +29,6 @@ public class Serveur extends Thread{
 	{
 		try{
 		    ServerSocket ses = new ServerSocket(port);
-		    Gestion_BDD.getInstance();
 		    System.out.println("serveur socket creer");
 		     while(true)
 		     {     

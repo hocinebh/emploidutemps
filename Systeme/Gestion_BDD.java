@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.sql.Time;
 import java.util.*;
 import org.jdom.*;
@@ -27,12 +28,13 @@ import bdd.*;
 public class Gestion_BDD {
 
 	//Definition des constantes
-	private static final String ficXml ="XML/bdedt2.xml";
-	private static final String ficXml2 ="XML/bdedt2.xml";
+	private static final String ficXml ="XML/bdedtApi.xml";
+	private static final String ficXml2 ="XML/bdedtApi.xml";
 	private static final String nomDtd = "bdedt";
 	private static final String ficSauvegarde = "tmp/system";
 	
 	//Definition des attributs
+	private SAXBuilder sxb;
 	private File fichier;
 	private org.jdom.Document document;
 	private Element racine;
@@ -69,19 +71,12 @@ public class Gestion_BDD {
 		matieres = new Vector<Matiere>();
 		
 		//SAXBuilder sxb = new SAXBuilder(true);
-		SAXBuilder sxb = new SAXBuilder();
+		sxb = new SAXBuilder();
 		sxb.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 		
 		if(chargeXml)
 		{
-			try {
-				document = sxb.build(new File(ficXml));
-				System.out.println("Création du jdom");
-				
-				//On initialise un nouvel élément racine avec 
-				//l'élément racine du document .
-				racine = document.getRootElement();
-				
+			try {				
 				//affiche();
 								
 				System.out.println("debut du chargement");
@@ -99,7 +94,7 @@ public class Gestion_BDD {
 		    } 
 		    catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		else
@@ -145,15 +140,23 @@ public class Gestion_BDD {
 	 * Fonction qui charge le document xml dans la bdd
 	 */
 	
-	private void chargement() throws Exception
+	public void chargement() throws Exception
 	{
+		document = sxb.build(new File(ficXml));
+		System.out.println("Création du jdom");
+		
+		//On initialise un nouvel élément racine avec 
+		//l'élément racine du document .
+		racine = document.getRootElement();
+		
 		chargePromotion(racine.getChild("étudiants").getChildren());
 		chargeResp(racine.getChild("inspecteurs").getChildren());
 		chargeEns(racine.getChild("enseignants").getChildren());
 		chargeGroupes(racine.getChild("groupes").getChildren());
 		chargeMatieres(racine.getChild("matières").getChildren());
 		chargeSalles(racine.getChild("salles").getChildren());
-		chargeEdt(racine.getChild("edt").getChildren());		
+		chargeEdt(racine.getChild("edt").getChildren());
+		Gestion_BDD.afficheXML(this.document);
 	}
 	
 	/**
@@ -915,6 +918,14 @@ public class Gestion_BDD {
 		return ok;
 	}
 
+	/**
+	 * Fonction qui indique la position ou inserer le cours
+	 * @param c
+	 * @param deb
+	 * @param nbElts
+	 * @return la position a laquelle inserer le cours
+	 * @throws Exception
+	 */
 	private int cherchePosition2(Cours c, int deb, int nbElts) throws Exception
 	{
 		int pos=0;
@@ -972,77 +983,6 @@ public class Gestion_BDD {
 		return pos;
 	}
 	
-	/**
-	 * Fonction qui indique la position ou inserer le cours
-	 * @param c
-	 * @param deb
-	 * @param fin
-	 * @return la position
-	 * @throws Exception 
-	 */
-	private int cherchePosition(Cours c, int deb, int fin) throws Exception
-	{
-		fin--;
-		int pos=0;
-		System.out.println("deb: "+deb +" et fin: "+fin);
-		if(fin==deb)
-		{
-			System.out.println("date du cours a inserer "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			System.out.println("date du cours au debut "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
-			switch(c.getCreneau().compare(cours.elementAt(deb).getCreneau()))
-			{
-				case Creneau.AVANT : pos=deb;break;
-				case Creneau.APRES : 
-				{
-					pos=deb+1;
-						
-					break;
-				}
-				case Creneau.ERREUR : 
-				{
-					if(c.getGroupe()==cours.elementAt(deb).getGroupe() || c.getSalle()==cours.elementAt(deb).getSalle())
-					{
-						throw new Exception("Probleme de créneau");
-					}
-					pos= deb+1;
-				}
-			}
-		}
-		else
-		{
-			pos = (fin+deb)/2;
-
-			System.out.println("deb("+deb+") "+cours.elementAt(deb).getCreneau().date()+" "+cours.elementAt(deb).getCreneau().heure());
-			System.out.println("c "+c.getCreneau().date()+" "+c.getCreneau().heure());
-			System.out.println("pos ("+pos+")" +cours.elementAt(pos).getCreneau().date()+" "+cours.elementAt(pos).getCreneau().heure());
-			System.out.println("fin("+fin+")" +cours.elementAt(fin).getCreneau().date()+" "+cours.elementAt(fin).getCreneau().heure());
-			switch(c.getCreneau().compare(cours.elementAt(pos).getCreneau()))
-			{
-				case Creneau.AVANT : pos=cherchePosition(c,deb, pos);break;
-				case Creneau.ERREUR : 
-				{
-					if(c.getGroupe()==cours.elementAt(deb).getGroupe() || c.getSalle()==cours.elementAt(deb).getSalle())
-					{
-						throw new Exception("Probleme de créneau");
-					}
-					pos=pos+1;
-				}
-				case Creneau.APRES : 
-				{
-					if((pos+1)<(fin))
-					{
-						pos=cherchePosition(c,pos+1, fin+1);
-					}
-					else pos++;
-					break;
-					
-				}
-				default:break;
-			}			
-				
-		}
-		return pos;
-	}
 	
 	public Vector<Personne> getRespEns() {
 		Vector<Personne> liste_personne = getResp();
@@ -1171,6 +1111,8 @@ public class Gestion_BDD {
 		Gestion_BDD bd = Gestion_BDD.getInstance(true);
 		bd.testAffiche();
 		//System.out.println("====================================================");
+		System.out.println("Encoding par défaut : "+Charset.defaultCharset()); 
+		
 		bd.sauvegarde();
 		try {
 			bd.sauveBDD();
