@@ -23,11 +23,11 @@ public class EmploiDuTemps implements Edt {
 	public EmploiDuTemps() {
 		//On lance le serveur
 		Serveur.lanceServeur();
-		System.out.println("lancement serveur");
+		//System.out.println("lancement serveur");
 	}
 
 	public Session créerSession(String login, String pass) {
-		System.out.println("creerSession");
+		//System.out.println("creerSession");
 		Client c = null;
 		boolean ok = false;
 		try {
@@ -48,7 +48,7 @@ public class EmploiDuTemps implements Edt {
 	}
 
 	public boolean initialiserBase(InputStream inStreamXML) {
-		System.out.println("InitialiserBase");
+		//System.out.println("InitialiserBase");
 		boolean ok = true;
 		try {
 			//On ecrit dans le fichier utiliser au chargement de la bdd
@@ -73,7 +73,7 @@ public class EmploiDuTemps implements Edt {
 	}
 
 	public boolean sauvegarderBase(OutputStream outStreamXML){
-		System.out.println("sauvegarderBase");
+		//System.out.println("sauvegarderBase");
 		boolean ok = true; 
 		File fichier = new File(fichierXml);
 		if(!fichier.exists())
@@ -102,7 +102,7 @@ public class EmploiDuTemps implements Edt {
 	public static void main(String[] args)
 	{
 		EmploiDuTemps edt = new EmploiDuTemps();
-		Session s= edt.créerSession("tvo_than", "toto2"); 
+		Session s= edt.créerSession("blanche", "neige"); 
 		
 		try {
 			OutputStream outStreamXML = new FileOutputStream("XML/testEdt.xml");
