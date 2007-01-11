@@ -719,7 +719,7 @@ public class Gestion_BDD {
 				trouve = true;
 			}
 		}
-		if(!trouve) throw new Exception("Groupe inexistant");
+		if(!trouve) throw new Exception("Groupe inexistant: " +name);
 		return gp;
 	}
 	
@@ -971,7 +971,7 @@ public class Gestion_BDD {
 				{
 					if(c.getGroupe().egal(cours.elementAt(pos).getGroupe()) || c.getSalle().egal(cours.elementAt(pos).getSalle()) || c.getEnseignant().egal(cours.elementAt(pos).getEnseignant()))
 						{
-						throw new Exception("Probleme de créneau");
+						throw new Exception("Probleme de créneau: "+c);
 					}
 					pos=pos+1;
 					break;
