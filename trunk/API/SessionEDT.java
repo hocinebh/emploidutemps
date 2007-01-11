@@ -76,7 +76,7 @@ public class SessionEDT implements Session {
 		      //On utilise ici un affichage classique avec getPrettyFormat()
 		      XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
 		      sortie.output(document, outStreamXML);
-		      //Gestion_BDD.afficheXML(document);
+		      Gestion_BDD.afficheXML(document);
 		   }
 		   catch (java.io.IOException e){e.printStackTrace();}
 	}
@@ -108,7 +108,7 @@ public class SessionEDT implements Session {
 		      //On utilise ici un affichage classique avec getPrettyFormat()
 		      XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
 		      sortie.output(document, outStreamXML);
-		      //Gestion_BDD.afficheXML(document);
+		      Gestion_BDD.afficheXML(document);
 		   }
 		   catch (java.io.IOException e){e.printStackTrace();}
 

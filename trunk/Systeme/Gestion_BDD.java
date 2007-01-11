@@ -28,7 +28,7 @@ import bdd.*;
 public class Gestion_BDD {
 
 	//Definition des constantes
-	private static final String ficXml ="XML/bdedtApi.xml";
+	private static final String ficXml ="XML/bdedt3.xml";
 	private static final String ficXml2 ="XML/bdedtApi.xml";
 	private static final String nomDtd = "bdedt";
 	private static final String ficSauvegarde = "tmp/system";
@@ -79,7 +79,7 @@ public class Gestion_BDD {
 			try {				
 				//affiche();
 								
-				System.out.println("debut du chargement");
+				//System.out.println("debut du chargement");
 				//Chargement du fichier xml
 				chargement();			
 			 }
@@ -94,7 +94,7 @@ public class Gestion_BDD {
 		    } 
 		    catch (Exception e) {
 				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 		else
@@ -143,7 +143,7 @@ public class Gestion_BDD {
 	public void chargement() throws Exception
 	{
 		document = sxb.build(new File(ficXml));
-		System.out.println("Création du jdom");
+		//System.out.println("Création du jdom");
 		
 		//On initialise un nouvel élément racine avec 
 		//l'élément racine du document .
@@ -156,7 +156,7 @@ public class Gestion_BDD {
 		chargeMatieres(racine.getChild("matières").getChildren());
 		chargeSalles(racine.getChild("salles").getChildren());
 		chargeEdt(racine.getChild("edt").getChildren());
-		Gestion_BDD.afficheXML(this.document);
+		//Gestion_BDD.afficheXML(this.document);
 	}
 	
 	/**
@@ -1080,14 +1080,14 @@ public class Gestion_BDD {
 	public void testAffiche()
 	{
 		//Vérifications a retirer par la suite
-		/*System.out.println("Fin chargement");
+		System.out.println("Fin chargement");
 		System.out.println(this.utilisateurs.size()+" utilisateurs");
 		System.out.println(this.promotions.size()+" promotions");
 		System.out.println(this.groupes.size()+" groupes");
 		System.out.println(this.matieres.size()+" matieres");
 		System.out.println(this.cours.size()+" cours");
 		System.out.println(this.salles.size()+" salles");
-		afficheObjets(utilisateurs);*/
+		afficheObjets(utilisateurs);
 		afficheObjets(cours);
 	}
 	
