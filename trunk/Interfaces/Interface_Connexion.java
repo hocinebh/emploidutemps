@@ -8,8 +8,9 @@ import javax.swing.*;
 
 import Systeme.*;
 /**
- * 
- * @author Alexander Remen
+ * Interface graphique de connexion au serveur
+ * @author Alexander Remen et Tonya Vo Thanh
+ * Classe qui s'occuppe 
  *
  */
 public class Interface_Connexion {

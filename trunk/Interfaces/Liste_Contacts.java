@@ -11,9 +11,11 @@ import bdd.Personne;
 
 import Systeme.Client;
 /**
- * 
- * @author Alexander Remen
- *
+ * Interface graphique d'envoi d'email
+ * @author Alexander Remen et Tonya Vo Thanh
+ * Cette classe devrait être instanciée en même temps que la classe {@link Interface_EDT} car elle n'est que caché lorsqu'elle n'est pas visible.
+ * Ceci fait que lorsque l'utilisateur appuye sur "Envoi email" sur l'{@link Interface_EDT} elle met {@code setVisible=true} 
+ * @see Client
  */
 public class Liste_Contacts {
 
@@ -21,17 +23,19 @@ public class Liste_Contacts {
 	private JTextField Sujet = new JTextField(35);
 	private JTextArea Message= new JTextArea("",20,37);
 
+
 	/**
-     * Centre la fenetre au milieu de l'ecran
-     * @param frame - la fenetre
+     * Afficher la fenetre d'envoi d'email
      */
-	
 	public void affiche_interface_mail(){
 		
 		fenetre.setVisible(true);
 		
 	}
-
+	/**
+     * Centre la fenetre au milieu de l'ecran
+     * @param frame - la fenetre
+     */
 	private static void centerFrame(JFrame frame) {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   Dimension frameSize = frame.getSize();
@@ -39,8 +43,9 @@ public class Liste_Contacts {
 	}
 	
 	/**
-	 * 
-	 * @param liste_emails_nom - liste de tous les emails auxquels la personne peut envoyer
+	 * @param liste_emails_nom - Vecteur de personnes auxquels on veut envoyer un mail
+	 * @param Classeclient - Le client qui a crée cette classe
+	 * @see Personne Client
 	 */
 	public void Init_fenetre_mail(Vector<Personne>liste_emails_nom,final Client Classeclient) {	
 		fenetre.setTitle("Envoyer un message");
