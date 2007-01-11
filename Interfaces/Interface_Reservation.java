@@ -17,13 +17,18 @@ import com.toedter.calendar.*;
 import Systeme.Client;
 import bdd.*;
 /**
- * 
- * @author Alexander Remen
- *
+ * Interface graphique reservation de cours
+ * @author Alexander Remen et Tonya Vo Thanh
+ * <p>Classe qui gere la reservation de cours:
+ * <ul>
+ * <li>Ajout d'un cours</li>
+ * <li>Suppression d'un cours</li>
+ * <li>Modification d'un cours</li> 
+ * </ul>
+ * </p>
  */
 public class Interface_Reservation {
 
-	
 	private final SimpleDateFormat formatjour =  new SimpleDateFormat("dd/MM/yyyy",new Locale("fr","FR"));
 	private Client Classeclient;
 	private Vector[] table;
@@ -125,7 +130,7 @@ public class Interface_Reservation {
 			i++;
 		}
 	}
-	/**
+	/*
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
      */
@@ -133,7 +138,12 @@ public class Interface_Reservation {
 	   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	   frame.setLocation((screenSize.width / 2) + (420-105), (screenSize.height / 2) - 300);
 	}
-	
+	/**
+	 * Cette methode affiche l'interface reservation. En parametre elle doit avoir la classe client qui l'a crée (normalement crée par un client)
+	 * parce qu'elle fait appelle a de nombreuses methodes dans la classe client pour envoyer des signaux au serveur par TCP/IP.
+	 *   
+	 * @param classeclient - Client qui crée la classe Interface_Reservation
+	 */
 	public void Affiche_Interface_Reservation(Client classeclient){
 		Classeclient = classeclient;
 		update_comboboxes();

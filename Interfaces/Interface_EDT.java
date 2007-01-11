@@ -14,10 +14,12 @@ import bdd.*;
 
 import java.util.*;
 /**
- * 
- * @author Alexander Remen
- *
+ * Interface graphique emploi du temps
+ * @author Alexander Remen et Tonya Vo Thanh
+ * <p>Classe qui affiche l'emploi du temps et permet de naviguer vers les semaines précédentes et les semaines suivantes.
+ * A partir du menu on peut aussi acceder à l'interface graphique d'un envoi d'un mél.</p>
  */
+
 public class Interface_EDT {
 	
 	public GregorianCalendar maintenant = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -138,8 +140,9 @@ public class Interface_EDT {
 	}
 
 	/**
-	 * @param
-	 * 
+	 * Méthode utilisé pour actualiser et pour changer de semaine. On lui passe une classe Jours 
+	 * @param Semaine - les jours que l'on veut afficher dans l'interface graphique
+	 * @see Jours
 	 */
 	public void afficher_contenu(Jours Semaine){
 		//On efface le contenu dans les panels
@@ -197,7 +200,7 @@ public class Interface_EDT {
 	
 	/**
 	 * 
-	 * @param Classeclient - La classe client qui instancie tout du cote client
+	 * @param notreClasseclient - La classe client qui instancie tout du cote client
 	 */
 	public void Afficher_EDT(Client notreClasseclient) {
 		Classeclient = notreClasseclient;

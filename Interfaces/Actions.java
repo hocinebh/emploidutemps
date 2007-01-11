@@ -10,10 +10,11 @@ import javax.swing.JOptionPane;
 import Systeme.*;
 
 /**
- * 
- * @author Alexander Remen
- *
- */public class Actions {
+ * Classe qui gere la fermeture des interfaces graphiques
+ * @author Tonya Vo Thanh et Alexander Remen
+ * Classe qui s'occuppe de l'action fermer de chaque interface graphique
+ */
+public class Actions {
 
 	private Client Classeclient;
 	
