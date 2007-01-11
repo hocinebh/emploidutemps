@@ -1,24 +1,26 @@
 package API;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.UnknownHostException;
-
 import be4gi.Edt;
 import be4gi.Session;
-import Interfaces.Interface_Connexion;
-import Systeme.*;
+import Systeme.Client;
+import Systeme.Gestion_BDD;
+import Systeme.Serveur;
 
+/**
+ * Classe EmploiDuTemps implementant l'interface EDT
+ * Elle permet l'utilisation de notre application Serveur-Client
+ * au travers des méthodes de l'interface EDT
+ * @author Alexander Remen et Tonya Vo Thanh
+ *
+ */
 public class EmploiDuTemps implements Edt {
 	private Gestion_BDD bd; 
 	private static final String fichierXml ="XML/bdedtApi.xml"; 
+
 	/**
-	 * 
+	 * Constructeur sans parametre qui lance le serveur
 	 */
 	public EmploiDuTemps() {
 		//On lance le serveur
@@ -26,6 +28,17 @@ public class EmploiDuTemps implements Edt {
 		//System.out.println("lancement serveur");
 	}
 
+	/**
+	 * Cette méthode permet d'ouvrir une session. Tout utilisateur (inspecteur des études,
+	 * enseignant, étudiant) peut ouvrir une session qui lui permettra d'effectuer des opérations
+	 * sur l'emploi du temps, à partir du moment où il a été correctement identifié. Dans le cas 
+	 * contraire, la création d'une session renverra la valeur null. Un même utilisateur doit
+	 * pouvoir ouvrir plusieurs sessions en même temps.
+	 * 
+	 * @param login pour identifier l'utilisateur
+	 * @param pass pour valider l'identification de l'utilisateur
+	 * @return la session ouverte ou null si l'identification n'a pu être faite.
+	 */
 	public Session créerSession(String login, String pass) {
 		//System.out.println("creerSession");
 		Client c = null;
@@ -33,7 +46,7 @@ public class EmploiDuTemps implements Edt {
 		try {
 			c = new Client();
 			ok=c.Connexion(login, pass);
-			if(ok)System.out.println("Client : "+login+" connecté");
+			//if(ok)System.out.println("Client : "+login+" connecté");
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,6 +60,12 @@ public class EmploiDuTemps implements Edt {
 		return new SessionEDT(ok, c);
 	}
 
+	/**
+	 * Cette méthode permet d'initialiser les données à partir d'un flux XML
+	 * valide suivant la dtd bdedt.dtd fournie dans le sujet du BE.
+	 * @param inStreamXML le flux XML valide suivant la dtd bdedt.dtd
+	 * @return vrai si les données ont été initialisées
+	 */
 	public boolean initialiserBase(InputStream inStreamXML) {
 		//System.out.println("InitialiserBase");
 		boolean ok = true;
@@ -72,13 +91,23 @@ public class EmploiDuTemps implements Edt {
 		return ok;
 	}
 
+	/**
+	 * Cette méthode permet d'obtenir l'ensemble des données sous forme d'un
+	 * flux XML valide suivant la dtd bdedt.dtd fournie dans le sujet du BE.
+	 * 
+	 * Le flux de sortie obtenue doit être compatible avec le flux d'entrée de
+	 * la méthode initialiserBase(Reader inStreamXML);
+	 * 
+	 * @param outStreamXML le writer dans lequel on sauvegardera les données
+	 * @return vrai si le writer a été correctement initialisé
+	 */
 	public boolean sauvegarderBase(OutputStream outStreamXML){
 		//System.out.println("sauvegarderBase");
 		boolean ok = true; 
 		File fichier = new File(fichierXml);
 		if(!fichier.exists())
 		{
-			System.out.println("Aucune base de données n'a été charger");
+			//System.out.println("Aucune base de données n'a été charger");
 			ok = false;
 		}
 		else
@@ -99,24 +128,4 @@ public class EmploiDuTemps implements Edt {
 		return ok;
 	}
 
-	public static void main(String[] args)
-	{
-		EmploiDuTemps edt = new EmploiDuTemps();
-		Session s= edt.créerSession("blanche", "neige"); 
-		
-		try {
-			OutputStream outStreamXML = new FileOutputStream("XML/testEdt.xml");
-			OutputStream outStreamXML2 = new FileOutputStream("XML/testEdt2.xml");
-			OutputStream outStreamXML3 = new FileOutputStream("XML/testEdt3.xml");
-			OutputStream outStreamXML4 = new FileOutputStream("XML/testEdt4.xml");
-			s.getEDT(outStreamXML);
-			s.getEDT(outStreamXML2,"4RT");
-			s.getEmail(outStreamXML3);
-			s.getRéservation(outStreamXML4, "3");
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

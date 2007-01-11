@@ -1,6 +1,5 @@
 package API;
 
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Vector;
@@ -14,6 +13,13 @@ import Systeme.*;
 import bdd.*;
 import be4gi.Session;
 
+/**
+ * Classe SessionEDT implementant l'interface Session
+ * Elle permet l'utilisation de notre application Serveur-Client
+ * au travers des méthodes de l'interface Session
+ * @author Alexander Remen et Tonya Vo Thanh
+ *
+ */
 public class SessionEDT implements Session {
 
 	private boolean ouverte;
@@ -54,7 +60,7 @@ public class SessionEDT implements Session {
 	 * à l'utilisateur associé à la session (si c'est un inspecteur d'étude, c'est l'emploi du 
 	 * temps de l'année dont il s'occupe.
 	 * 
-	 * Une exception est levée si l'utilisateur associé à la session n'a pas les droits requis
+	 * @throws Exception - levée si l'utilisateur associé à la session n'a pas les droits requis
 	 * pour une telle requête.
 	 */
 	public void getEDT(OutputStream outStreamXML) throws Exception {
