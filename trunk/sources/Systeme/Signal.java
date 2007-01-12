@@ -3,10 +3,18 @@ package Systeme;
 import java.io.Serializable;
 import java.util.Vector;
 
+/**
+ * Classe Signal utilisé pour l'envoi de signaux entre le client et le serveur 
+ * @author Alexander Remen et Tonya Vo Thanh
+ *
+ */
 public class Signal implements Serializable{
+	
 	private String nom;
 	private Vector parametres;
+	
 	/**
+	 * Constructeur d'un signal
 	 * @param nom
 	 */
 	public Signal(String nom) {
@@ -15,6 +23,7 @@ public class Signal implements Serializable{
 		this.parametres= new Vector();
 	}
 	/**
+	 * Constructeur d'un signal
 	 * @param nom
 	 * @param parametres
 	 */
@@ -48,6 +57,10 @@ public class Signal implements Serializable{
 		this.parametres = parametres;
 	}
 	
+	/**
+	 * Ajouter un paramètre
+	 * @param o
+	 */
 	public void addParametre(Object o)
 	{
 		parametres.add(o);

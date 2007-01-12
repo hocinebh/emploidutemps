@@ -3,8 +3,11 @@ package bdd;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
-
+/**
+ * Classe cours qui peut regrouper une matière, un groupe, un enseignant, une salle et un creneau.
+ * @author Tonya Vo Thanh & Alexander Remen
+ *
+ */
 public class Cours implements Serializable{
 
 	private Matiere matiere;
@@ -14,6 +17,7 @@ public class Cours implements Serializable{
 	private Creneau creneau;
 	
 	/**
+	 * Constructeur d'un cours ou l'enseignant est trouvé lui même si le groupe n'est pas égal à {@code null} sinon l'enseignant est {@code null}.
 	 * @param creneau
 	 * @param salle
 	 * @param groupe
@@ -31,6 +35,7 @@ public class Cours implements Serializable{
 	}
 	
 	/**
+	 * Constructeur d'un cours
 	 * @param matiere
 	 * @param salle
 	 * @param groupe
@@ -56,97 +61,104 @@ public class Cours implements Serializable{
 	}
 
 	/**
-	 * @return the enseignant
+	 * @return l'enseignant
 	 */
 	public Enseignant getEnseignant() {
 		return enseignant;
 	}
 
 	/**
-	 * @param enseignant the enseignant to set
+	 * @param enseignant l'enseignant à configurer
 	 */
 	public void setEnseignant(Enseignant enseignant) {
 		this.enseignant = enseignant;
 	}
 
 	/**
-	 * @return the groupe
+	 * @return le groupe
 	 */
 	public Groupe getGroupe() {
 		return groupe;
 	}
 
 	/**
-	 * @param groupe the groupe to set
+	 * @param groupe le groupe à configurer
 	 */
 	public void setGroupe(Groupe groupe) {
 		this.groupe = groupe;
 	}
 
 	/**
-	 * @return the matiere
+	 * @return la matiere
 	 */
 	public Matiere getMatiere() {
 		return matiere;
 	}
 
 	/**
-	 * @param matiere the matiere to set
+	 * @param matiere la matière à configurer
 	 */
 	public void setMatiere(Matiere matiere) {
 		this.matiere = matiere;
 	}
 
 	/**
-	 * @return the salle
+	 * @return la salle
 	 */
 	public Salle getSalle() {
 		return salle;
 	}
 
 	/**
-	 * @param salle the salle to set
+	 * @param salle la salle à configurer
 	 */
 	public void setSalle(Salle salle) {
 		this.salle = salle;
 	}
 
 	/**
-	 * @return the creneau
+	 * @return le creneau
 	 */
 	public Creneau getCreneau() {
 		return creneau;
 	}
 
 	/**
-	 * @param creneau the creneau to set
+	 * @param creneau le creneau à configurer
 	 */
 	public void setCreneau(Creneau creneau) {
 		this.creneau = creneau;
 	}
 
-
+	/**
+	 * @return le cours en String
+	 */
 	public String toString() {
 		
 		return this.creneau.date()+" ("+this.creneau.heure()+"-"+this.creneau.heureFin()+") "+this.matiere+" , gr. "+this.groupe;
 	}
-
+	/**
+	 * Méthode qui compare le jour du cours à la Date donnée en paramètre
+	 * @param jour1 la Date à comparer
+	 * @return integer
+	 */
 	public int compareJour(Date jour1) {
 		GregorianCalendar d1 = this.creneau.getDate();
-		//String jour[]=jour1.toString().split(":");
-		//System.out.println(jour1.getDay()+"/"+jour1.getMonth()+"/"+jour1.getYear());
 		GregorianCalendar d2 = new GregorianCalendar();
+		
 		d2.setTime(jour1);
 		d2.set(GregorianCalendar.HOUR_OF_DAY, 0);
 		d2.set(GregorianCalendar.MINUTE, 0);
 		d2.set(GregorianCalendar.SECOND, 0);
 		d2.set(GregorianCalendar.MILLISECOND, 0);
-		
-		//System.out.println("d1 : "+Creneau.DatetoString(d1)+" d2 : "+Creneau.DatetoString(d2));
-		
+				
 		return d1.compareTo(d2);
 	}
-	
+	/**
+	 * Compare le cours à un autre et retourne un boolean.
+	 * @param lecours à comparer
+	 * @return true si c'est le même cours, false sinon
+	 */
 	public boolean egal (Cours lecours){
 		boolean retour = false;
 		

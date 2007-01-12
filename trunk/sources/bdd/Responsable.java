@@ -1,11 +1,17 @@
 package bdd;
 
+/**
+ * Classe qui représente un responsable
+ * @author Alexander Remen et Tonya Vo Thanh
+ *
+ */
 public class Responsable extends Enseignant {
 
 	private static int nbPers =0;
 	private Promotion promo;
 	
 	/**
+	 * Constructeur d'un responsable
 	 * @param num_personne
 	 * @param username
 	 * @param password
@@ -30,6 +36,7 @@ public class Responsable extends Enseignant {
 	}
 
 	/**
+	 * Set Promo
 	 * @param promo the promo to set
 	 */
 	public void setPromo(Promotion promo) {

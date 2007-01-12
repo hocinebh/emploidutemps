@@ -105,20 +105,21 @@ public class Interface_Reservation {
 			update_comboboxes();
 		}
 	}
-	
+	/*
+	 * Méthode qui cherche les cours à mettre dans la JComboBox de reservations
+	 */
 	private void update_comboboxes(){
 		table = null;
 		try {
 			table = Classeclient.Recup_Listes_Reservation();
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			//e2.printStackTrace();
 		} catch (ClassNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			//e2.printStackTrace();
 		}
 		Vector<Cours> liste_cours=table[4];
 		comboboxmodel.removeAllElements();
+		/* On ajoute un element null */
 		if (table[4]!= null)
 			table[4].add(0,null);
 		int i =0;
@@ -139,7 +140,6 @@ public class Interface_Reservation {
 	/**
 	 * Cette methode affiche l'interface reservation. En parametre elle doit avoir la classe client qui l'a crée (normalement crée par un client)
 	 * parce qu'elle fait appelle a de nombreuses methodes dans la classe client pour envoyer des signaux au serveur par TCP/IP.
-	 *   
 	 * @param classeclient - Client qui crée la classe Interface_Reservation
 	 */
 	public void Affiche_Interface_Reservation(Client classeclient){
@@ -198,7 +198,6 @@ public class Interface_Reservation {
 				try {
 					Enseignant.setSelectedItem(((Matiere)Matiere.getSelectedItem()).getEnseignant((Groupe)Groupe.getSelectedItem()));
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					//e1.printStackTrace();
 				}
 			}
@@ -229,7 +228,7 @@ public class Interface_Reservation {
 		panelcenter.add(Salle);
 		fenetre.getContentPane().add(panelcenter,BorderLayout.CENTER);
 		
-				/* Bouttons valider, modifier, effacer et supprimer*/
+		/* Bouttons valider, modifier, effacer et supprimer*/
 		JPanel ButtonPanel = new JPanel();
 		ButtonPanel.setLayout(new BorderLayout());
 		
@@ -319,11 +318,9 @@ public class Interface_Reservation {
 					reserver_cours();
 					}
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 				
 				
@@ -347,11 +344,9 @@ public class Interface_Reservation {
 						update_comboboxes();
 					}
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 				
 				

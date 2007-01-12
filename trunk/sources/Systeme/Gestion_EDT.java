@@ -7,7 +7,13 @@ import java.net.Socket;
 import java.util.*;
 
 import bdd.*;
-
+/**
+ * Classe Gestion EDT qui est le thread qui demarre a chaque fois qu'un client se connecte au serveur. 
+ * @author Alexander Remen et Tonya Vo Thanh
+ *<p>La classe communique avec le client par TCP et avec Gestion_BDD qui s'occupe de la base de donnée.
+ * Les stacktraces ne sont pas enlever dans cette partie pour faciliter la tâche de deboguage du côté serveur.
+ * On imagine que celui qui fait tourner le serveur devrait avoir la possibilité d'améliorer le serveur et c'est donc avantageux. </p>
+ */
 public class Gestion_EDT extends Thread {
 
 	static final int port = 8080;
@@ -24,6 +30,7 @@ public class Gestion_EDT extends Thread {
 	private Gestion_BDD bd;
 	
     /**
+     * Constructeur d'un thread gestion edt
 	 * @param soc
 	 */
 	public Gestion_EDT(Socket soc) {
@@ -45,7 +52,7 @@ public class Gestion_EDT extends Thread {
 	}
 	
 	/**
-	 * Methode lancer lors de la reception de signaux
+	 * Methode qui attends les signaux du client et execute la commande demandé
 	 */
 	public void run()
 	{
@@ -60,14 +67,12 @@ public class Gestion_EDT extends Thread {
 			
 		} catch (IOException e1) {} 
 		  catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+	/* méthode qui ferme la connection socket */
 	private void FermerConnexion()
 	{
 		try {
@@ -79,7 +84,7 @@ public class Gestion_EDT extends Thread {
 			System.out.println("Erreur fermeture socket");
 		}
 	}
-	
+	/* La méthode qui cherche quel signal est recu et execute la commande appropriée */
 	private void execute(Signal methode) throws Exception
 	{
 		if(methode.getNom().compareTo("Connexion")==0)
@@ -93,7 +98,7 @@ public class Gestion_EDT extends Thread {
 		else if(methode.getNom().compareTo("visualiser_EDT")==0)
 		{
 			//Retourne la liste des cours trier
-			bd.testAffiche();
+			//bd.testAffiche();
 			Jours semaine = (Jours)methode.getParametres().elementAt(0);
 			visualiser_EDT(methode,semaine);
 			
@@ -110,7 +115,6 @@ public class Gestion_EDT extends Thread {
 				resp = (bd.getPromotion((String)methode.getParametres().firstElement())).getResp();
 				trie_par_jour(bd.getCoursPromotion(resp), liste_cours);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			}
 			out.writeObject(liste_cours);
@@ -145,7 +149,7 @@ public class Gestion_EDT extends Thread {
 			Groupe gp = (Groupe)methode.getParametres().elementAt(3);
 			Enseignant ens = (Enseignant)methode.getParametres().elementAt(4);
 			Saisir_EDT(mat, salle,cren,gp,ens);
-			bd.testAffiche();
+			//bd.testAffiche();
 		}
 		else if(methode.getNom().compareTo("Saisir_EDT2")==0)
 		{
@@ -160,7 +164,7 @@ public class Gestion_EDT extends Thread {
 				out.writeObject(e);
 			}
 			
-			bd.testAffiche();
+			//bd.testAffiche();
 		}
 		else if(methode.getNom().compareTo("Modifier_EDT")==0)
 		{
@@ -191,12 +195,13 @@ public class Gestion_EDT extends Thread {
 		bd.sauveBDD();
 	}
 	
-
+	/* la methode qui supprime un cours */
 	private void Supprimer_EDT(Cours cours) throws IOException {
 		Boolean ok = bd.supprime_cours(cours);
 		out.writeObject(ok);
 	}
-
+	
+	/* saisie d'un cours */
 	private void Saisir_EDT(Matiere mat, Salle salle, Creneau cren, Groupe gp, Enseignant ens) throws IOException {
 		try {
 			if(ens!=null)bd.addCours(new Cours(mat, salle, gp, cren, ens));
@@ -207,7 +212,7 @@ public class Gestion_EDT extends Thread {
 			out.writeObject(e);
 		}
 	}
-
+	/* modification d'un cours */
 	private void Modifier_EDT(Signal methode) throws IOException {
 		Boolean ok = true;
 		
@@ -233,7 +238,8 @@ public class Gestion_EDT extends Thread {
 		out.writeObject(ok);
 		
 	}
-
+	
+	/* methode qui trie les cours par jour dans la liste que l'on utilise */
 	private void trie_par_jour(Vector<Cours> cours, Vector<Vector<Cours>> liste_cours)
 	{
 		String date="";
@@ -252,15 +258,15 @@ public class Gestion_EDT extends Thread {
 		}
 	}
 	
-	/**
+	/*
 	 * Methodes a appeler lors de la 
-	 * reception d'un signal
+	 * reception d'un signal "connection"
 	 * @throws IOException 
 	 */
 	private void Connection(String nom, String mdp) throws IOException
 	{
 		boolean ok=false;
-		System.out.println("Connection: "+nom+ "  " + mdp);
+		//System.out.println("Connection: "+nom+ "  " + mdp);
 		
 		for(int i=0; i<bd.getUtilisateurs().size() && !ok; i++)
 		{
@@ -297,7 +303,8 @@ public class Gestion_EDT extends Thread {
 			System.exit(0);
 		} */
 	}
-
+	
+	/* methode qui recupere l'emploi du temps demandé */
 	private Vector<Vector<Cours>> recuperer_EDT(Signal methode) throws Exception
 	{
 		Vector<Vector<Cours>> liste_cours = new Vector<Vector<Cours>>();
@@ -328,6 +335,7 @@ public class Gestion_EDT extends Thread {
 		return liste_cours;
 	}
 	
+	/* methode qui envoi au client les cours qu'il a demandé */
 	private void visualiser_EDT(Signal methode,Jours Semaine) throws Exception
 	{
 		Vector<Vector<Cours>> liste_cours = recuperer_EDT(methode);

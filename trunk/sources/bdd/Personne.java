@@ -2,6 +2,11 @@ package bdd;
 
 import java.io.Serializable;
 
+/**
+ * Classe qui représente la classe personne utilisée pour les enseignants et les étudiants
+ * @author Alexander Remen et Tonya Vo Thanh
+ * 
+ */
 public abstract class Personne implements Serializable{
 
 	public static final int ETUDIANT = 0;
@@ -20,6 +25,7 @@ public abstract class Personne implements Serializable{
 	
 	
 	/**
+	 * Constructeur d'une personne
 	 * @param username
 	 * @param password
 	 * @param nom
@@ -38,45 +44,97 @@ public abstract class Personne implements Serializable{
 		this.email = email;
 		this.tel = tel;
 	}
+	/**
+	 * 
+	 * @return adresse
+	 */
 	public String getAdresse() {
 		return adresse;
 	}
+	/**
+	 * set adresse
+	 * @param adresse
+	 */
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
+	/**
+	 * 
+	 * @return email
+	 */
 	public String getEmail() {
 		return email;
 	}
+	/**
+	 * set email
+	 * @param email
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	/**
+	 * 
+	 * @return nom en String
+	 */
 	public String getNom() {
 		return nom;
 	}
+	/**
+	 * set nom 
+	 * @param nom
+	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+	/**
+	 * 
+	 * @return password
+	 */
 	public String getPassword() {
 		return password;
 	}
+	/**
+	 * set password
+	 * @param password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	/**
+	 * 
+	 * @return prenom
+	 */
 	public String getPrenom() {
 		return prenom;
 	}
+	/**
+	 * set prenom
+	 * @param prenom
+	 */
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
+	/**
+	 * 
+	 * @return tel
+	 */
 	public int getTel() {
 		return tel;
 	}
 	public void setTel(int tel) {
 		this.tel = tel;
 	}
+	/**
+	 * 
+	 * @return username
+	 */
 	public String getUsername() {
 		return username;
 	}
+	/**
+	 * set username
+	 * @param username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -91,6 +149,9 @@ public abstract class Personne implements Serializable{
 		String text = "Personne "+num_personne+" : "+this.nom+" , "+this.prenom+"\nLogin : "+this.username+" mdp : "+this.password;
 		return text;
 	}*/
+	/**
+	 * @return une personne en String
+	 */
 	public String toString() {
 		String text = "";
 		if(this!=null)
