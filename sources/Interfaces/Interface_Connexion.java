@@ -10,14 +10,14 @@ import Systeme.*;
 /**
  * Interface graphique de connexion au serveur
  * @author Alexander Remen et Tonya Vo Thanh
- * Classe qui s'occuppe 
+ * <p>Classe qui gère l'interface graphique de la connection au serveur.</p> 
  *
  */
 public class Interface_Connexion {
 
 	private JTextField TFlogin = new JTextField(15);
 	private JTextField TFmdp = new JTextField(15);
-	/**
+	/*
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
      */
@@ -32,14 +32,15 @@ public class Interface_Connexion {
 	 *
 	 */
 	public void affiche_login_screen(final Client Classeclient) {
-		Actions action = new Actions(Classeclient);
-		
+		/* La fenêtre */
 		final JFrame fenetre = new JFrame("Connexion");
 		fenetre.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		Actions action = new Actions(Classeclient);
 		fenetre.addWindowListener(action.getFermerWindows());
 		fenetre.setSize(300,200);
 		centerFrame(fenetre);
 		
+		/* Labels et Gridbaglayout */
 		JLabel Llogin = new JLabel("Login");
 		JLabel Lmdp = new JLabel("Mot de passe");
 		JButton Valider = new JButton("Connexion");
@@ -50,21 +51,20 @@ public class Interface_Connexion {
 		JMenu mfichier = new JMenu("Fichier");
 		JMenuItem quitter = new JMenuItem("Quitter");
 				
+		/* Action valider lorsqu'on clique sur le boutton valider */
 		ActionListener valider = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO envoi un signal au serveur avec 2 parametres le nom et le mdp
+				//envoi un signal au serveur avec 2 parametres le nom et le mdp
 				boolean test=false;
 				try {
 					test = Classeclient.Connexion(TFlogin.getText(), TFmdp.getText());
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				} //retour de envoi_signal();
 				catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 				if (test == false){
 					JOptionPane.showMessageDialog(null,"Connexion echoue","Connexion echoue",JOptionPane.ERROR_MESSAGE);
@@ -73,14 +73,11 @@ public class Interface_Connexion {
 					try {
 						Classeclient.Afficher_Emploi_du_temps();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						//e1.printStackTrace();
 					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						//	e1.printStackTrace();
 					}
 					fenetre.setVisible(false);
-					//TODO afficher son emploi du temps 
 					
 				}
 					

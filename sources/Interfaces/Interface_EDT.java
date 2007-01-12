@@ -3,23 +3,19 @@ package Interfaces;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-
 import Systeme.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.*;
-
 import bdd.*;
-
 import java.util.*;
+
 /**
  * Interface graphique emploi du temps
  * @author Alexander Remen et Tonya Vo Thanh
  * <p>Classe qui affiche l'emploi du temps et permet de naviguer vers les semaines précédentes et les semaines suivantes.
  * A partir du menu on peut aussi acceder à l'interface graphique d'un envoi d'un mél.</p>
  */
-
 public class Interface_EDT {
 	
 	public GregorianCalendar maintenant = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -38,7 +34,6 @@ public class Interface_EDT {
 	private JTextPane PJeudi =  new JTextPane();
 	private JTextPane PVendredi =  new JTextPane();
 	private Liste_Contacts Fenetremail = new Liste_Contacts();
-	//private Vector<Vector<Cours>> liste_cours= new Vector<Vector<Cours>>();
 	private Client Classeclient;
 	
     private static void AddtexttoPane(String[] initString,String[] initStyles, JTextPane textPane) {
@@ -55,24 +50,24 @@ public class Interface_EDT {
             System.err.println("Couldn't insert initial text into text pane.");
         }
     }
-	public void Addcourstojour(Vector<Vector<Cours>> tabCours) {
-		//String[] initString ={"10:00 - 11:15 \n","MDSI \n","Salle 110 \n","Daniel Marre\n","******************\n"};
+    /*
+     * Méthode qui prend en paramètre le vecteur de vecteur de cours (tous les cours d'une semaine) et les affiches dans 5 differents JTextPane.
+     * @param tabCours
+     * @see Cours
+     */
+	private void Addcourstojour(Vector<Vector<Cours>> tabCours) {
+
 		int nbcours;
 		JTextPane textpane;
-		
 		/* Calculer le nombre de cours */
-		//nbcours =6;
 		for(int jours=0;jours<5;jours++){
 			Vector<Cours> listec = tabCours.elementAt(jours);
 			nbcours = listec.size();
-			//System.out.println(""+nbcours);
 			String[] SJour = new String[6*nbcours];
 			String[] StyleJour = new String[6*nbcours];
 			int j =0;
 			for (int i=0;i<=(nbcours*6)-1;i=i+6){
 				//on va chercher les cours a afficher pour chaque jour
-				//horaire
-				//System.out.print(""+i);
 				Cours c = listec.elementAt(j);
 				SJour[i]=c.getCreneau().heure()+"-"+c.getCreneau().heureFin()+"\n";
 				StyleJour[i]="horaire";
@@ -108,7 +103,7 @@ public class Interface_EDT {
 
 	}
 	
-    
+    /* Méthode qui ajoute le style de chaque string dans les JTextPane */
 	protected static void addStylesToDocument(StyledDocument doc) {
         //Initialize some styles.
         Style def = StyleContext.getDefaultStyleContext().
@@ -140,7 +135,7 @@ public class Interface_EDT {
 	}
 
 	/**
-	 * Méthode utilisé pour actualiser et pour changer de semaine. On lui passe une classe Jours 
+	 * Méthode utilisé pour actualiser et pour changer de semaine. On lui passe une classe Jours et elle actualise tout la fenêtre.
 	 * @param Semaine - les jours que l'on veut afficher dans l'interface graphique
 	 * @see Jours
 	 */
@@ -163,23 +158,24 @@ public class Interface_EDT {
 		addtolisteCours(Semaine);
 		
 	}
-	
+	/**
+	 * Méthode qui fait appel à une méthode dans la classe client qui envoi les dates de la semaine.
+	 * Ensuite elle fait appel à la méthode qui affiche (actualise le contenu des JTextPanes).
+	 * @param Semaine
+	 */
 	public void addtolisteCours(Jours Semaine){
 		try {
-			
 			Vector<Vector<Cours>> liste_cours = (Classeclient.recuperercoursdelasemaine(Semaine));
 			Addcourstojour(liste_cours);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 	}
 	
-	/**
+	/*
      * Centre la fenetre au milieu de l'ecran
      * @param frame - la fenetre
      */
@@ -189,7 +185,7 @@ public class Interface_EDT {
 	   frame.setLocation((screenSize.width / 2) - ((frameSize.width +210)/ 2), (screenSize.height / 2) - (frameSize.height / 2));
 	}
 	/**
-	 * 
+	 * Méthode qui recoit en paramètre un vecteur de personne et la classe client et fait appelle à la méthode de la classe Liste_Contacts apropriée.
 	 * @param ListePersonne - vector<Personne> a afficher dans le JComboBox
 	 * @param Classeclient - La classe client qui instancie tout du cote client
 	 */
@@ -199,14 +195,17 @@ public class Interface_EDT {
 	}
 	
 	/**
-	 * 
+	 * Méthode qui affiche la fenêtre avec l'emploi du temps. Elle commence par afficher la semaine en cours. La communication avec le serveur 
+	 * passe par la classe client et doit donc la connaître, et est donc passé en paramètre.
 	 * @param notreClasseclient - La classe client qui instancie tout du cote client
 	 */
 	public void Afficher_EDT(Client notreClasseclient) {
 		Classeclient = notreClasseclient;
-		Actions action = new Actions(Classeclient);
+		
 		fenetre.setTitle("Emploi du temps");
+		/* On veut que la fenetre ne se ferme pas, mais fait appel à la méthode fermer de la classe Actions */
 		fenetre.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		Actions action = new Actions(Classeclient);
 		fenetre.addWindowListener(action.getFermerWindows());
 		fenetre.setSize(800,600);
 		centerFrame(fenetre);
@@ -224,7 +223,7 @@ public class Interface_EDT {
 		
 		afficher_contenu(Semaine);
 		
-		/* Contenu panels jours */
+		/* Contenu panels dates des jours */
 		LLundi.setBorder(new LineBorder(new Color(0,0,0)));
 		LLundi.setBackground(new Color(115,167,230));
 		LMardi.setBorder(new LineBorder(new Color(0,0,0)));
@@ -243,6 +242,7 @@ public class Interface_EDT {
 		JoursSemaine.add(LJeudi);
 		JoursSemaine.add(LVendredi);
 		
+		/* Panel qui regroupe les deux panels du dessus */
 		JPanel toppanel = new JPanel();
 		toppanel.setLayout(new BorderLayout());
 		toppanel.add(headerpane,BorderLayout.NORTH);
@@ -250,10 +250,13 @@ public class Interface_EDT {
 		
 		fenetre.getContentPane().add(toppanel,BorderLayout.NORTH);
 		
+		/* Panel qui regroupe les JTextPanes */
 		JPanel contenu = new JPanel();
 		contenu.setSize(800,400);
 		contenu.setLayout(new GridLayout(1,5));
 		contenu.setBackground(new Color(255,255,255));
+		
+		/* Couleurs et bordures des JTextPanes */
 		PLundi.setBorder(new LineBorder(new Color(0,0,0)));
 		PMardi.setBorder(new LineBorder(new Color(0,0,0)));
 		PMercredi.setBorder(new LineBorder(new Color(0,0,0)));
@@ -288,6 +291,7 @@ public class Interface_EDT {
 		menu.add(mfichier);
 		fenetre.setJMenuBar(menu);
 		
+		/* Action afficher la fenêtre mail */
 		ActionListener actionmail = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -297,9 +301,11 @@ public class Interface_EDT {
 			}
 		};
 		envoiemail.addActionListener(actionmail);
-			
+		
+		/* Action fermer l'application par le menu */
 		quitter.addActionListener(action.getFermerButton());
 		
+		/* Action actualiser la semaine en cours */
 		ActionListener SemaineEnCours = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -310,6 +316,7 @@ public class Interface_EDT {
 		};
 		this.LSemaine.addActionListener(SemaineEnCours);
 		
+		/* Action regarder la semaine suivante */
 		ActionListener SemaineSuivante = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -320,7 +327,7 @@ public class Interface_EDT {
 			}
 		};
 		SemaineSuiv.addActionListener(SemaineSuivante);
-		
+		/* Action regarder la semaine précendente */
 		ActionListener SemainePrecedente = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)

@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Vector;
 
+/**
+ * Classe qui représente une promotion
+ * @author Alexander Remen et Tonya Vo Thanh
+ *
+ */
 public class Promotion implements Serializable{
 	
 	/*Declaration des attributs*/
@@ -12,6 +17,7 @@ public class Promotion implements Serializable{
 	private Vector<Etudiant> liste_etudiant;
 
 	/**
+	 * Constructeur d'une promotion
 	 * @param nom_promotion
 	 * @param liste_etudiant
 	 */
@@ -29,13 +35,14 @@ public class Promotion implements Serializable{
 	}
 
 	/**
-	 * @return the resp
+	 * @return le responsable
 	 */
 	public Responsable getResp() {
 		return resp;
 	}
 
 	/**
+	 * set responsable
 	 * @param resp the resp to set
 	 */
 	public void setResp(Responsable resp) {
@@ -43,14 +50,14 @@ public class Promotion implements Serializable{
 	}
 
 	/**
-	 * @return the num_promotion
+	 * @return le numero promotion
 	 */
 	public String getNom_promotion() {
 		return nom_promotion;
 	}
 
 	/**
-	 * @return the liste_etudiant
+	 * @return la liste d'etudiants
 	 */
 	public Vector<Etudiant> getListe_etudiant() {
 		return liste_etudiant;
@@ -62,7 +69,8 @@ public class Promotion implements Serializable{
 	}
 
 	/**
-	 * @param liste_etudiant the liste_etudiant to set
+	 * set liste d'etudiants
+	 * @param liste_etudiant liste d'etudiant
 	 */
 	public void setListe_etudiant(Vector<Etudiant> liste_etudiant) {
 		this.liste_etudiant = liste_etudiant;

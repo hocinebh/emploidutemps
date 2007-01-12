@@ -3,7 +3,14 @@ package Systeme;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+/**
+ * Classe qui gère les dates des jours de la semaine 
+ * @author Alexander Remen et Tonya Vo Thanh
+ * <p>La classe contient 5 jours (lundi: jour1 - vendredi: jour5) et est construite avec le 
+ * constructeur en passant en parametre une des 7 dates (GregorianCalendar) de la semaine.
+ * En lui passant la date d'un samedi ou dimanche, elle renvoit la semaine d'après.</p>
+ * <p> Les dates renvoyés sont de type java.util.Date.
+ */
 public class Jours implements Serializable{
 	
 	
@@ -18,7 +25,8 @@ public class Jours implements Serializable{
 	 
 	/**
 	 * Constructeur qui a partir de la date donnée (par defaut aujourd'hui) trouve les dates lundi-vendredi qu'on veut utiliser
-	 * @param maintenant - Calendar
+	 * @param maintenant - GregorianCalendar
+	 * Renvoit les jours de la même semaine que le paramètre pour lundi-vendredi et les jours de la semaine d'après pour samedi-dimanche.
 	 */
 	public Jours(GregorianCalendar maintenant){	
 		formatsemaine.setTimeZone(cet);
@@ -43,21 +51,46 @@ public class Jours implements Serializable{
 	maintenant.add(GregorianCalendar.DAY_OF_WEEK,+1);
 	jour5 = maintenant.getTime();
 	}
+	/**
+	 * Méthode qui retourne le premier jour, lundi
+	 * @return jour1 - java.util.Date
+	 */
 	public Date getJour1() {
 		return jour1;
 	}
+	/**
+	 * Méthode qui retourne le deuxième jour, mardi
+	 * @return jour2 - java.util.Date
+	 */
 	public Date getJour2() {
 		return jour2;
 	}
+	/**
+	 * Méthode qui retourne le troisième jour, mercredi
+	 * @return jour3 - java.util.Date
+	 */
 	public Date getJour3() {
 		return jour3;
 	}
+	/**
+	 * Méthode qui retourne le quatrième jour, jeudi
+	 * @return jour4 - java.util.Date
+	 */
 	public Date getJour4() {
 		return jour4;
 	}
+	/**
+	 * Méthode qui retourne le cinquième jour, vendredi
+	 * @return jour5 - java.util.Date
+	 */
 	public Date getJour5() {
 		return jour5;
 	}
+	/**
+	 * Méthode qui prend en paramètre le numéro du jour (1-5) et renvoi la date
+	 * @param i - int
+	 * @return Date - java.util.Date
+	 */
 	public Date getJours(int i)
 	{
 		Date d=null;
@@ -71,29 +104,60 @@ public class Jours implements Serializable{
 		}
 		return d;
 	}
+	/**
+	 * Méthode qui retourne le premier jour en format texte (en francais)
+	 * @return jour1 - String 
+	 */
 	public String getStringJour1() {
 		return formatjour.format(jour1);
 	}
+	/**
+	 * Méthode qui retourne le deuxième jour en format texte (en francais)
+	 * @return jour2 - String 
+	 */
 	public String getStringJour2() {
 		return formatjour.format(jour2);
 	}
+	/**
+	 * Méthode qui retourne le troisième jour en format texte (en francais)
+	 * @return jour3 - String 
+	 */
 	public String getStringJour3() {
 		return formatjour.format(jour3);
 	}
+	/**
+	 * Méthode qui retourne le quatrième jour en format texte (en francais)
+	 * @return jour4 - String 
+	 */
 	public String getStringJour4() {
 		return formatjour.format(jour4);
 	}
+	/**
+	 * Méthode qui retourne le cinquième jour en format texte (en francais)
+	 * @return jour5 - String 
+	 */
 	public String getStringJour5() {
 		return formatjour.format(jour5);
 	}
+	/**
+	 * Méthode qui retourne le numéro de semaine en format texte
+	 * @return semaine - String 
+	 */
 	public String getStringSemaine() {
 		return formatsemaine.format(jour1);
 	}
+	/**
+	 * Méthode qui retourne le numéro de semaine d'après en format texte
+	 * @return semaine - String 
+	 */
 	public String getStringSemaineproch() {
 		
 		return Integer.toString(Integer.parseInt(formatsemaine.format(jour1))+1);
 	}
-	
+	/**
+	 * Méthode qui retourne le numéro de semaine précédente en format texte
+	 * @return semaine - String 
+	 */
 	public String getStringSemaineprec() {
 		
 		return Integer.toString(Integer.parseInt(formatsemaine.format(jour1))-1);

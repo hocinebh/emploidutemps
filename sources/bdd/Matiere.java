@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /**
+ * Classe qui représente une matière
  * @author Tonya Vo Thanh & Alexander Remen
  *
  */
@@ -26,9 +27,10 @@ public class Matiere implements Serializable{
 	private Vector<Enseignement> liste_enseignement;
 	
 	/**
-	 * @param num_matiere
-	 * @param intitule
-	 * @param type
+	 * Constructeur d'une matière
+	 * @param num_matiere le numéro de la matière
+	 * @param intitule l'intitulé de la matière
+	 * @param type le type de la matière
 	 */
 	public Matiere(String num_matiere, String intitule, int type) {
 		super();
@@ -39,22 +41,21 @@ public class Matiere implements Serializable{
 	}
 
 
-
+	/**
+	 * Ajoute l'enseignement dans la matière
+	 * @param e l'enseignement à ajouter
+	 */
 	public void ajoutEnseignement(Enseignement e)
 	{
 		liste_enseignement.add(e);
 	}
 
-
-
 	/**
-	 * @return Returns the num_matiere.
+	 * @return num_matière le numero de la matière
 	 */
 	public String getNum_matiere() {
 		return num_matiere;
 	}
-
-
 
 	/**
 	 * @param num_matiere The num_matiere to set.
@@ -70,8 +71,6 @@ public class Matiere implements Serializable{
 		return liste_enseignement;
 	}
 
-
-
 	/**
 	 * @param liste_enseignement The liste_enseignement to set.
 	 */
@@ -86,16 +85,12 @@ public class Matiere implements Serializable{
 		return intitule;
 	}
 
-
-
 	/**
 	 * @param intitule the intitule to set
 	 */
 	public void setIntitule(String intitule) {
 		this.intitule = intitule;
 	}
-
-
 
 	/**
 	 * @return the type
@@ -104,8 +99,6 @@ public class Matiere implements Serializable{
 		return type;
 	}
 
-
-
 	/**
 	 * @param type the type to set
 	 */
@@ -113,19 +106,31 @@ public class Matiere implements Serializable{
 		this.type = type;
 	}
 	
-	
+	/**
+	 * @return le String intitulé de la matière
+	 */
 	public String toString(){
 		if(this!=null)
 		return intitule;
 		else return "";
 		
 	}
-	
+	/**
+	 * Compare une matière à la matière donnée en paramètre
+	 * @param mat
+	 * @return true si oui, false sinon
+	 */
 	public boolean egal(Matiere mat)
 	{
 		return (num_matiere.compareTo(mat.getNum_matiere())==0);
 	}
 	
+	/**
+	 * Méthode qui retourne l'enseignant qui correspond au groupe donnée en paramètre
+	 * @param gp groupe
+	 * @return l'enseignant
+	 * @throws Exception
+	 */
 	public Enseignant getEnseignant(Groupe gp) throws Exception
 	{
 		Enseignant enseignant= null;
@@ -137,5 +142,4 @@ public class Matiere implements Serializable{
 		}
 		return enseignant;
 	}
-	
 }

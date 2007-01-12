@@ -13,8 +13,8 @@ import Systeme.Client;
 /**
  * Interface graphique d'envoi d'email
  * @author Alexander Remen et Tonya Vo Thanh
- * Cette classe devrait être instanciée en même temps que la classe {@link Interface_EDT} car elle n'est que caché lorsqu'elle n'est pas visible.
- * Ceci fait que lorsque l'utilisateur appuye sur "Envoi email" sur l'{@link Interface_EDT} elle met {@code setVisible=true} 
+ * <p>Cette classe devrait être instanciée en même temps que la classe {@link Interface_EDT} car elle n'est que caché lorsqu'elle n'est pas visible.
+ * Ceci fait que lorsque l'utilisateur appuye sur "Envoi email" sur l'{@link Interface_EDT} elle met {@code setVisible=true}<p> 
  * @see Client
  */
 public class Liste_Contacts {

@@ -3,7 +3,11 @@ package bdd;
 import java.util.Iterator;
 import java.util.Vector;
 
-
+/**
+ * Classe qui représente un étudiant
+ * @author Alexander Remen et Tonya Vo Thanh
+ *
+ */
 public class Etudiant extends Personne {
 
 	//private int semestre;
@@ -11,6 +15,8 @@ public class Etudiant extends Personne {
 	private Promotion promo;
 	
 	/**
+	 * Constructeur qui crée un étudiant 
+	 * @param num
 	 * @param username
 	 * @param password
 	 * @param nom
@@ -18,8 +24,6 @@ public class Etudiant extends Personne {
 	 * @param adresse
 	 * @param email
 	 * @param tel
-	 * @param semestre
-	 * @param specialite
 	 */
 	public Etudiant(String num, String username, String password, String nom, String prenom, String adresse, String email, int tel) {
 		super(num,username, password, nom, prenom, adresse, email, tel);
@@ -43,7 +47,10 @@ public class Etudiant extends Personne {
 	}
 
 
-
+	/**
+	 * Méthode qui ajoute un groupe a l'étudiant
+	 * @param g
+	 */
 	public void ajouteGroupe(Groupe g)
 	{
 		groupes.add(g);
@@ -52,7 +59,7 @@ public class Etudiant extends Personne {
 	
 
 	/**
-	 * @return the groupes
+	 * @return la liste des groupes
 	 */
 	public Vector<Groupe> getGroupes() {
 		return groupes;
@@ -66,7 +73,12 @@ public class Etudiant extends Personne {
 	public void setGroupes(Vector<Groupe> groupes) {
 		this.groupes = groupes;
 	}
-
+	
+	/**
+	 * Méthode qui dit si un étudiant fait parti d'un groupe donné en paramètre
+	 * @param g le groupe
+	 * @return true si oui, false sinon
+	 */
 	public boolean estDuGroupe(Groupe g)
 	{		
 		return groupes.contains(g);

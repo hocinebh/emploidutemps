@@ -5,23 +5,22 @@ import javax.mail.internet.*;
 import java.util.*;
 
 /**
- * 
+ * Classe qui envoi un mail
  * @author Alexander Remen et Tonya vo Thanh
- * Classe simple qui envoit un mail.
  * Elle doit etre utilise par le serveur sur l'INSA pour que le serveur SMTP soit reconnu.
  */
 
 public class SimpleMailSender {
 	/**
-	 * // Il faut changer le nom du serveur smtp en fonction de la machine ou tourne le serveur: 
+	 * Il faut changer le nom du serveur smtp en fonction de la machine ou tourne le serveur: 
 	 *"smtp.free.fr" = serveur chez tonya et alex a toulouse
 	 *"melinite.insa-toulouse.fr" = serveur a l'insa
 	 *"smtp.online.no" = serveur chez alex en norvege
 	 */
-	static boolean envoiok = true; 
+	private boolean envoiok = true; 
 	//private static String smtpServer = "smtp.free.fr"; //serveur chez tonya et alex a toulouse
 	//private String smtpServer = "melinite.insa-toulouse.fr" //serveur a l'insa
-	private static String smtpServer = "smtp.online.no"; //serveur chez alex en norvege
+	private String smtpServer = "smtp.online.no"; //serveur chez alex en norvege
 	/**
 	 * Methode qui envoie un mail. Il faut changer le SMTP dans la source pour qu'il marche sur le serveur en compte! 
 	 * @param to : destinataire
@@ -43,7 +42,7 @@ public class SimpleMailSender {
 		return envoiok;
 	}
 	
-	  /**
+	  /*
 	    * "send" method to send the message.
 	    * @throws Exception
 	    */

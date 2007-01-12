@@ -1217,7 +1217,7 @@ public class Gestion_BDD {
 	/**
 	 * Fonction qui supprime un cours
 	 * @param cours2 - le cours a supprimer
-	 * @return
+	 * @return ok si ca marche bien 
 	 */
 	public Boolean supprime_cours(Cours cours2) {
 		boolean ok = false;
